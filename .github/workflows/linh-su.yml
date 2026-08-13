@@ -1,5 +1,12 @@
 # KHÔI LỖI TÔNG MÔN THỨ HAI — chạy trên runner của GitHub, song song với khôi lỗi trên VM.
 #
+# CHỖ ĐẶT TỆP NÀY LÀ MỘT LUẬT, không phải một chỗ tuỳ tiện (13/08/2026): **kho nào giữ MÃ NGUỒN
+# thì không chạy nó.** Workflow này nằm trong `.github/workflows/` của một kho khôi lỗi dùng rồi
+# bỏ, và chỉ ở đó. Lý do: nó đòi `WORKER_TOKEN` — chìa TOÀN CỤC, mở cookie của MỌI thành viên —
+# nằm trong Secrets của kho chạy nó, và nó đổ nhật ký vĩnh viễn, ai cũng đọc được, của một tiến
+# trình chuyên cầm cookie đã giải mã. Đặt cả hai thứ ấy lên một kho dùng rồi bỏ thì mất một kho
+# dùng rồi bỏ; đặt lên kho mã nguồn thì mất kho mã nguồn.
+#
 # PHỐI HỢP VỚI VM: không có cơ chế điều phối nào ở đây, và đó là chủ ý — Postgres đã phân xử
 # sẵn. `claimNextJob` là MỘT câu UPDATE nguyên tử: hai khôi lỗi giành nhau thì nhận hai dòng
 # khác nhau, hoặc một dòng và một null. Cộng index `jobs_one_active_per_account`, hai đàn cùng
@@ -24,9 +31,10 @@
 # vì timeout; 5 ghế → load ~2. Runner có ít RAM hơn và chia sẻ I/O nên lấy 2 ghế, dè dặt có chủ
 # ý — VM vẫn là chỗ gánh chính, đây là phần cộng thêm.
 #
-# CÀI ĐẶT — một việc: Settings → Secrets and variables → Actions, thêm `WORKER_TOKEN` đúng giá
-# trị đang đặt trên Vercel. Thiếu nó thì bước cuối dừng ngay với một câu nói rõ, không chạy
-# rỗng rồi để người ta đoán.
+# CÀI ĐẶT — một việc, và lượt dựng tự động đã làm sẵn: Settings → Secrets and variables →
+# Actions, thêm `WORKER_TOKEN` đúng giá trị đang đặt trên Vercel. Chỉ phải làm tay khi dựng kho
+# bằng tay. Thiếu nó thì bước cuối dừng ngay với một câu nói rõ, không chạy rỗng rồi để người ta
+# đoán.
 
 name: Khôi lỗi tông môn (GitHub)
 
@@ -68,7 +76,7 @@ jobs:
 
       - name: Trực ca
         env:
-          WEB_URL: ${{ vars.WEB_URL || 'https://auto-hh3d-2.vercel.app' }}
+          WEB_URL: ${{ vars.WEB_URL || 'https://auto-hh3d.vercel.app' }}
           WORKER_TOKEN: ${{ secrets.WORKER_TOKEN }}
           # Danh tính riêng — xem điều 1.
           WORKER_ID: khoiloi-tro-20260813-160253

@@ -62,8 +62,13 @@ const POLL_MS = Number(process.env.WORKER_POLL_MS ?? 5000);
 // để máy chủ riêng có thể tiết chế request, nhưng không nhận giá trị vô lý làm quay nóng CPU.
 const HEARTBEAT_MS = Math.max(1_000, Number(process.env.WORKER_HEARTBEAT_MS ?? 5_000) || 5_000);
 // Số job (= số tài khoản) chạy CÙNG LÚC trong một tiến trình khôi lỗi. Mỗi job là một
-// Chromium riêng nên trần này là trần RAM: 2 vừa cho máy nhà, VM tông môn có thể nâng qua
-// biến môi trường. Kẹp 1–8 để một dấu phẩy gõ nhầm không mở tám mươi trình duyệt.
+// Chromium riêng nên trần này là trần RAM. Kẹp 1–8 để một dấu phẩy gõ nhầm không mở tám mươi
+// trình duyệt.
+//
+// HAI là trần chuẩn của cả tông môn từ 14/08/2026 — máy nhà lẫn VM lẫn runner GitHub. Con số
+// này còn được KHAI LÊN máy chủ ở mỗi lượt hỏi việc: bộ cân tải luân phiên phải biết khôi lỗi
+// nào còn chỗ, bằng không nó giữ lượt cho một tiến trình đã đầy ghế (services/dispatch.ts).
+// Vặn biến môi trường rồi khởi động lại là con số mới có hiệu lực ngay ở nhịp gõ cửa kế tiếp.
 const MAX_JOBS = Math.max(1, Math.min(8, Number(process.env.WORKER_MAX_JOBS ?? 2) || 2));
 /**
  * TUỔI THỌ một lượt chạy — sống quá mốc này thì THÔI NHẬN VIỆC MỚI, không phải chết ngay.
@@ -328,7 +333,11 @@ for (;;) {
 
   if (running.size < MAX_JOBS) {
     try {
-      const { job } = await call("claim", { workerId: WORKER_ID, ...(VERSION ? { version: VERSION } : {}) });
+      const { job } = await call("claim", {
+        workerId: WORKER_ID,
+        maxJobs: MAX_JOBS,
+        ...(VERSION ? { version: VERSION } : {}),
+      });
       if (job) {
         claimed = true;
         // handle() tự nuốt mọi lỗi của chính nó (kể cả lỗi báo cáo complete), nên promise
