@@ -1,0 +1,13 @@
+{
+  "name": "linh-su",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Tiến trình nền của tông môn — chạy theo lịch.",
+  "scripts": {
+    "worker": "node scripts/worker.mjs"
+  },
+  "dependencies": {
+    "playwright-core": "^1.62.1"
+  }
+}
