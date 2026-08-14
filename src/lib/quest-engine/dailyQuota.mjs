@@ -32,6 +32,12 @@ export const DAILY_QUOTA_QUEST_IDS = new Set([
   "van-dap",
   "van-dap-thuong",
   "bi-canh-tong-mon",
+  // Khoáng Mạch: trần NGÀY thật — hai trần Tu Vi/Tinh Thạch trên trang, cạn sau ~2 lần nhận
+  // (bản ghi 14/08). `alreadyDone` của nó chỉ phát từ MỘT chỗ: stopIf「đã đầy trần」đọc số
+  // x/y do server render — đúng hình dạng mà dailyCapReached đi tìm. Đường「đang đào dở」
+  // thoát bằng onCooldown kèm đồng hồ nên không bao giờ lạc vào sổ này.
+  "khoang-mach",
+  "khoang-mach-thuong",
 ]);
 
 /** Nhiệm vụ này có trần lượt theo ngày không. */

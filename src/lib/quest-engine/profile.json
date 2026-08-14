@@ -1,6 +1,6 @@
 {
   "name": "Ho\u1EA1t \u0111\u1ED9ng h\u00E0ng ng\u00E0y (m\u1EB7c \u0111\u1ECBnh)",
-  "schemaVersion": 57,
+  "schemaVersion": 58,
   "dailyQuestPath": "/nhiem-vu-hang-ngay",
   "quests": [
     {
@@ -1910,19 +1910,526 @@
       "id": "khoang-mach",
       "name": "Kho\u00E1ng M\u1EA1ch",
       "enabled": false,
-      "kind": "labelMatch",
+      "kind": "customSteps",
       "matchTexts": [
-        "thu ho\u1EA1ch",
-        "thu hoach",
-        "nh\u1EADn th\u01B0\u1EDFng",
-        "nhan thuong"
+        "kho\u00E1ng m\u1EA1ch",
+        "khoang mach"
       ],
-      "steps": [],
-      "options": [],
-      "fallbackCooldownSeconds": 420,
+      "pagePath": "/khoang-mach/?nv_embed=1",
+      "steps": [
+        {
+          "action": "navigate",
+          "text": "/khoang-mach/?nv_embed=1",
+          "timeoutMs": 15000
+        },
+        {
+          "action": "waitForSelector",
+          "selector": "div.mine-buttons \u003E button.mine-type-button",
+          "timeoutMs": 25000,
+          "note": "c\u1ED5ng render: thanh ch\u1ECDn lo\u1EA1i kho\u00E1ng lu\u00F4n c\u00F3 m\u1EB7t, k\u1EC3 c\u1EA3 khi danh s\u00E1ch m\u1ECF c\u00F2n \u0111ang t\u1EA3i"
+        },
+        {
+          "action": "waitMilliseconds",
+          "timeoutMs": 1500,
+          "note": "ch\u1EDD s\u1ED1 li\u1EC7u th\u1EADt t\u1EEB server \u00E1p v\u00E0o b\u1EA3ng ch\u1EC9 s\u1ED1 \u2014 trang v\u1EBD khung tr\u01B0\u1EDBc, s\u1ED1 \u0111\u1EBFn sau"
+        },
+        {
+          "action": "evaluateJavaScript",
+          "script": "() =\u003E { const MARK = \u0027jvz-km-done\u0027; if (document.body) document.body.classList.remove(MARK); const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase(); const text = fold(document.body ? document.body.textContent : \u0027\u0027).replace(/\\s\u002B/g, \u0027 \u0027); const read = (label) =\u003E { const m = text.match(new RegExp(label \u002B \u0027\\\\s*:?\\\\s*([\\\\d.,\\\\u00A0 ]\u002B?)\\\\s*\\\\/\\\\s*([\\\\d.,\\\\u00A0 ]\u002B)\u0027)); if (!m) return null; /* \u00221.200\u0022 l\u00E0 ph\u00E2n c\u00E1ch h\u00E0ng ngh\u00ECn vi-VN \u2014 b\u00F3c m\u1ECDi th\u1EE9 kh\u00F4ng ph\u1EA3i s\u1ED1 tr\u01B0\u1EDBc khi \u0111\u1ECDc, b\u00E0i h\u1ECDc MazeCapScan. */ const got = parseInt(m[1].replace(/\\D/g, \u0027\u0027), 10); const cap = parseInt(m[2].replace(/\\D/g, \u0027\u0027), 10); return cap \u003E 0 ? { got: got, cap: cap } : null; }; const tv = read(\u0027tu vi\u0027); const tt = read(\u0027tinh thach\u0027); if (!tv || !tt) return \u0027cap-scan: ch\u01B0a th\u1EA5y \u00F4 Tu Vi / Tinh Th\u1EA1ch tr\u00EAn trang\u0027; const full = tv.got \u003E= tv.cap \u0026\u0026 tt.got \u003E= tt.cap; if (full \u0026\u0026 document.body) document.body.classList.add(MARK); return \u0027!Tr\u1EA7n h\u00F4m nay: Tu Vi \u0027 \u002B tv.got \u002B \u0027/\u0027 \u002B tv.cap \u002B \u0027, Tinh Th\u1EA1ch \u0027 \u002B tt.got \u002B \u0027/\u0027 \u002B tt.cap \u002B (full ? \u0027 \u2014 \u0110\u00C3 \u0110\u1EA6Y, ngh\u1EC9 t\u1EDBi mai\u0027 : \u0027\u0027); }",
+          "timeoutMs": 15000
+        },
+        {
+          "action": "stopIf",
+          "text": "\u0111\u00E3 \u0111\u1EA7y tr\u1EA7n Tu Vi \u002B Tinh Th\u1EA1ch h\u00F4m nay",
+          "timeoutMs": 15000,
+          "note": "d\u1EEBng KH\u00D4NG k\u00E8m \u0111\u1ED3ng h\u1ED3 \u2192 alreadyDone \u2192 v\u00E0o s\u1ED5 tr\u1EA7n-ng\u00E0y, mai gh\u00E9 l\u1EA1i",
+          "condition": {
+            "kind": "visible",
+            "selector": "body.jvz-km-done"
+          }
+        },
+        {
+          "action": "click",
+          "selector": "div.mine-buttons \u003E button.mine-type-button:nth-of-type({{mineType}})",
+          "timeoutMs": 15000,
+          "note": "ch\u1ECDn lo\u1EA1i kho\u00E1ng theo c\u1EA5u h\u00ECnh; n\u00FAt \u0111ang ch\u1ECDn s\u1EB5n th\u00EC b\u1EA5m l\u1EA1i v\u00F4 h\u1EA1i"
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 10000,
+          "note": "n\u00FAt nh\u1EADn .active = tab \u0111\u00E3 \u0111\u1ED5i (stateBase b\u1EA3n ghi x\u00E1c nh\u1EADn class n\u00E0y)",
+          "condition": {
+            "kind": "visible",
+            "selector": "div.mine-buttons \u003E button.mine-type-button.active:nth-of-type({{mineType}})"
+          }
+        },
+        {
+          "action": "waitForSelector",
+          "selector": "#mine-list .mine",
+          "timeoutMs": 20000,
+          "note": "danh s\u00E1ch m\u1ECF c\u1EE7a lo\u1EA1i v\u1EEBa ch\u1ECDn \u0111\u00E3 render"
+        },
+        {
+          "action": "waitMilliseconds",
+          "timeoutMs": 800,
+          "note": "AJAX thay tr\u1ECDn danh s\u00E1ch \u2014 ch\u1EDD n\u1ED1t ph\u1EA7n \u0111u\u00F4i k\u1EBBo pick tr\u00FAng th\u1EBB c\u1EE7a lo\u1EA1i c\u0169"
+        },
+        {
+          "action": "evaluateJavaScript",
+          "script": "() =\u003E { const body = document.body; if (body) { body.classList.remove(\u0027jvz-km-usable\u0027); body.classList.remove(\u0027jvz-km-move\u0027); } for (const el of document.querySelectorAll(\u0027.jvz-km-enter, .jvz-km-open\u0027)) { el.classList.remove(\u0027jvz-km-enter\u0027); el.classList.remove(\u0027jvz-km-open\u0027); } const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027).trim(); const cards = [...document.querySelectorAll(\u0027#mine-list .mine\u0027)]; if (cards.length === 0) return \u0027pick: #mine-list ch\u01B0a render th\u1EBB m\u1ECF n\u00E0o\u0027; const current = cards.find((c) =\u003E c.querySelector(\u0027button.leave-mine\u0027)); const want = fold(\u0027{{mineName}}\u0027); const target = want.length \u003E 0 ? cards.find((c) =\u003E fold(c.textContent).indexOf(want) \u003E= 0) : null; const markOpen = (card) =\u003E { const img = card.querySelector(\u0027.mine-image img\u0027) || card.querySelector(\u0027.mine-image\u0027); if (img) img.classList.add(\u0027jvz-km-open\u0027); if (body) body.classList.add(\u0027jvz-km-usable\u0027); }; if (target \u0026\u0026 current \u0026\u0026 target === current) { markOpen(current); return \u0027!\u0110ang \u1EDF \u0111\u00FAng m\u1ECF \u00AB{{mineName}}\u00BB \u2014 m\u1EDF s\u1ED5 \u0111\u1EA1o h\u1EEFu trong m\u1ECF\u0027; } if (target) { const btn = target.querySelector(\u0027button.enter-mine\u0027); if (!btn) return \u0027pick: th\u1EA5y m\u1ECF \u00AB{{mineName}}\u00BB nh\u01B0ng kh\u00F4ng c\u00F3 n\u00FAt V\u00E0o Ngay \u2014 m\u1ECF \u0111\u1EA7y ch\u1ED7?\u0027; btn.classList.add(\u0027jvz-km-enter\u0027); if (body) { body.classList.add(\u0027jvz-km-usable\u0027); body.classList.add(\u0027jvz-km-move\u0027); } return \u0027!V\u00E0o m\u1ECF \u00AB{{mineName}}\u00BB\u0027 \u002B (current ? \u0027 \u2014 r\u1EDDi m\u1ECF \u0111ang \u1EDF, th\u01B0\u1EDFng treo (n\u1EBFu c\u00F3) s\u1EBD t\u1EF1 nh\u1EADn tr\u01B0\u1EDBc khi \u0111i\u0027 : \u0027\u0027); } if (current) { markOpen(current); return \u0027!Kh\u00F4ng th\u1EA5y m\u1ECF \u00AB{{mineName}}\u00BB trong lo\u1EA1i \u0111ang ch\u1ECDn \u2014 ti\u1EBFp t\u1EE5c v\u1EDBi m\u1ECF \u0110ANG \u1EDE (so\u00E1t l\u1EA1i t\u00EAn m\u1ECF trong c\u1EA5u h\u00ECnh)\u0027; } return \u0027pick: kh\u00F4ng th\u1EA5y m\u1ECF \u00AB{{mineName}}\u00BB, v\u00E0 t\u00E0i kho\u1EA3n c\u0169ng ch\u01B0a \u1EDF trong m\u1ECF n\u00E0o\u0027; }",
+          "timeoutMs": 15000
+        },
+        {
+          "action": "expectVisible",
+          "selector": "body.jvz-km-usable",
+          "timeoutMs": 3000,
+          "note": "kh\u00F4ng th\u1EA5y m\u1ECF c\u1EA5u h\u00ECnh v\u00E0 c\u0169ng kh\u00F4ng \u1EDF trong m\u1ECF n\u00E0o \u2192 quest \u0111\u1ECF, l\u1EDDi nh\u1EAFn c\u1EE7a pick n\u1EB1m trong log"
+        },
+        {
+          "action": "click",
+          "selector": ".jvz-km-enter",
+          "timeoutMs": 10000,
+          "note": "\u0111\u00E3 \u1EDF trong m\u1ECF th\u00EC pick kh\u00F4ng \u0111\u00E1nh d\u1EA5u n\u00FAt n\u00E0y \u2014 c\u1EA3 c\u1EE5m v\u00E0o-m\u1ECF t\u1EF1 l\u1EB7n",
+          "when": {
+            "kind": "visible",
+            "selector": ".jvz-km-enter"
+          }
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 10000,
+          "note": "h\u1ED9p swal2 c\u1EE7a trang m\u1ECF (kh\u00E1c h\u1ED9p nh\u00E0 #hh3d-confirm-layer!) \u2014 h\u1ECFi CH\u1EEE ch\u1EE9 kh\u00F4ng ch\u1EC9 h\u1ECFi h\u1ED9p: \u300Cth\u01B0\u1EDFng t\u1EEB kho\u00E1ng m\u1EA1ch kh\u00E1c s\u1EBD t\u1EF1 \u0111\u1ED9ng nh\u1EADn tr\u01B0\u1EDBc khi di chuy\u1EC3n\u300D(khung h\u00ECnh 05:28)",
+          "condition": {
+            "kind": "textMatches",
+            "selector": ".swal2-container .swal2-popup",
+            "text": "v\u00E0o ngay|di chuy\u1EC3n"
+          },
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-move"
+          }
+        },
+        {
+          "action": "click",
+          "selector": ".swal2-container button.swal2-confirm",
+          "timeoutMs": 8000,
+          "note": "\u300CC\u00F3, v\u00E0o ngay\u300D\u2014 b\u1EA5m b\u1EB1ng selector, kh\u00F4ng qu\u00E9t nh\u00E3n; kh\u00F4ng bao gi\u1EDD \u0111\u1EE5ng n\u00FAt Kh\u00F4ng",
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-move"
+          }
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 20000,
+          "note": "th\u1EBB m\u1ECF \u0111ang \u1EDF \u0111\u1ED5i sang R\u1EDDi Kh\u1ECFi = server \u0111\u00E3 ghi nh\u1EADn m\u00ECnh trong m\u1ECF (\u0111\u01B0\u1EDDng kh\u00F4ng-di-chuy\u1EC3n th\u00EC n\u00FAt n\u00E0y c\u00F3 s\u1EB5n, b\u01B0\u1EDBc qua ngay)",
+          "condition": {
+            "kind": "visible",
+            "selector": "#mine-list .mine button.leave-mine"
+          }
+        },
+        {
+          "action": "waitMilliseconds",
+          "timeoutMs": 1000,
+          "note": "danh s\u00E1ch render l\u1EA1i sau khi v\u00E0o \u2014 d\u1EA5u jvz-km-open c\u0169 ch\u1EBFt theo DOM c\u0169"
+        },
+        {
+          "action": "evaluateJavaScript",
+          "script": "() =\u003E { const body = document.body; if (body) { body.classList.remove(\u0027jvz-km-usable\u0027); body.classList.remove(\u0027jvz-km-move\u0027); } for (const el of document.querySelectorAll(\u0027.jvz-km-enter, .jvz-km-open\u0027)) { el.classList.remove(\u0027jvz-km-enter\u0027); el.classList.remove(\u0027jvz-km-open\u0027); } const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027).trim(); const cards = [...document.querySelectorAll(\u0027#mine-list .mine\u0027)]; if (cards.length === 0) return \u0027pick: #mine-list ch\u01B0a render th\u1EBB m\u1ECF n\u00E0o\u0027; const current = cards.find((c) =\u003E c.querySelector(\u0027button.leave-mine\u0027)); const want = fold(\u0027{{mineName}}\u0027); const target = want.length \u003E 0 ? cards.find((c) =\u003E fold(c.textContent).indexOf(want) \u003E= 0) : null; const markOpen = (card) =\u003E { const img = card.querySelector(\u0027.mine-image img\u0027) || card.querySelector(\u0027.mine-image\u0027); if (img) img.classList.add(\u0027jvz-km-open\u0027); if (body) body.classList.add(\u0027jvz-km-usable\u0027); }; if (target \u0026\u0026 current \u0026\u0026 target === current) { markOpen(current); return \u0027!\u0110ang \u1EDF \u0111\u00FAng m\u1ECF \u00AB{{mineName}}\u00BB \u2014 m\u1EDF s\u1ED5 \u0111\u1EA1o h\u1EEFu trong m\u1ECF\u0027; } if (target) { const btn = target.querySelector(\u0027button.enter-mine\u0027); if (!btn) return \u0027pick: th\u1EA5y m\u1ECF \u00AB{{mineName}}\u00BB nh\u01B0ng kh\u00F4ng c\u00F3 n\u00FAt V\u00E0o Ngay \u2014 m\u1ECF \u0111\u1EA7y ch\u1ED7?\u0027; btn.classList.add(\u0027jvz-km-enter\u0027); if (body) { body.classList.add(\u0027jvz-km-usable\u0027); body.classList.add(\u0027jvz-km-move\u0027); } return \u0027!V\u00E0o m\u1ECF \u00AB{{mineName}}\u00BB\u0027 \u002B (current ? \u0027 \u2014 r\u1EDDi m\u1ECF \u0111ang \u1EDF, th\u01B0\u1EDFng treo (n\u1EBFu c\u00F3) s\u1EBD t\u1EF1 nh\u1EADn tr\u01B0\u1EDBc khi \u0111i\u0027 : \u0027\u0027); } if (current) { markOpen(current); return \u0027!Kh\u00F4ng th\u1EA5y m\u1ECF \u00AB{{mineName}}\u00BB trong lo\u1EA1i \u0111ang ch\u1ECDn \u2014 ti\u1EBFp t\u1EE5c v\u1EDBi m\u1ECF \u0110ANG \u1EDE (so\u00E1t l\u1EA1i t\u00EAn m\u1ECF trong c\u1EA5u h\u00ECnh)\u0027; } return \u0027pick: kh\u00F4ng th\u1EA5y m\u1ECF \u00AB{{mineName}}\u00BB, v\u00E0 t\u00E0i kho\u1EA3n c\u0169ng ch\u01B0a \u1EDF trong m\u1ECF n\u00E0o\u0027; }",
+          "timeoutMs": 15000,
+          "note": "ch\u1EA1y l\u1EA1i pick \u0111\u1EC3 \u0111\u00E1nh d\u1EA5u \u1EA3nh m\u1ECF \u0110ANG \u1EDE tr\u00EAn DOM m\u1EDBi"
+        },
+        {
+          "action": "click",
+          "selector": ".jvz-km-open",
+          "timeoutMs": 10000,
+          "note": "b\u1EA5m \u1EA3nh m\u1ECF \u0111\u1EC3 m\u1EDF #user-modal (click#164 c\u1EE7a b\u1EA3n ghi)"
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 15000,
+          "note": "s\u1ED5 \u0111\u00E3 render d\u00F2ng \u0111\u1EA7u ti\u00EAn",
+          "condition": {
+            "kind": "visible",
+            "selector": "#user-list .user-row"
+          }
+        },
+        {
+          "action": "waitMilliseconds",
+          "timeoutMs": 800
+        },
+        {
+          "action": "evaluateJavaScript",
+          "script": "() =\u003E { const body = document.body; if (body) body.classList.remove(\u0027jvz-km-host-go\u0027); for (const el of document.querySelectorAll(\u0027.jvz-km-doat\u0027)) el.classList.remove(\u0027jvz-km-doat\u0027); if (\u0027{{hostMode}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) return \u0027host: tu\u1EF3 ch\u1ECDn \u0111o\u1EA1t m\u1ECF \u0111ang t\u1EAFt\u0027; const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); const bonusEl = document.querySelector(\u0027#tuvi-bonus-percentage\u0027); const bonus = bonusEl ? parseInt((bonusEl.textContent || \u0027\u0027).replace(/\\D/g, \u0027\u0027), 10) : NaN; if (!(bonus \u003E= 0)) return \u0027host: ch\u01B0a \u0111\u1ECDc \u0111\u01B0\u1EE3c % tu vi bonus c\u1EE7a m\u1ECF (#tuvi-bonus-percentage)\u0027; const thr = parseInt(\u0027{{hostMinBonus}}\u0027, 10) || 0; if (bonus \u003C thr) return \u0027!Bonus tu vi c\u1EE7a m\u1ECF \u0027 \u002B bonus \u002B \u0027% d\u01B0\u1EDBi ng\u01B0\u1EE1ng \u0027 \u002B thr \u002B \u0027% \u2014 kh\u00F4ng \u0111o\u1EA1t m\u1ECF n\u00E0y\u0027; const atk = fold(body ? body.textContent : \u0027\u0027).match(/luot tan cong\\s*:?\\s*(\\d\u002B)\\s*\\/\\s*(\\d\u002B)/); if (atk \u0026\u0026 parseInt(atk[1], 10) \u003E= parseInt(atk[2], 10)) return \u0027!H\u1EBFt l\u01B0\u1EE3t t\u1EA5n c\u00F4ng h\u00F4m nay (\u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] \u002B \u0027) \u2014 kh\u00F4ng \u0111o\u1EA1t\u0027; const doat = [...document.querySelectorAll(\u0027#user-list button.doat-mo-btn\u0027)].find((b) =\u003E !b.disabled); if (!doat) return \u0027!Kh\u00F4ng c\u00F3 n\u00FAt \u0110o\u1EA1t M\u1ECF trong s\u1ED5 \u2014 m\u00ECnh \u0111ang l\u00E0 ch\u1EE7, ho\u1EB7c ch\u1EE7 m\u1ECF \u0111ang \u0111\u01B0\u1EE3c b\u1EA3o h\u1ED9\u0027; doat.classList.add(\u0027jvz-km-doat\u0027); if (body) body.classList.add(\u0027jvz-km-host-go\u0027); return \u0027!\u0110\u1EE7 \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t m\u1ECF: bonus \u0027 \u002B bonus \u002B \u0027% \u2265 ng\u01B0\u1EE1ng \u0027 \u002B thr \u002B \u0027%\u0027 \u002B (atk ? \u0027, l\u01B0\u1EE3t t\u1EA5n c\u00F4ng \u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] : \u0027\u0027); }",
+          "timeoutMs": 15000
+        },
+        {
+          "action": "click",
+          "selector": "#close-btn",
+          "timeoutMs": 8000,
+          "note": "\u0111\u00F3ng s\u1ED5 \u0111\u1EC3 t\u1EDBi TI\u1EC6M \u2014 c\u00F4ng th\u1EE9c host c\u1EE7a b\u1EA3n ghi: \u0111\u00F3ng \u2192 mua ph\u00F9 \u2192 m\u1EDF l\u1EA1i \u2192 \u0111o\u1EA1t",
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-host-go"
+          }
+        },
+        {
+          "action": "click",
+          "selector": "#shopButton",
+          "timeoutMs": 8000,
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-host-go"
+          }
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 10000,
+          "note": "k\u1EC7 TI\u1EC6M \u0111\u00E3 render",
+          "condition": {
+            "kind": "visible",
+            "selector": "#shop-container .shop-item"
+          },
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-host-go"
+          }
+        },
+        {
+          "action": "evaluateJavaScript",
+          "script": "() =\u003E { for (const el of document.querySelectorAll(\u0027.jvz-km-buy\u0027)) el.classList.remove(\u0027jvz-km-buy\u0027); const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); const items = [...document.querySelectorAll(\u0027#shop-container .shop-item\u0027)]; if (items.length === 0) return \u0027shop: #shop-container ch\u01B0a render m\u00F3n n\u00E0o\u0027; const item = items.find((i) =\u003E fold(i.textContent).indexOf(\u0027linh quang phu\u0027) \u003E= 0); if (!item) return \u0027shop: kh\u00F4ng th\u1EA5y m\u00F3n Linh Quang Ph\u00F9 tr\u00EAn k\u1EC7\u0027; const btn = item.querySelector(\u0027button.shop-item-button\u0027); if (!btn) return \u0027shop: m\u00F3n Linh Quang Ph\u00F9 kh\u00F4ng c\u00F3 n\u00FAt mua\u0027; btn.classList.add(\u0027jvz-km-buy\u0027); return \u0027!Mua Linh Quang Ph\u00F9 (\u002B20% tu vi trong 1 gi\u1EDD) tr\u01B0\u1EDBc khi \u0111o\u1EA1t m\u1ECF\u0027; }",
+          "timeoutMs": 15000,
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-host-go"
+          }
+        },
+        {
+          "action": "click",
+          "selector": ".jvz-km-buy",
+          "timeoutMs": 8000,
+          "note": "OPTIONAL c\u00F3 ch\u1EE7 \u00FD: thi\u1EBFu ti\u1EC1n hay k\u1EC7 \u0111\u1ED5i th\u00EC m\u1EA5t ph\u1EA7n \u002B20%, c\u00FA \u0111o\u1EA1t v\u1EABn \u0111i ti\u1EBFp",
+          "optional": true,
+          "when": {
+            "kind": "visible",
+            "selector": ".jvz-km-buy"
+          }
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 8000,
+          "note": "v\u0103n b\u1EA3n popup mua KH\u00D4NG \u0111\u01B0\u1EE3c b\u1EA3n ghi ch\u1EE5p tr\u1ECDn \u2014 \u0111i\u1EC1u ki\u1EC7n l\u1ECFng h\u01A1n c\u00E1c popup kh\u00E1c, v\u00E0 optional",
+          "optional": true,
+          "condition": {
+            "kind": "textMatches",
+            "selector": ".swal2-container .swal2-popup",
+            "text": "mua|linh quang"
+          },
+          "when": {
+            "kind": "visible",
+            "selector": ".jvz-km-buy"
+          }
+        },
+        {
+          "action": "click",
+          "selector": ".swal2-container button.swal2-confirm",
+          "timeoutMs": 8000,
+          "note": "\u300CMua Ngay\u300Dtrong h\u1ED9p x\u00E1c nh\u1EADn (click#236)",
+          "optional": true,
+          "when": {
+            "kind": "visible",
+            "selector": ".jvz-km-buy"
+          }
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 8000,
+          "note": "toast\u300C\u0110\u1EA1o h\u1EEFu \u0111\u00E3 mua th\u00E0nh c\u00F4ng Linh Quang Ph\u00F9!\u300D\u2014 optional v\u00EC toast s\u1ED1ng ng\u1EAFn",
+          "optional": true,
+          "condition": {
+            "kind": "textMatches",
+            "selector": "body",
+            "text": "mua th\u00E0nh c\u00F4ng"
+          },
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-host-go"
+          }
+        },
+        {
+          "action": "click",
+          "selector": ".jvz-km-open",
+          "timeoutMs": 10000,
+          "note": "m\u1EDF l\u1EA1i s\u1ED5; TI\u1EC6M l\u00E0 tab ri\u00EAng n\u00EAn #mine-list v\u00E0 d\u1EA5u jvz-km-open c\u00F2n nguy\u00EAn (click#239 b\u1EA5m th\u1EB3ng \u0111\u01B0\u1EE3c)",
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-host-go"
+          }
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 15000,
+          "condition": {
+            "kind": "visible",
+            "selector": "#user-list .user-row"
+          },
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-host-go"
+          }
+        },
+        {
+          "action": "waitMilliseconds",
+          "timeoutMs": 800,
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-host-go"
+          }
+        },
+        {
+          "action": "evaluateJavaScript",
+          "script": "() =\u003E { const body = document.body; if (body) body.classList.remove(\u0027jvz-km-host-go\u0027); for (const el of document.querySelectorAll(\u0027.jvz-km-doat\u0027)) el.classList.remove(\u0027jvz-km-doat\u0027); if (\u0027{{hostMode}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) return \u0027host: tu\u1EF3 ch\u1ECDn \u0111o\u1EA1t m\u1ECF \u0111ang t\u1EAFt\u0027; const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); const bonusEl = document.querySelector(\u0027#tuvi-bonus-percentage\u0027); const bonus = bonusEl ? parseInt((bonusEl.textContent || \u0027\u0027).replace(/\\D/g, \u0027\u0027), 10) : NaN; if (!(bonus \u003E= 0)) return \u0027host: ch\u01B0a \u0111\u1ECDc \u0111\u01B0\u1EE3c % tu vi bonus c\u1EE7a m\u1ECF (#tuvi-bonus-percentage)\u0027; const thr = parseInt(\u0027{{hostMinBonus}}\u0027, 10) || 0; if (bonus \u003C thr) return \u0027!Bonus tu vi c\u1EE7a m\u1ECF \u0027 \u002B bonus \u002B \u0027% d\u01B0\u1EDBi ng\u01B0\u1EE1ng \u0027 \u002B thr \u002B \u0027% \u2014 kh\u00F4ng \u0111o\u1EA1t m\u1ECF n\u00E0y\u0027; const atk = fold(body ? body.textContent : \u0027\u0027).match(/luot tan cong\\s*:?\\s*(\\d\u002B)\\s*\\/\\s*(\\d\u002B)/); if (atk \u0026\u0026 parseInt(atk[1], 10) \u003E= parseInt(atk[2], 10)) return \u0027!H\u1EBFt l\u01B0\u1EE3t t\u1EA5n c\u00F4ng h\u00F4m nay (\u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] \u002B \u0027) \u2014 kh\u00F4ng \u0111o\u1EA1t\u0027; const doat = [...document.querySelectorAll(\u0027#user-list button.doat-mo-btn\u0027)].find((b) =\u003E !b.disabled); if (!doat) return \u0027!Kh\u00F4ng c\u00F3 n\u00FAt \u0110o\u1EA1t M\u1ECF trong s\u1ED5 \u2014 m\u00ECnh \u0111ang l\u00E0 ch\u1EE7, ho\u1EB7c ch\u1EE7 m\u1ECF \u0111ang \u0111\u01B0\u1EE3c b\u1EA3o h\u1ED9\u0027; doat.classList.add(\u0027jvz-km-doat\u0027); if (body) body.classList.add(\u0027jvz-km-host-go\u0027); return \u0027!\u0110\u1EE7 \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t m\u1ECF: bonus \u0027 \u002B bonus \u002B \u0027% \u2265 ng\u01B0\u1EE1ng \u0027 \u002B thr \u002B \u0027%\u0027 \u002B (atk ? \u0027, l\u01B0\u1EE3t t\u1EA5n c\u00F4ng \u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] : \u0027\u0027); }",
+          "timeoutMs": 15000,
+          "note": "s\u1ED5 v\u1EEBa render l\u1EA1i \u2014 qu\u00E9t l\u1EA1i \u0111\u1EC3 \u0111\u00E1nh d\u1EA5u n\u00FAt \u0110o\u1EA1t M\u1ECF tr\u00EAn DOM m\u1EDBi; ai \u0111\u00F3 \u0111o\u1EA1t tr\u01B0\u1EDBc th\u00EC c\u1EDD t\u1EF1 r\u1EDBt v\u00E0 c\u1EE5m c\u00F2n l\u1EA1i l\u1EB7n",
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-host-go"
+          }
+        },
+        {
+          "action": "click",
+          "selector": ".jvz-km-doat",
+          "timeoutMs": 8000,
+          "note": "d\u00F2ng ch\u1EE7 m\u1ECF n\u1EB1m trang 1 \u1EDF c\u1EA3 hai tr\u1EA1ng th\u00E1i b\u1EA3n ghi ch\u1EE5p \u0111\u01B0\u1EE3c \u2014 kh\u00F4ng ph\u00E2n trang cho c\u00FA n\u00E0y",
+          "when": {
+            "kind": "visible",
+            "selector": ".jvz-km-doat"
+          }
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 8000,
+          "note": "\u300C\u0110\u1EA1o h\u1EEFu c\u00F3 ch\u1EAFc ch\u1EAFn mu\u1ED1n \u0111o\u1EA1t quy\u1EC1n ch\u1EE7 m\u1ECF n\u00E0y kh\u00F4ng?\u300D(khung h\u00ECnh 42:14)",
+          "condition": {
+            "kind": "textMatches",
+            "selector": ".swal2-container .swal2-popup",
+            "text": "\u0111o\u1EA1t quy\u1EC1n ch\u1EE7 m\u1ECF"
+          },
+          "when": {
+            "kind": "visible",
+            "selector": ".jvz-km-doat"
+          }
+        },
+        {
+          "action": "click",
+          "selector": ".swal2-container button.swal2-confirm",
+          "timeoutMs": 8000,
+          "note": "\u300CX\u00E1c nh\u1EADn\u300D\u2014 AJAX tr\u1EA3\u300C\u0110\u00E3 \u0111o\u1EA1t th\u00E0nh c\u00F4ng quy\u1EC1n ch\u1EE7 m\u1ECF.\u300D(click#246)",
+          "when": {
+            "kind": "visible",
+            "selector": ".jvz-km-doat"
+          }
+        },
+        {
+          "action": "waitMilliseconds",
+          "timeoutMs": 1200,
+          "note": "s\u1ED5 x\u1EBFp l\u1EA1i sau khi \u0111\u1ED5i ch\u1EE7 \u2014 d\u00F2ng m\u00ECnh d\u1EDDi l\u00EAn \u0111\u1EA7u trang 1, ph\u00E9p qu\u00E9t ngay d\u01B0\u1EDBi s\u1EBD th\u1EA5y",
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-host-go"
+          }
+        },
+        {
+          "action": "repeat",
+          "timeoutMs": 15000,
+          "note": "s\u1ED5 t\u1ED1i \u0111a ~5 trang cho 50 ng\u01B0\u1EDDi; 6 v\u00F2ng l\u00E0 d\u01B0 m\u1ED9t v\u00F2ng an to\u00E0n",
+          "steps": [
+            {
+              "action": "evaluateJavaScript",
+              "script": "() =\u003E { const MINE_MINUTES = 30; const body = document.body; if (body) { body.classList.remove(\u0027jvz-km-self-seen\u0027); body.classList.remove(\u0027jvz-km-max\u0027); } for (const el of document.querySelectorAll(\u0027.jvz-km-claim\u0027)) el.classList.remove(\u0027jvz-km-claim\u0027); const nextBtn = document.querySelector(\u0027#next-btn\u0027); if (nextBtn) nextBtn.classList.remove(\u0027jvz-km-next-go\u0027); const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027).trim(); const btn = document.querySelector(\u0027#user-list button.chua-dat, #user-list button.claim-reward\u0027); if (!btn) { if (nextBtn \u0026\u0026 !nextBtn.disabled) { nextBtn.classList.add(\u0027jvz-km-next-go\u0027); return \u0027self-scan: trang n\u00E0y ch\u01B0a c\u00F3 d\u00F2ng c\u1EE7a m\u00ECnh \u2014 sang trang k\u1EBF\u0027; } return \u0027self-scan: kh\u00F4ng th\u1EA5y d\u00F2ng c\u1EE7a m\u00ECnh v\u00E0 kh\u00F4ng c\u00F2n trang k\u1EBF\u0027; } if (body) body.classList.add(\u0027jvz-km-self-seen\u0027); let eta = document.getElementById(\u0027jvz-km-eta\u0027); if (!eta) { eta = document.createElement(\u0027span\u0027); eta.id = \u0027jvz-km-eta\u0027; eta.style.cssText = \u0027position:fixed;bottom:0;right:0;font-size:2px;color:transparent;pointer-events:none\u0027; (body || document.documentElement).appendChild(eta); } const btnText = fold(btn.textContent); if (btnText.indexOf(\u0027nhan thuong\u0027) \u003E= 0 \u0026\u0026 !btn.disabled) { btn.classList.add(\u0027jvz-km-claim\u0027); if (body) body.classList.add(\u0027jvz-km-max\u0027); eta.textContent = \u0027\u0027; return \u0027!Khai th\u00E1c \u0110\u1EA0T T\u1ED0I \u0110A \u2014 nh\u1EADn th\u01B0\u1EDFng\u0027; } const row = btn.closest(\u0027.user-row\u0027); const rowText = fold(row ? row.textContent : \u0027\u0027); const m = rowText.match(/khai thac\\s*:?\\s*(?:dat toi da|([\\d.,]\u002B)\\s*(giay|phut|gio))/); let remain = MINE_MINUTES; if (m) { if (m[1] === undefined) { remain = 1; } else { const v = parseInt(m[1].replace(/\\D/g, \u0027\u0027), 10) || 0; const spent = m[2] === \u0027giay\u0027 ? Math.ceil(v / 60) : (m[2] === \u0027gio\u0027 ? v * 60 : v); remain = Math.max(MINE_MINUTES - spent, 1); } } eta.textContent = remain \u002B \u0027 ph\u00FAt\u0027; return \u0027!\u0110ang khai th\u00E1c (n\u00FAt: \u0027 \u002B (btn.textContent || \u0027\u0027).trim() \u002B \u0027) \u2014 c\u00F2n ~\u0027 \u002B remain \u002B \u0027 ph\u00FAt n\u1EEFa \u0111\u1EA1t t\u1ED1i \u0111a\u0027; }",
+              "timeoutMs": 15000
+            },
+            {
+              "action": "click",
+              "selector": "#next-btn.jvz-km-next-go",
+              "timeoutMs": 2500,
+              "note": "self-scan ch\u1EC9 \u0111\u00E1nh d\u1EA5u khi ch\u01B0a th\u1EA5y d\u00F2ng m\u00ECnh V\u00C0 c\u00F2n trang k\u1EBF \u2014 th\u1EA5y r\u1ED3i th\u00EC selector n\u00E0y kh\u00F4ng t\u1ED3n t\u1EA1i, optional cho n\u00F3 tr\u01B0\u1EE3t \u00EAm",
+              "optional": true
+            },
+            {
+              "action": "waitMilliseconds",
+              "timeoutMs": 900
+            }
+          ],
+          "until": {
+            "kind": "visible",
+            "selector": "body.jvz-km-self-seen"
+          },
+          "maxIterations": 6,
+          "maxSeconds": 90
+        },
+        {
+          "action": "expectVisible",
+          "selector": "body.jvz-km-self-seen",
+          "timeoutMs": 3000,
+          "note": "qu\u00E9t h\u1EBFt c\u00E1c trang m\u00E0 kh\u00F4ng th\u1EA5y d\u00F2ng m\u00ECnh \u2192 c\u00F3 chuy\u1EC7n th\u1EADt (ch\u01B0a v\u00E0o \u0111\u01B0\u1EE3c m\u1ECF?) \u2014 quest \u0111\u1ECF"
+        },
+        {
+          "action": "click",
+          "selector": ".jvz-km-claim",
+          "timeoutMs": 8000,
+          "note": "\u300CNh\u1EADn Th\u01B0\u1EDFng\u300Dtr\u00EAn d\u00F2ng m\u00ECnh (button.claim-reward, click#259)",
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-max"
+          }
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 15000,
+          "note": "n\u00FAt m\u00ECnh \u0111\u1ED5i th\u00E0nh\u300C\u0110\u00E3 nh\u1EADn (Xs)\u300D= server \u0111\u00E3 ghi th\u01B0\u1EDFng \u2014 ch\u1EC9 d\u00F2ng m\u00ECnh mang ch\u1EEF n\u00E0y",
+          "condition": {
+            "kind": "textMatches",
+            "selector": "#user-list",
+            "text": "\u0111\u00E3 nh\u1EADn"
+          },
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-max"
+          }
+        },
+        {
+          "action": "evaluateJavaScript",
+          "script": "() =\u003E { const eta = document.getElementById(\u0027jvz-km-eta\u0027); if (!eta) return \u0027tail: ch\u01B0a c\u00F3 node eta \u2014 self-scan ch\u01B0a ch\u1EA1y?\u0027; if (document.body \u0026\u0026 document.body.classList.contains(\u0027jvz-km-max\u0027)) { eta.textContent = \u002730 ph\u00FAt\u0027; return \u0027!\u0110\u00E3 nh\u1EADn th\u01B0\u1EDFng \u2014 chu k\u1EF3 khai th\u00E1c m\u1EDBi b\u1EAFt \u0111\u1EA7u, gh\u00E9 l\u1EA1i sau ~30 ph\u00FAt\u0027; } return \u0027tail: gi\u1EEF nh\u1ECBp gh\u00E9 l\u1EA1i \u0027 \u002B (eta.textContent || \u0027(tr\u1ED1ng)\u0027); }",
+          "timeoutMs": 15000
+        },
+        {
+          "action": "readCooldownSeconds",
+          "selector": "#jvz-km-eta",
+          "timeoutMs": 15000,
+          "note": "node eta do self-scan/tail d\u1EF1ng \u2014 \u0111i qua \u0111\u00FAng b\u1ED9 parse \u0111\u1ED3ng h\u1ED3 c\u1EE7a engine"
+        },
+        {
+          "action": "stopIf",
+          "text": "\u0111ang khai th\u00E1c \u2014 ch\u01B0a \u0111\u1EA1t t\u1ED1i \u0111a, gh\u00E9 l\u1EA1i theo \u0111\u1ED3ng h\u1ED3",
+          "timeoutMs": 15000,
+          "note": "d\u1EEBng K\u00C8M \u0111\u1ED3ng h\u1ED3 (eta v\u1EEBa \u0111\u1ECDc) \u2192 onCooldown; c\u00F2n \u0111\u01B0\u1EDDng v\u1EEBa-nh\u1EADn-xong \u0111i ti\u1EBFp xu\u1ED1ng d\u01B0\u1EDBi \u2192 completed v\u1EDBi \u0111\u1ED3ng h\u1ED3 30 ph\u00FAt",
+          "condition": {
+            "kind": "hidden",
+            "selector": "body.jvz-km-max"
+          }
+        }
+      ],
+      "options": [
+        {
+          "key": "mineType",
+          "label": "Lo\u1EA1i kho\u00E1ng",
+          "choices": [
+            {
+              "value": "1",
+              "label": "Th\u01B0\u1EE3ng \u2014 Kho\u00E1ng V\u00E0ng"
+            },
+            {
+              "value": "2",
+              "label": "Trung \u2014 Kho\u00E1ng B\u1EA1c"
+            },
+            {
+              "value": "3",
+              "label": "H\u1EA1 \u2014 Kho\u00E1ng \u0110\u1ED3ng (T\u00E2n Th\u1EE7)"
+            }
+          ],
+          "allowCustom": false,
+          "selectedValue": "2"
+        },
+        {
+          "key": "mineName",
+          "label": "T\u00EAn m\u1ECF",
+          "choices": [
+            {
+              "value": "Th\u00F4ng Thi\u00EAn Ki\u1EBFm Ph\u00E1i",
+              "label": "Th\u00F4ng Thi\u00EAn Ki\u1EBFm Ph\u00E1i (Trung)"
+            },
+            {
+              "value": "\u00C2m Minh Chi \u0110\u1ECBa",
+              "label": "\u00C2m Minh Chi \u0110\u1ECBa (Trung)"
+            },
+            {
+              "value": "B\u1EA5t Di\u1EC7t S\u01A1n",
+              "label": "B\u1EA5t Di\u1EC7t S\u01A1n (Trung)"
+            },
+            {
+              "value": "Thi\u00EAn",
+              "label": "Thi\u00EAn (Th\u01B0\u1EE3ng)"
+            },
+            {
+              "value": "\u0110\u1ECBa",
+              "label": "\u0110\u1ECBa (Th\u01B0\u1EE3ng)"
+            },
+            {
+              "value": "H\u1ED3ng Hoang",
+              "label": "H\u1ED3ng Hoang (Th\u01B0\u1EE3ng)"
+            },
+            {
+              "value": "B\u00E1ch \u0110o\u1EA1n S\u01A1n",
+              "label": "B\u00E1ch \u0110o\u1EA1n S\u01A1n (H\u1EA1)"
+            },
+            {
+              "value": "Th\u1EA1ch Th\u00F4n",
+              "label": "Th\u1EA1ch Th\u00F4n (H\u1EA1)"
+            }
+          ],
+          "allowCustom": true,
+          "selectedValue": "Th\u00F4ng Thi\u00EAn Ki\u1EBFm Ph\u00E1i"
+        },
+        {
+          "key": "hostMode",
+          "label": "\u0110o\u1EA1t m\u1ECF (l\u00E0m ch\u1EE7)",
+          "choices": [
+            {
+              "value": "\u00ABkh\u00F4ng \u0111o\u1EA1t\u00BB",
+              "label": "Kh\u00F4ng \u2014 ch\u1EC9 \u0111\u00E0o"
+            },
+            {
+              "value": "\u0111o\u1EA1t khi \u0111\u1EE7 ng\u01B0\u1EE1ng",
+              "label": "Mua Linh Quang Ph\u00F9 \u002B \u0111o\u1EA1t khi bonus \u2265 ng\u01B0\u1EE1ng"
+            }
+          ],
+          "allowCustom": false,
+          "selectedValue": "\u00ABkh\u00F4ng \u0111o\u1EA1t\u00BB"
+        },
+        {
+          "key": "hostMinBonus",
+          "label": "Ng\u01B0\u1EE1ng % tu vi t\u1ED1i thi\u1EC3u \u0111\u1EC3 \u0111o\u1EA1t",
+          "choices": [
+            {
+              "value": "50",
+              "label": "\u2265 50%"
+            },
+            {
+              "value": "80",
+              "label": "\u2265 80%"
+            },
+            {
+              "value": "100",
+              "label": "\u2265 100%"
+            },
+            {
+              "value": "120",
+              "label": "\u2265 120%"
+            },
+            {
+              "value": "150",
+              "label": "\u2265 150%"
+            }
+          ],
+          "allowCustom": true,
+          "selectedValue": "100"
+        }
+      ],
+      "fallbackCooldownSeconds": 600,
       "requiresVip": true,
       "order": 100,
-      "notes": "Thu ho\u1EA1ch t\u00E0i nguy\u00EAn Kho\u00E1ng M\u1EA1ch (nh\u00E3n ch\u01B0a hi\u1EC7u ch\u1EC9nh n\u00EAn t\u1EAFt s\u1EB5n)."
+      "notes": "\u0110\u00E0o m\u1ECF \u0111\u00E3 c\u1EA5u h\u00ECnh: v\u00E0o m\u1ECF, \u0111\u1EE3i chu k\u1EF3 30 ph\u00FAt, nh\u1EADn th\u01B0\u1EDFng \u2014 2 l\u1EA7n/ng\u00E0y. \u0110o\u1EA1t m\u1ECF (l\u00E0m ch\u1EE7) l\u00E0 tu\u1EF3 ch\u1ECDn ri\u00EAng v\u00E0 ti\u00EAu ti\u1EC1n th\u1EADt."
     },
     {
       "id": "me-cung",
@@ -2956,6 +3463,531 @@
       "requiresVip": true,
       "order": 105,
       "notes": "T\u1EF1 luy\u1EC7n \u0111an \u1EDF Luy\u1EC7n \u0110an \u0110\u01B0\u1EDDng \u2014 m\u1ED7i m\u1EBB T\u1ED0N d\u01B0\u1EE3c li\u1EC7u \u002B 20 Ti\u00EAn Ng\u1ECDc."
+    },
+    {
+      "id": "khoang-mach-thuong",
+      "name": "Kho\u00E1ng M\u1EA1ch",
+      "enabled": false,
+      "kind": "customSteps",
+      "matchTexts": [
+        "kho\u00E1ng m\u1EA1ch",
+        "khoang mach"
+      ],
+      "pagePath": "/khoang-mach/?nv_embed=1",
+      "steps": [
+        {
+          "action": "navigate",
+          "text": "/khoang-mach/?nv_embed=1",
+          "timeoutMs": 15000
+        },
+        {
+          "action": "waitForSelector",
+          "selector": "div.mine-buttons \u003E button.mine-type-button",
+          "timeoutMs": 25000,
+          "note": "c\u1ED5ng render: thanh ch\u1ECDn lo\u1EA1i kho\u00E1ng lu\u00F4n c\u00F3 m\u1EB7t, k\u1EC3 c\u1EA3 khi danh s\u00E1ch m\u1ECF c\u00F2n \u0111ang t\u1EA3i"
+        },
+        {
+          "action": "waitMilliseconds",
+          "timeoutMs": 1500,
+          "note": "ch\u1EDD s\u1ED1 li\u1EC7u th\u1EADt t\u1EEB server \u00E1p v\u00E0o b\u1EA3ng ch\u1EC9 s\u1ED1 \u2014 trang v\u1EBD khung tr\u01B0\u1EDBc, s\u1ED1 \u0111\u1EBFn sau"
+        },
+        {
+          "action": "evaluateJavaScript",
+          "script": "() =\u003E { const MARK = \u0027jvz-km-done\u0027; if (document.body) document.body.classList.remove(MARK); const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase(); const text = fold(document.body ? document.body.textContent : \u0027\u0027).replace(/\\s\u002B/g, \u0027 \u0027); const read = (label) =\u003E { const m = text.match(new RegExp(label \u002B \u0027\\\\s*:?\\\\s*([\\\\d.,\\\\u00A0 ]\u002B?)\\\\s*\\\\/\\\\s*([\\\\d.,\\\\u00A0 ]\u002B)\u0027)); if (!m) return null; /* \u00221.200\u0022 l\u00E0 ph\u00E2n c\u00E1ch h\u00E0ng ngh\u00ECn vi-VN \u2014 b\u00F3c m\u1ECDi th\u1EE9 kh\u00F4ng ph\u1EA3i s\u1ED1 tr\u01B0\u1EDBc khi \u0111\u1ECDc, b\u00E0i h\u1ECDc MazeCapScan. */ const got = parseInt(m[1].replace(/\\D/g, \u0027\u0027), 10); const cap = parseInt(m[2].replace(/\\D/g, \u0027\u0027), 10); return cap \u003E 0 ? { got: got, cap: cap } : null; }; const tv = read(\u0027tu vi\u0027); const tt = read(\u0027tinh thach\u0027); if (!tv || !tt) return \u0027cap-scan: ch\u01B0a th\u1EA5y \u00F4 Tu Vi / Tinh Th\u1EA1ch tr\u00EAn trang\u0027; const full = tv.got \u003E= tv.cap \u0026\u0026 tt.got \u003E= tt.cap; if (full \u0026\u0026 document.body) document.body.classList.add(MARK); return \u0027!Tr\u1EA7n h\u00F4m nay: Tu Vi \u0027 \u002B tv.got \u002B \u0027/\u0027 \u002B tv.cap \u002B \u0027, Tinh Th\u1EA1ch \u0027 \u002B tt.got \u002B \u0027/\u0027 \u002B tt.cap \u002B (full ? \u0027 \u2014 \u0110\u00C3 \u0110\u1EA6Y, ngh\u1EC9 t\u1EDBi mai\u0027 : \u0027\u0027); }",
+          "timeoutMs": 15000
+        },
+        {
+          "action": "stopIf",
+          "text": "\u0111\u00E3 \u0111\u1EA7y tr\u1EA7n Tu Vi \u002B Tinh Th\u1EA1ch h\u00F4m nay",
+          "timeoutMs": 15000,
+          "note": "d\u1EEBng KH\u00D4NG k\u00E8m \u0111\u1ED3ng h\u1ED3 \u2192 alreadyDone \u2192 v\u00E0o s\u1ED5 tr\u1EA7n-ng\u00E0y, mai gh\u00E9 l\u1EA1i",
+          "condition": {
+            "kind": "visible",
+            "selector": "body.jvz-km-done"
+          }
+        },
+        {
+          "action": "click",
+          "selector": "div.mine-buttons \u003E button.mine-type-button:nth-of-type({{mineType}})",
+          "timeoutMs": 15000,
+          "note": "ch\u1ECDn lo\u1EA1i kho\u00E1ng theo c\u1EA5u h\u00ECnh; n\u00FAt \u0111ang ch\u1ECDn s\u1EB5n th\u00EC b\u1EA5m l\u1EA1i v\u00F4 h\u1EA1i"
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 10000,
+          "note": "n\u00FAt nh\u1EADn .active = tab \u0111\u00E3 \u0111\u1ED5i (stateBase b\u1EA3n ghi x\u00E1c nh\u1EADn class n\u00E0y)",
+          "condition": {
+            "kind": "visible",
+            "selector": "div.mine-buttons \u003E button.mine-type-button.active:nth-of-type({{mineType}})"
+          }
+        },
+        {
+          "action": "waitForSelector",
+          "selector": "#mine-list .mine",
+          "timeoutMs": 20000,
+          "note": "danh s\u00E1ch m\u1ECF c\u1EE7a lo\u1EA1i v\u1EEBa ch\u1ECDn \u0111\u00E3 render"
+        },
+        {
+          "action": "waitMilliseconds",
+          "timeoutMs": 800,
+          "note": "AJAX thay tr\u1ECDn danh s\u00E1ch \u2014 ch\u1EDD n\u1ED1t ph\u1EA7n \u0111u\u00F4i k\u1EBBo pick tr\u00FAng th\u1EBB c\u1EE7a lo\u1EA1i c\u0169"
+        },
+        {
+          "action": "evaluateJavaScript",
+          "script": "() =\u003E { const body = document.body; if (body) { body.classList.remove(\u0027jvz-km-usable\u0027); body.classList.remove(\u0027jvz-km-move\u0027); } for (const el of document.querySelectorAll(\u0027.jvz-km-enter, .jvz-km-open\u0027)) { el.classList.remove(\u0027jvz-km-enter\u0027); el.classList.remove(\u0027jvz-km-open\u0027); } const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027).trim(); const cards = [...document.querySelectorAll(\u0027#mine-list .mine\u0027)]; if (cards.length === 0) return \u0027pick: #mine-list ch\u01B0a render th\u1EBB m\u1ECF n\u00E0o\u0027; const current = cards.find((c) =\u003E c.querySelector(\u0027button.leave-mine\u0027)); const want = fold(\u0027{{mineName}}\u0027); const target = want.length \u003E 0 ? cards.find((c) =\u003E fold(c.textContent).indexOf(want) \u003E= 0) : null; const markOpen = (card) =\u003E { const img = card.querySelector(\u0027.mine-image img\u0027) || card.querySelector(\u0027.mine-image\u0027); if (img) img.classList.add(\u0027jvz-km-open\u0027); if (body) body.classList.add(\u0027jvz-km-usable\u0027); }; if (target \u0026\u0026 current \u0026\u0026 target === current) { markOpen(current); return \u0027!\u0110ang \u1EDF \u0111\u00FAng m\u1ECF \u00AB{{mineName}}\u00BB \u2014 m\u1EDF s\u1ED5 \u0111\u1EA1o h\u1EEFu trong m\u1ECF\u0027; } if (target) { const btn = target.querySelector(\u0027button.enter-mine\u0027); if (!btn) return \u0027pick: th\u1EA5y m\u1ECF \u00AB{{mineName}}\u00BB nh\u01B0ng kh\u00F4ng c\u00F3 n\u00FAt V\u00E0o Ngay \u2014 m\u1ECF \u0111\u1EA7y ch\u1ED7?\u0027; btn.classList.add(\u0027jvz-km-enter\u0027); if (body) { body.classList.add(\u0027jvz-km-usable\u0027); body.classList.add(\u0027jvz-km-move\u0027); } return \u0027!V\u00E0o m\u1ECF \u00AB{{mineName}}\u00BB\u0027 \u002B (current ? \u0027 \u2014 r\u1EDDi m\u1ECF \u0111ang \u1EDF, th\u01B0\u1EDFng treo (n\u1EBFu c\u00F3) s\u1EBD t\u1EF1 nh\u1EADn tr\u01B0\u1EDBc khi \u0111i\u0027 : \u0027\u0027); } if (current) { markOpen(current); return \u0027!Kh\u00F4ng th\u1EA5y m\u1ECF \u00AB{{mineName}}\u00BB trong lo\u1EA1i \u0111ang ch\u1ECDn \u2014 ti\u1EBFp t\u1EE5c v\u1EDBi m\u1ECF \u0110ANG \u1EDE (so\u00E1t l\u1EA1i t\u00EAn m\u1ECF trong c\u1EA5u h\u00ECnh)\u0027; } return \u0027pick: kh\u00F4ng th\u1EA5y m\u1ECF \u00AB{{mineName}}\u00BB, v\u00E0 t\u00E0i kho\u1EA3n c\u0169ng ch\u01B0a \u1EDF trong m\u1ECF n\u00E0o\u0027; }",
+          "timeoutMs": 15000
+        },
+        {
+          "action": "expectVisible",
+          "selector": "body.jvz-km-usable",
+          "timeoutMs": 3000,
+          "note": "kh\u00F4ng th\u1EA5y m\u1ECF c\u1EA5u h\u00ECnh v\u00E0 c\u0169ng kh\u00F4ng \u1EDF trong m\u1ECF n\u00E0o \u2192 quest \u0111\u1ECF, l\u1EDDi nh\u1EAFn c\u1EE7a pick n\u1EB1m trong log"
+        },
+        {
+          "action": "click",
+          "selector": ".jvz-km-enter",
+          "timeoutMs": 10000,
+          "note": "\u0111\u00E3 \u1EDF trong m\u1ECF th\u00EC pick kh\u00F4ng \u0111\u00E1nh d\u1EA5u n\u00FAt n\u00E0y \u2014 c\u1EA3 c\u1EE5m v\u00E0o-m\u1ECF t\u1EF1 l\u1EB7n",
+          "when": {
+            "kind": "visible",
+            "selector": ".jvz-km-enter"
+          }
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 10000,
+          "note": "h\u1ED9p swal2 c\u1EE7a trang m\u1ECF (kh\u00E1c h\u1ED9p nh\u00E0 #hh3d-confirm-layer!) \u2014 h\u1ECFi CH\u1EEE ch\u1EE9 kh\u00F4ng ch\u1EC9 h\u1ECFi h\u1ED9p: \u300Cth\u01B0\u1EDFng t\u1EEB kho\u00E1ng m\u1EA1ch kh\u00E1c s\u1EBD t\u1EF1 \u0111\u1ED9ng nh\u1EADn tr\u01B0\u1EDBc khi di chuy\u1EC3n\u300D(khung h\u00ECnh 05:28)",
+          "condition": {
+            "kind": "textMatches",
+            "selector": ".swal2-container .swal2-popup",
+            "text": "v\u00E0o ngay|di chuy\u1EC3n"
+          },
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-move"
+          }
+        },
+        {
+          "action": "click",
+          "selector": ".swal2-container button.swal2-confirm",
+          "timeoutMs": 8000,
+          "note": "\u300CC\u00F3, v\u00E0o ngay\u300D\u2014 b\u1EA5m b\u1EB1ng selector, kh\u00F4ng qu\u00E9t nh\u00E3n; kh\u00F4ng bao gi\u1EDD \u0111\u1EE5ng n\u00FAt Kh\u00F4ng",
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-move"
+          }
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 20000,
+          "note": "th\u1EBB m\u1ECF \u0111ang \u1EDF \u0111\u1ED5i sang R\u1EDDi Kh\u1ECFi = server \u0111\u00E3 ghi nh\u1EADn m\u00ECnh trong m\u1ECF (\u0111\u01B0\u1EDDng kh\u00F4ng-di-chuy\u1EC3n th\u00EC n\u00FAt n\u00E0y c\u00F3 s\u1EB5n, b\u01B0\u1EDBc qua ngay)",
+          "condition": {
+            "kind": "visible",
+            "selector": "#mine-list .mine button.leave-mine"
+          }
+        },
+        {
+          "action": "waitMilliseconds",
+          "timeoutMs": 1000,
+          "note": "danh s\u00E1ch render l\u1EA1i sau khi v\u00E0o \u2014 d\u1EA5u jvz-km-open c\u0169 ch\u1EBFt theo DOM c\u0169"
+        },
+        {
+          "action": "evaluateJavaScript",
+          "script": "() =\u003E { const body = document.body; if (body) { body.classList.remove(\u0027jvz-km-usable\u0027); body.classList.remove(\u0027jvz-km-move\u0027); } for (const el of document.querySelectorAll(\u0027.jvz-km-enter, .jvz-km-open\u0027)) { el.classList.remove(\u0027jvz-km-enter\u0027); el.classList.remove(\u0027jvz-km-open\u0027); } const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027).trim(); const cards = [...document.querySelectorAll(\u0027#mine-list .mine\u0027)]; if (cards.length === 0) return \u0027pick: #mine-list ch\u01B0a render th\u1EBB m\u1ECF n\u00E0o\u0027; const current = cards.find((c) =\u003E c.querySelector(\u0027button.leave-mine\u0027)); const want = fold(\u0027{{mineName}}\u0027); const target = want.length \u003E 0 ? cards.find((c) =\u003E fold(c.textContent).indexOf(want) \u003E= 0) : null; const markOpen = (card) =\u003E { const img = card.querySelector(\u0027.mine-image img\u0027) || card.querySelector(\u0027.mine-image\u0027); if (img) img.classList.add(\u0027jvz-km-open\u0027); if (body) body.classList.add(\u0027jvz-km-usable\u0027); }; if (target \u0026\u0026 current \u0026\u0026 target === current) { markOpen(current); return \u0027!\u0110ang \u1EDF \u0111\u00FAng m\u1ECF \u00AB{{mineName}}\u00BB \u2014 m\u1EDF s\u1ED5 \u0111\u1EA1o h\u1EEFu trong m\u1ECF\u0027; } if (target) { const btn = target.querySelector(\u0027button.enter-mine\u0027); if (!btn) return \u0027pick: th\u1EA5y m\u1ECF \u00AB{{mineName}}\u00BB nh\u01B0ng kh\u00F4ng c\u00F3 n\u00FAt V\u00E0o Ngay \u2014 m\u1ECF \u0111\u1EA7y ch\u1ED7?\u0027; btn.classList.add(\u0027jvz-km-enter\u0027); if (body) { body.classList.add(\u0027jvz-km-usable\u0027); body.classList.add(\u0027jvz-km-move\u0027); } return \u0027!V\u00E0o m\u1ECF \u00AB{{mineName}}\u00BB\u0027 \u002B (current ? \u0027 \u2014 r\u1EDDi m\u1ECF \u0111ang \u1EDF, th\u01B0\u1EDFng treo (n\u1EBFu c\u00F3) s\u1EBD t\u1EF1 nh\u1EADn tr\u01B0\u1EDBc khi \u0111i\u0027 : \u0027\u0027); } if (current) { markOpen(current); return \u0027!Kh\u00F4ng th\u1EA5y m\u1ECF \u00AB{{mineName}}\u00BB trong lo\u1EA1i \u0111ang ch\u1ECDn \u2014 ti\u1EBFp t\u1EE5c v\u1EDBi m\u1ECF \u0110ANG \u1EDE (so\u00E1t l\u1EA1i t\u00EAn m\u1ECF trong c\u1EA5u h\u00ECnh)\u0027; } return \u0027pick: kh\u00F4ng th\u1EA5y m\u1ECF \u00AB{{mineName}}\u00BB, v\u00E0 t\u00E0i kho\u1EA3n c\u0169ng ch\u01B0a \u1EDF trong m\u1ECF n\u00E0o\u0027; }",
+          "timeoutMs": 15000,
+          "note": "ch\u1EA1y l\u1EA1i pick \u0111\u1EC3 \u0111\u00E1nh d\u1EA5u \u1EA3nh m\u1ECF \u0110ANG \u1EDE tr\u00EAn DOM m\u1EDBi"
+        },
+        {
+          "action": "click",
+          "selector": ".jvz-km-open",
+          "timeoutMs": 10000,
+          "note": "b\u1EA5m \u1EA3nh m\u1ECF \u0111\u1EC3 m\u1EDF #user-modal (click#164 c\u1EE7a b\u1EA3n ghi)"
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 15000,
+          "note": "s\u1ED5 \u0111\u00E3 render d\u00F2ng \u0111\u1EA7u ti\u00EAn",
+          "condition": {
+            "kind": "visible",
+            "selector": "#user-list .user-row"
+          }
+        },
+        {
+          "action": "waitMilliseconds",
+          "timeoutMs": 800
+        },
+        {
+          "action": "evaluateJavaScript",
+          "script": "() =\u003E { const body = document.body; if (body) body.classList.remove(\u0027jvz-km-host-go\u0027); for (const el of document.querySelectorAll(\u0027.jvz-km-doat\u0027)) el.classList.remove(\u0027jvz-km-doat\u0027); if (\u0027{{hostMode}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) return \u0027host: tu\u1EF3 ch\u1ECDn \u0111o\u1EA1t m\u1ECF \u0111ang t\u1EAFt\u0027; const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); const bonusEl = document.querySelector(\u0027#tuvi-bonus-percentage\u0027); const bonus = bonusEl ? parseInt((bonusEl.textContent || \u0027\u0027).replace(/\\D/g, \u0027\u0027), 10) : NaN; if (!(bonus \u003E= 0)) return \u0027host: ch\u01B0a \u0111\u1ECDc \u0111\u01B0\u1EE3c % tu vi bonus c\u1EE7a m\u1ECF (#tuvi-bonus-percentage)\u0027; const thr = parseInt(\u0027{{hostMinBonus}}\u0027, 10) || 0; if (bonus \u003C thr) return \u0027!Bonus tu vi c\u1EE7a m\u1ECF \u0027 \u002B bonus \u002B \u0027% d\u01B0\u1EDBi ng\u01B0\u1EE1ng \u0027 \u002B thr \u002B \u0027% \u2014 kh\u00F4ng \u0111o\u1EA1t m\u1ECF n\u00E0y\u0027; const atk = fold(body ? body.textContent : \u0027\u0027).match(/luot tan cong\\s*:?\\s*(\\d\u002B)\\s*\\/\\s*(\\d\u002B)/); if (atk \u0026\u0026 parseInt(atk[1], 10) \u003E= parseInt(atk[2], 10)) return \u0027!H\u1EBFt l\u01B0\u1EE3t t\u1EA5n c\u00F4ng h\u00F4m nay (\u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] \u002B \u0027) \u2014 kh\u00F4ng \u0111o\u1EA1t\u0027; const doat = [...document.querySelectorAll(\u0027#user-list button.doat-mo-btn\u0027)].find((b) =\u003E !b.disabled); if (!doat) return \u0027!Kh\u00F4ng c\u00F3 n\u00FAt \u0110o\u1EA1t M\u1ECF trong s\u1ED5 \u2014 m\u00ECnh \u0111ang l\u00E0 ch\u1EE7, ho\u1EB7c ch\u1EE7 m\u1ECF \u0111ang \u0111\u01B0\u1EE3c b\u1EA3o h\u1ED9\u0027; doat.classList.add(\u0027jvz-km-doat\u0027); if (body) body.classList.add(\u0027jvz-km-host-go\u0027); return \u0027!\u0110\u1EE7 \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t m\u1ECF: bonus \u0027 \u002B bonus \u002B \u0027% \u2265 ng\u01B0\u1EE1ng \u0027 \u002B thr \u002B \u0027%\u0027 \u002B (atk ? \u0027, l\u01B0\u1EE3t t\u1EA5n c\u00F4ng \u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] : \u0027\u0027); }",
+          "timeoutMs": 15000
+        },
+        {
+          "action": "click",
+          "selector": "#close-btn",
+          "timeoutMs": 8000,
+          "note": "\u0111\u00F3ng s\u1ED5 \u0111\u1EC3 t\u1EDBi TI\u1EC6M \u2014 c\u00F4ng th\u1EE9c host c\u1EE7a b\u1EA3n ghi: \u0111\u00F3ng \u2192 mua ph\u00F9 \u2192 m\u1EDF l\u1EA1i \u2192 \u0111o\u1EA1t",
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-host-go"
+          }
+        },
+        {
+          "action": "click",
+          "selector": "#shopButton",
+          "timeoutMs": 8000,
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-host-go"
+          }
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 10000,
+          "note": "k\u1EC7 TI\u1EC6M \u0111\u00E3 render",
+          "condition": {
+            "kind": "visible",
+            "selector": "#shop-container .shop-item"
+          },
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-host-go"
+          }
+        },
+        {
+          "action": "evaluateJavaScript",
+          "script": "() =\u003E { for (const el of document.querySelectorAll(\u0027.jvz-km-buy\u0027)) el.classList.remove(\u0027jvz-km-buy\u0027); const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); const items = [...document.querySelectorAll(\u0027#shop-container .shop-item\u0027)]; if (items.length === 0) return \u0027shop: #shop-container ch\u01B0a render m\u00F3n n\u00E0o\u0027; const item = items.find((i) =\u003E fold(i.textContent).indexOf(\u0027linh quang phu\u0027) \u003E= 0); if (!item) return \u0027shop: kh\u00F4ng th\u1EA5y m\u00F3n Linh Quang Ph\u00F9 tr\u00EAn k\u1EC7\u0027; const btn = item.querySelector(\u0027button.shop-item-button\u0027); if (!btn) return \u0027shop: m\u00F3n Linh Quang Ph\u00F9 kh\u00F4ng c\u00F3 n\u00FAt mua\u0027; btn.classList.add(\u0027jvz-km-buy\u0027); return \u0027!Mua Linh Quang Ph\u00F9 (\u002B20% tu vi trong 1 gi\u1EDD) tr\u01B0\u1EDBc khi \u0111o\u1EA1t m\u1ECF\u0027; }",
+          "timeoutMs": 15000,
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-host-go"
+          }
+        },
+        {
+          "action": "click",
+          "selector": ".jvz-km-buy",
+          "timeoutMs": 8000,
+          "note": "OPTIONAL c\u00F3 ch\u1EE7 \u00FD: thi\u1EBFu ti\u1EC1n hay k\u1EC7 \u0111\u1ED5i th\u00EC m\u1EA5t ph\u1EA7n \u002B20%, c\u00FA \u0111o\u1EA1t v\u1EABn \u0111i ti\u1EBFp",
+          "optional": true,
+          "when": {
+            "kind": "visible",
+            "selector": ".jvz-km-buy"
+          }
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 8000,
+          "note": "v\u0103n b\u1EA3n popup mua KH\u00D4NG \u0111\u01B0\u1EE3c b\u1EA3n ghi ch\u1EE5p tr\u1ECDn \u2014 \u0111i\u1EC1u ki\u1EC7n l\u1ECFng h\u01A1n c\u00E1c popup kh\u00E1c, v\u00E0 optional",
+          "optional": true,
+          "condition": {
+            "kind": "textMatches",
+            "selector": ".swal2-container .swal2-popup",
+            "text": "mua|linh quang"
+          },
+          "when": {
+            "kind": "visible",
+            "selector": ".jvz-km-buy"
+          }
+        },
+        {
+          "action": "click",
+          "selector": ".swal2-container button.swal2-confirm",
+          "timeoutMs": 8000,
+          "note": "\u300CMua Ngay\u300Dtrong h\u1ED9p x\u00E1c nh\u1EADn (click#236)",
+          "optional": true,
+          "when": {
+            "kind": "visible",
+            "selector": ".jvz-km-buy"
+          }
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 8000,
+          "note": "toast\u300C\u0110\u1EA1o h\u1EEFu \u0111\u00E3 mua th\u00E0nh c\u00F4ng Linh Quang Ph\u00F9!\u300D\u2014 optional v\u00EC toast s\u1ED1ng ng\u1EAFn",
+          "optional": true,
+          "condition": {
+            "kind": "textMatches",
+            "selector": "body",
+            "text": "mua th\u00E0nh c\u00F4ng"
+          },
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-host-go"
+          }
+        },
+        {
+          "action": "click",
+          "selector": ".jvz-km-open",
+          "timeoutMs": 10000,
+          "note": "m\u1EDF l\u1EA1i s\u1ED5; TI\u1EC6M l\u00E0 tab ri\u00EAng n\u00EAn #mine-list v\u00E0 d\u1EA5u jvz-km-open c\u00F2n nguy\u00EAn (click#239 b\u1EA5m th\u1EB3ng \u0111\u01B0\u1EE3c)",
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-host-go"
+          }
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 15000,
+          "condition": {
+            "kind": "visible",
+            "selector": "#user-list .user-row"
+          },
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-host-go"
+          }
+        },
+        {
+          "action": "waitMilliseconds",
+          "timeoutMs": 800,
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-host-go"
+          }
+        },
+        {
+          "action": "evaluateJavaScript",
+          "script": "() =\u003E { const body = document.body; if (body) body.classList.remove(\u0027jvz-km-host-go\u0027); for (const el of document.querySelectorAll(\u0027.jvz-km-doat\u0027)) el.classList.remove(\u0027jvz-km-doat\u0027); if (\u0027{{hostMode}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) return \u0027host: tu\u1EF3 ch\u1ECDn \u0111o\u1EA1t m\u1ECF \u0111ang t\u1EAFt\u0027; const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); const bonusEl = document.querySelector(\u0027#tuvi-bonus-percentage\u0027); const bonus = bonusEl ? parseInt((bonusEl.textContent || \u0027\u0027).replace(/\\D/g, \u0027\u0027), 10) : NaN; if (!(bonus \u003E= 0)) return \u0027host: ch\u01B0a \u0111\u1ECDc \u0111\u01B0\u1EE3c % tu vi bonus c\u1EE7a m\u1ECF (#tuvi-bonus-percentage)\u0027; const thr = parseInt(\u0027{{hostMinBonus}}\u0027, 10) || 0; if (bonus \u003C thr) return \u0027!Bonus tu vi c\u1EE7a m\u1ECF \u0027 \u002B bonus \u002B \u0027% d\u01B0\u1EDBi ng\u01B0\u1EE1ng \u0027 \u002B thr \u002B \u0027% \u2014 kh\u00F4ng \u0111o\u1EA1t m\u1ECF n\u00E0y\u0027; const atk = fold(body ? body.textContent : \u0027\u0027).match(/luot tan cong\\s*:?\\s*(\\d\u002B)\\s*\\/\\s*(\\d\u002B)/); if (atk \u0026\u0026 parseInt(atk[1], 10) \u003E= parseInt(atk[2], 10)) return \u0027!H\u1EBFt l\u01B0\u1EE3t t\u1EA5n c\u00F4ng h\u00F4m nay (\u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] \u002B \u0027) \u2014 kh\u00F4ng \u0111o\u1EA1t\u0027; const doat = [...document.querySelectorAll(\u0027#user-list button.doat-mo-btn\u0027)].find((b) =\u003E !b.disabled); if (!doat) return \u0027!Kh\u00F4ng c\u00F3 n\u00FAt \u0110o\u1EA1t M\u1ECF trong s\u1ED5 \u2014 m\u00ECnh \u0111ang l\u00E0 ch\u1EE7, ho\u1EB7c ch\u1EE7 m\u1ECF \u0111ang \u0111\u01B0\u1EE3c b\u1EA3o h\u1ED9\u0027; doat.classList.add(\u0027jvz-km-doat\u0027); if (body) body.classList.add(\u0027jvz-km-host-go\u0027); return \u0027!\u0110\u1EE7 \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t m\u1ECF: bonus \u0027 \u002B bonus \u002B \u0027% \u2265 ng\u01B0\u1EE1ng \u0027 \u002B thr \u002B \u0027%\u0027 \u002B (atk ? \u0027, l\u01B0\u1EE3t t\u1EA5n c\u00F4ng \u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] : \u0027\u0027); }",
+          "timeoutMs": 15000,
+          "note": "s\u1ED5 v\u1EEBa render l\u1EA1i \u2014 qu\u00E9t l\u1EA1i \u0111\u1EC3 \u0111\u00E1nh d\u1EA5u n\u00FAt \u0110o\u1EA1t M\u1ECF tr\u00EAn DOM m\u1EDBi; ai \u0111\u00F3 \u0111o\u1EA1t tr\u01B0\u1EDBc th\u00EC c\u1EDD t\u1EF1 r\u1EDBt v\u00E0 c\u1EE5m c\u00F2n l\u1EA1i l\u1EB7n",
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-host-go"
+          }
+        },
+        {
+          "action": "click",
+          "selector": ".jvz-km-doat",
+          "timeoutMs": 8000,
+          "note": "d\u00F2ng ch\u1EE7 m\u1ECF n\u1EB1m trang 1 \u1EDF c\u1EA3 hai tr\u1EA1ng th\u00E1i b\u1EA3n ghi ch\u1EE5p \u0111\u01B0\u1EE3c \u2014 kh\u00F4ng ph\u00E2n trang cho c\u00FA n\u00E0y",
+          "when": {
+            "kind": "visible",
+            "selector": ".jvz-km-doat"
+          }
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 8000,
+          "note": "\u300C\u0110\u1EA1o h\u1EEFu c\u00F3 ch\u1EAFc ch\u1EAFn mu\u1ED1n \u0111o\u1EA1t quy\u1EC1n ch\u1EE7 m\u1ECF n\u00E0y kh\u00F4ng?\u300D(khung h\u00ECnh 42:14)",
+          "condition": {
+            "kind": "textMatches",
+            "selector": ".swal2-container .swal2-popup",
+            "text": "\u0111o\u1EA1t quy\u1EC1n ch\u1EE7 m\u1ECF"
+          },
+          "when": {
+            "kind": "visible",
+            "selector": ".jvz-km-doat"
+          }
+        },
+        {
+          "action": "click",
+          "selector": ".swal2-container button.swal2-confirm",
+          "timeoutMs": 8000,
+          "note": "\u300CX\u00E1c nh\u1EADn\u300D\u2014 AJAX tr\u1EA3\u300C\u0110\u00E3 \u0111o\u1EA1t th\u00E0nh c\u00F4ng quy\u1EC1n ch\u1EE7 m\u1ECF.\u300D(click#246)",
+          "when": {
+            "kind": "visible",
+            "selector": ".jvz-km-doat"
+          }
+        },
+        {
+          "action": "waitMilliseconds",
+          "timeoutMs": 1200,
+          "note": "s\u1ED5 x\u1EBFp l\u1EA1i sau khi \u0111\u1ED5i ch\u1EE7 \u2014 d\u00F2ng m\u00ECnh d\u1EDDi l\u00EAn \u0111\u1EA7u trang 1, ph\u00E9p qu\u00E9t ngay d\u01B0\u1EDBi s\u1EBD th\u1EA5y",
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-host-go"
+          }
+        },
+        {
+          "action": "repeat",
+          "timeoutMs": 15000,
+          "note": "s\u1ED5 t\u1ED1i \u0111a ~5 trang cho 50 ng\u01B0\u1EDDi; 6 v\u00F2ng l\u00E0 d\u01B0 m\u1ED9t v\u00F2ng an to\u00E0n",
+          "steps": [
+            {
+              "action": "evaluateJavaScript",
+              "script": "() =\u003E { const MINE_MINUTES = 30; const body = document.body; if (body) { body.classList.remove(\u0027jvz-km-self-seen\u0027); body.classList.remove(\u0027jvz-km-max\u0027); } for (const el of document.querySelectorAll(\u0027.jvz-km-claim\u0027)) el.classList.remove(\u0027jvz-km-claim\u0027); const nextBtn = document.querySelector(\u0027#next-btn\u0027); if (nextBtn) nextBtn.classList.remove(\u0027jvz-km-next-go\u0027); const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027).trim(); const btn = document.querySelector(\u0027#user-list button.chua-dat, #user-list button.claim-reward\u0027); if (!btn) { if (nextBtn \u0026\u0026 !nextBtn.disabled) { nextBtn.classList.add(\u0027jvz-km-next-go\u0027); return \u0027self-scan: trang n\u00E0y ch\u01B0a c\u00F3 d\u00F2ng c\u1EE7a m\u00ECnh \u2014 sang trang k\u1EBF\u0027; } return \u0027self-scan: kh\u00F4ng th\u1EA5y d\u00F2ng c\u1EE7a m\u00ECnh v\u00E0 kh\u00F4ng c\u00F2n trang k\u1EBF\u0027; } if (body) body.classList.add(\u0027jvz-km-self-seen\u0027); let eta = document.getElementById(\u0027jvz-km-eta\u0027); if (!eta) { eta = document.createElement(\u0027span\u0027); eta.id = \u0027jvz-km-eta\u0027; eta.style.cssText = \u0027position:fixed;bottom:0;right:0;font-size:2px;color:transparent;pointer-events:none\u0027; (body || document.documentElement).appendChild(eta); } const btnText = fold(btn.textContent); if (btnText.indexOf(\u0027nhan thuong\u0027) \u003E= 0 \u0026\u0026 !btn.disabled) { btn.classList.add(\u0027jvz-km-claim\u0027); if (body) body.classList.add(\u0027jvz-km-max\u0027); eta.textContent = \u0027\u0027; return \u0027!Khai th\u00E1c \u0110\u1EA0T T\u1ED0I \u0110A \u2014 nh\u1EADn th\u01B0\u1EDFng\u0027; } const row = btn.closest(\u0027.user-row\u0027); const rowText = fold(row ? row.textContent : \u0027\u0027); const m = rowText.match(/khai thac\\s*:?\\s*(?:dat toi da|([\\d.,]\u002B)\\s*(giay|phut|gio))/); let remain = MINE_MINUTES; if (m) { if (m[1] === undefined) { remain = 1; } else { const v = parseInt(m[1].replace(/\\D/g, \u0027\u0027), 10) || 0; const spent = m[2] === \u0027giay\u0027 ? Math.ceil(v / 60) : (m[2] === \u0027gio\u0027 ? v * 60 : v); remain = Math.max(MINE_MINUTES - spent, 1); } } eta.textContent = remain \u002B \u0027 ph\u00FAt\u0027; return \u0027!\u0110ang khai th\u00E1c (n\u00FAt: \u0027 \u002B (btn.textContent || \u0027\u0027).trim() \u002B \u0027) \u2014 c\u00F2n ~\u0027 \u002B remain \u002B \u0027 ph\u00FAt n\u1EEFa \u0111\u1EA1t t\u1ED1i \u0111a\u0027; }",
+              "timeoutMs": 15000
+            },
+            {
+              "action": "click",
+              "selector": "#next-btn.jvz-km-next-go",
+              "timeoutMs": 2500,
+              "note": "self-scan ch\u1EC9 \u0111\u00E1nh d\u1EA5u khi ch\u01B0a th\u1EA5y d\u00F2ng m\u00ECnh V\u00C0 c\u00F2n trang k\u1EBF \u2014 th\u1EA5y r\u1ED3i th\u00EC selector n\u00E0y kh\u00F4ng t\u1ED3n t\u1EA1i, optional cho n\u00F3 tr\u01B0\u1EE3t \u00EAm",
+              "optional": true
+            },
+            {
+              "action": "waitMilliseconds",
+              "timeoutMs": 900
+            }
+          ],
+          "until": {
+            "kind": "visible",
+            "selector": "body.jvz-km-self-seen"
+          },
+          "maxIterations": 6,
+          "maxSeconds": 90
+        },
+        {
+          "action": "expectVisible",
+          "selector": "body.jvz-km-self-seen",
+          "timeoutMs": 3000,
+          "note": "qu\u00E9t h\u1EBFt c\u00E1c trang m\u00E0 kh\u00F4ng th\u1EA5y d\u00F2ng m\u00ECnh \u2192 c\u00F3 chuy\u1EC7n th\u1EADt (ch\u01B0a v\u00E0o \u0111\u01B0\u1EE3c m\u1ECF?) \u2014 quest \u0111\u1ECF"
+        },
+        {
+          "action": "click",
+          "selector": ".jvz-km-claim",
+          "timeoutMs": 8000,
+          "note": "\u300CNh\u1EADn Th\u01B0\u1EDFng\u300Dtr\u00EAn d\u00F2ng m\u00ECnh (button.claim-reward, click#259)",
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-max"
+          }
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 15000,
+          "note": "n\u00FAt m\u00ECnh \u0111\u1ED5i th\u00E0nh\u300C\u0110\u00E3 nh\u1EADn (Xs)\u300D= server \u0111\u00E3 ghi th\u01B0\u1EDFng \u2014 ch\u1EC9 d\u00F2ng m\u00ECnh mang ch\u1EEF n\u00E0y",
+          "condition": {
+            "kind": "textMatches",
+            "selector": "#user-list",
+            "text": "\u0111\u00E3 nh\u1EADn"
+          },
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-max"
+          }
+        },
+        {
+          "action": "evaluateJavaScript",
+          "script": "() =\u003E { const eta = document.getElementById(\u0027jvz-km-eta\u0027); if (!eta) return \u0027tail: ch\u01B0a c\u00F3 node eta \u2014 self-scan ch\u01B0a ch\u1EA1y?\u0027; if (document.body \u0026\u0026 document.body.classList.contains(\u0027jvz-km-max\u0027)) { eta.textContent = \u002730 ph\u00FAt\u0027; return \u0027!\u0110\u00E3 nh\u1EADn th\u01B0\u1EDFng \u2014 chu k\u1EF3 khai th\u00E1c m\u1EDBi b\u1EAFt \u0111\u1EA7u, gh\u00E9 l\u1EA1i sau ~30 ph\u00FAt\u0027; } return \u0027tail: gi\u1EEF nh\u1ECBp gh\u00E9 l\u1EA1i \u0027 \u002B (eta.textContent || \u0027(tr\u1ED1ng)\u0027); }",
+          "timeoutMs": 15000
+        },
+        {
+          "action": "readCooldownSeconds",
+          "selector": "#jvz-km-eta",
+          "timeoutMs": 15000,
+          "note": "node eta do self-scan/tail d\u1EF1ng \u2014 \u0111i qua \u0111\u00FAng b\u1ED9 parse \u0111\u1ED3ng h\u1ED3 c\u1EE7a engine"
+        },
+        {
+          "action": "stopIf",
+          "text": "\u0111ang khai th\u00E1c \u2014 ch\u01B0a \u0111\u1EA1t t\u1ED1i \u0111a, gh\u00E9 l\u1EA1i theo \u0111\u1ED3ng h\u1ED3",
+          "timeoutMs": 15000,
+          "note": "d\u1EEBng K\u00C8M \u0111\u1ED3ng h\u1ED3 (eta v\u1EEBa \u0111\u1ECDc) \u2192 onCooldown; c\u00F2n \u0111\u01B0\u1EDDng v\u1EEBa-nh\u1EADn-xong \u0111i ti\u1EBFp xu\u1ED1ng d\u01B0\u1EDBi \u2192 completed v\u1EDBi \u0111\u1ED3ng h\u1ED3 30 ph\u00FAt",
+          "condition": {
+            "kind": "hidden",
+            "selector": "body.jvz-km-max"
+          }
+        }
+      ],
+      "options": [
+        {
+          "key": "mineType",
+          "label": "Lo\u1EA1i kho\u00E1ng",
+          "choices": [
+            {
+              "value": "1",
+              "label": "Th\u01B0\u1EE3ng \u2014 Kho\u00E1ng V\u00E0ng"
+            },
+            {
+              "value": "2",
+              "label": "Trung \u2014 Kho\u00E1ng B\u1EA1c"
+            },
+            {
+              "value": "3",
+              "label": "H\u1EA1 \u2014 Kho\u00E1ng \u0110\u1ED3ng (T\u00E2n Th\u1EE7)"
+            }
+          ],
+          "allowCustom": false,
+          "selectedValue": "2"
+        },
+        {
+          "key": "mineName",
+          "label": "T\u00EAn m\u1ECF",
+          "choices": [
+            {
+              "value": "Th\u00F4ng Thi\u00EAn Ki\u1EBFm Ph\u00E1i",
+              "label": "Th\u00F4ng Thi\u00EAn Ki\u1EBFm Ph\u00E1i (Trung)"
+            },
+            {
+              "value": "\u00C2m Minh Chi \u0110\u1ECBa",
+              "label": "\u00C2m Minh Chi \u0110\u1ECBa (Trung)"
+            },
+            {
+              "value": "B\u1EA5t Di\u1EC7t S\u01A1n",
+              "label": "B\u1EA5t Di\u1EC7t S\u01A1n (Trung)"
+            },
+            {
+              "value": "Thi\u00EAn",
+              "label": "Thi\u00EAn (Th\u01B0\u1EE3ng)"
+            },
+            {
+              "value": "\u0110\u1ECBa",
+              "label": "\u0110\u1ECBa (Th\u01B0\u1EE3ng)"
+            },
+            {
+              "value": "H\u1ED3ng Hoang",
+              "label": "H\u1ED3ng Hoang (Th\u01B0\u1EE3ng)"
+            },
+            {
+              "value": "B\u00E1ch \u0110o\u1EA1n S\u01A1n",
+              "label": "B\u00E1ch \u0110o\u1EA1n S\u01A1n (H\u1EA1)"
+            },
+            {
+              "value": "Th\u1EA1ch Th\u00F4n",
+              "label": "Th\u1EA1ch Th\u00F4n (H\u1EA1)"
+            }
+          ],
+          "allowCustom": true,
+          "selectedValue": "Th\u00F4ng Thi\u00EAn Ki\u1EBFm Ph\u00E1i"
+        },
+        {
+          "key": "hostMode",
+          "label": "\u0110o\u1EA1t m\u1ECF (l\u00E0m ch\u1EE7)",
+          "choices": [
+            {
+              "value": "\u00ABkh\u00F4ng \u0111o\u1EA1t\u00BB",
+              "label": "Kh\u00F4ng \u2014 ch\u1EC9 \u0111\u00E0o"
+            },
+            {
+              "value": "\u0111o\u1EA1t khi \u0111\u1EE7 ng\u01B0\u1EE1ng",
+              "label": "Mua Linh Quang Ph\u00F9 \u002B \u0111o\u1EA1t khi bonus \u2265 ng\u01B0\u1EE1ng"
+            }
+          ],
+          "allowCustom": false,
+          "selectedValue": "\u00ABkh\u00F4ng \u0111o\u1EA1t\u00BB"
+        },
+        {
+          "key": "hostMinBonus",
+          "label": "Ng\u01B0\u1EE1ng % tu vi t\u1ED1i thi\u1EC3u \u0111\u1EC3 \u0111o\u1EA1t",
+          "choices": [
+            {
+              "value": "50",
+              "label": "\u2265 50%"
+            },
+            {
+              "value": "80",
+              "label": "\u2265 80%"
+            },
+            {
+              "value": "100",
+              "label": "\u2265 100%"
+            },
+            {
+              "value": "120",
+              "label": "\u2265 120%"
+            },
+            {
+              "value": "150",
+              "label": "\u2265 150%"
+            }
+          ],
+          "allowCustom": true,
+          "selectedValue": "100"
+        }
+      ],
+      "fallbackCooldownSeconds": 600,
+      "requiresVip": false,
+      "order": 100,
+      "notes": "\u0110\u00E0o m\u1ECF \u0111\u00E3 c\u1EA5u h\u00ECnh: v\u00E0o m\u1ECF, \u0111\u1EE3i chu k\u1EF3 30 ph\u00FAt, nh\u1EADn th\u01B0\u1EDFng \u2014 2 l\u1EA7n/ng\u00E0y. \u0110o\u1EA1t m\u1ECF (l\u00E0m ch\u1EE7) l\u00E0 tu\u1EF3 ch\u1ECDn ri\u00EAng v\u00E0 ti\u00EAu ti\u1EC1n th\u1EADt."
     },
     {
       "id": "me-cung-thuong",

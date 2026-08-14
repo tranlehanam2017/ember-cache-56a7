@@ -89,7 +89,6 @@ const SIMPLE_QUESTS = [
   ["phucLoiVip", "Phúc Lợi VIP — Khắc Trận Văn"],
   ["vongQuay", "Vòng Quay Phúc Vận"],
   ["vanDap", "Vấn Đáp"],
-  ["khoangMach", "Khoáng Mạch"],
   ["hySuDuong", "Hỷ Sự Đường"],
 ];
 
@@ -170,7 +169,40 @@ export function profileForConfig(config, log) {
     }
   }
 
-  // ---- Mười một nhiệm vụ một-công-tắc --------------------------------------------------
+  // ---- Khoáng Mạch ---------------------------------------------------------------------
+  // Cùng phép tách twin với Luyện Đan: `khoangMach` cho bản VIP, `khoangMachThuong` cho bản
+  // thường. Snapshot đóng băng TRƯỚC schema 58 chỉ mang `khoangMach` dạng công-tắc (và đã bị
+  // ép tắt từ thời stub), nên nhánh rơi-về của twin thường vô hại với chúng.
+  const khoangMachTwins = findQuests(profile, "Khoáng Mạch");
+  if (khoangMachTwins.length === 0) {
+    log?.("Hồ sơ không có nhiệm vụ「Khoáng Mạch」.");
+  }
+  for (const khoangMach of khoangMachTwins) {
+    const km = khoangMach.requiresVip === false
+      ? config.quests?.khoangMachThuong ?? config.quests?.khoangMach
+      : config.quests?.khoangMach;
+    khoangMach.enabled = km?.enabled === true;
+    if (khoangMach.enabled) {
+      setOption(khoangMach, "mineType", String(km.mineType ?? "2"), { log });
+
+      // Tên mỏ là chuỗi tự do (configs.ts đã làm sạch bằng sanitizeChatMessage — đích đến là
+      // một literal trong nguồn evaluateJavaScript). RỖNG = đào tiếp mỏ đang ở, script pick
+      // đọc chuỗi rỗng đúng nghĩa ấy nên vẫn phải được đặt vào, không được rơi về mặc định.
+      setOption(khoangMach, "mineName", km.mineName ?? "", { allowFreeform: true, log });
+
+      // hostMode trên web là công tắc, trong hồ sơ là hai giá trị chuỗi mà «…» nghĩa là tắt
+      // — cùng phép dịch với capCheck của Mê Cung ở trên.
+      const hostOption = findOption(khoangMach, "hostMode");
+      const hostOff = hostOption?.choices?.find((c) => c.value.includes("«"));
+      const hostOn = hostOption?.choices?.find((c) => !c.value.includes("«"));
+      const wanted = km.hostMode === true ? hostOn : hostOff;
+      if (wanted) setOption(khoangMach, "hostMode", wanted.value, { log });
+
+      setOption(khoangMach, "hostMinBonus", String(km.hostMinBonus ?? 100), { allowFreeform: true, log });
+    }
+  }
+
+  // ---- Mười nhiệm vụ một-công-tắc ------------------------------------------------------
   for (const [key, name] of SIMPLE_QUESTS) {
     const quests = findQuests(profile, name);
     if (quests.length === 0) {
@@ -196,6 +228,8 @@ export function profileForConfig(config, log) {
     "meCung",
     "luyenDan",
     "luyenDanThuong",
+    "khoangMach",
+    "khoangMachThuong",
   ]);
   for (const [key, value] of Object.entries(config.quests ?? {})) {
     if (value?.enabled === true && !knownKeys.has(key)) {
