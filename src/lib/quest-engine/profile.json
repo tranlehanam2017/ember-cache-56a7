@@ -1,6 +1,6 @@
 {
   "name": "Ho\u1EA1t \u0111\u1ED9ng h\u00E0ng ng\u00E0y (m\u1EB7c \u0111\u1ECBnh)",
-  "schemaVersion": 58,
+  "schemaVersion": 59,
   "dailyQuestPath": "/nhiem-vu-hang-ngay",
   "quests": [
     {
@@ -2246,7 +2246,7 @@
           "steps": [
             {
               "action": "evaluateJavaScript",
-              "script": "() =\u003E { const MINE_MINUTES = 30; const body = document.body; if (body) { body.classList.remove(\u0027jvz-km-self-seen\u0027); body.classList.remove(\u0027jvz-km-max\u0027); } for (const el of document.querySelectorAll(\u0027.jvz-km-claim\u0027)) el.classList.remove(\u0027jvz-km-claim\u0027); const nextBtn = document.querySelector(\u0027#next-btn\u0027); if (nextBtn) nextBtn.classList.remove(\u0027jvz-km-next-go\u0027); const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027).trim(); const btn = document.querySelector(\u0027#user-list button.chua-dat, #user-list button.claim-reward\u0027); if (!btn) { if (nextBtn \u0026\u0026 !nextBtn.disabled) { nextBtn.classList.add(\u0027jvz-km-next-go\u0027); return \u0027self-scan: trang n\u00E0y ch\u01B0a c\u00F3 d\u00F2ng c\u1EE7a m\u00ECnh \u2014 sang trang k\u1EBF\u0027; } return \u0027self-scan: kh\u00F4ng th\u1EA5y d\u00F2ng c\u1EE7a m\u00ECnh v\u00E0 kh\u00F4ng c\u00F2n trang k\u1EBF\u0027; } if (body) body.classList.add(\u0027jvz-km-self-seen\u0027); let eta = document.getElementById(\u0027jvz-km-eta\u0027); if (!eta) { eta = document.createElement(\u0027span\u0027); eta.id = \u0027jvz-km-eta\u0027; eta.style.cssText = \u0027position:fixed;bottom:0;right:0;font-size:2px;color:transparent;pointer-events:none\u0027; (body || document.documentElement).appendChild(eta); } const btnText = fold(btn.textContent); if (btnText.indexOf(\u0027nhan thuong\u0027) \u003E= 0 \u0026\u0026 !btn.disabled) { btn.classList.add(\u0027jvz-km-claim\u0027); if (body) body.classList.add(\u0027jvz-km-max\u0027); eta.textContent = \u0027\u0027; return \u0027!Khai th\u00E1c \u0110\u1EA0T T\u1ED0I \u0110A \u2014 nh\u1EADn th\u01B0\u1EDFng\u0027; } const row = btn.closest(\u0027.user-row\u0027); const rowText = fold(row ? row.textContent : \u0027\u0027); const m = rowText.match(/khai thac\\s*:?\\s*(?:dat toi da|([\\d.,]\u002B)\\s*(giay|phut|gio))/); let remain = MINE_MINUTES; if (m) { if (m[1] === undefined) { remain = 1; } else { const v = parseInt(m[1].replace(/\\D/g, \u0027\u0027), 10) || 0; const spent = m[2] === \u0027giay\u0027 ? Math.ceil(v / 60) : (m[2] === \u0027gio\u0027 ? v * 60 : v); remain = Math.max(MINE_MINUTES - spent, 1); } } eta.textContent = remain \u002B \u0027 ph\u00FAt\u0027; return \u0027!\u0110ang khai th\u00E1c (n\u00FAt: \u0027 \u002B (btn.textContent || \u0027\u0027).trim() \u002B \u0027) \u2014 c\u00F2n ~\u0027 \u002B remain \u002B \u0027 ph\u00FAt n\u1EEFa \u0111\u1EA1t t\u1ED1i \u0111a\u0027; }",
+              "script": "() =\u003E { const MINE_MINUTES = 30; const HOLD_MINUTES = 10; const body = document.body; if (body) { body.classList.remove(\u0027jvz-km-self-seen\u0027); body.classList.remove(\u0027jvz-km-max\u0027); } for (const el of document.querySelectorAll(\u0027.jvz-km-claim\u0027)) el.classList.remove(\u0027jvz-km-claim\u0027); const nextBtn = document.querySelector(\u0027#next-btn\u0027); if (nextBtn) nextBtn.classList.remove(\u0027jvz-km-next-go\u0027); const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027).trim(); const btn = document.querySelector(\u0027#user-list button.chua-dat, #user-list button.claim-reward\u0027); if (!btn) { if (nextBtn \u0026\u0026 !nextBtn.disabled) { nextBtn.classList.add(\u0027jvz-km-next-go\u0027); return \u0027self-scan: trang n\u00E0y ch\u01B0a c\u00F3 d\u00F2ng c\u1EE7a m\u00ECnh \u2014 sang trang k\u1EBF\u0027; } return \u0027self-scan: kh\u00F4ng th\u1EA5y d\u00F2ng c\u1EE7a m\u00ECnh v\u00E0 kh\u00F4ng c\u00F2n trang k\u1EBF\u0027; } if (body) body.classList.add(\u0027jvz-km-self-seen\u0027); let eta = document.getElementById(\u0027jvz-km-eta\u0027); if (!eta) { eta = document.createElement(\u0027span\u0027); eta.id = \u0027jvz-km-eta\u0027; eta.style.cssText = \u0027position:fixed;bottom:0;right:0;font-size:2px;color:transparent;pointer-events:none\u0027; (body || document.documentElement).appendChild(eta); } const btnText = fold(btn.textContent); if (btnText.indexOf(\u0027nhan thuong\u0027) \u003E= 0 \u0026\u0026 !btn.disabled) { const min = parseInt(\u0027{{minBonus}}\u0027, 10) || 0; let why = \u0027\u0027; if (min \u003E 0) { const bEl = document.querySelector(\u0027#tuvi-bonus-percentage\u0027); const bonus = bEl ? parseInt((bEl.textContent || \u0027\u0027).replace(/\\D/g, \u0027\u0027), 10) : NaN; if (bonus \u003E= 0) { if (bonus \u003C min) { eta.textContent = HOLD_MINUTES \u002B \u0027 ph\u00FAt\u0027; return \u0027!\u0110\u00E3 \u0111\u1EA1t t\u1ED1i \u0111a NH\u01AFNG bonus tu vi c\u1EE7a m\u1ECF \u0027 \u002B bonus \u002B \u0027% d\u01B0\u1EDBi ng\u01B0\u1EE1ng \u0027 \u002B min \u002B \u0027% \u2014 ch\u01B0a nh\u1EADn, \u0111\u1EC3 d\u00E0nh ch\u1EDD m\u1ECF kh\u00E1 h\u01A1n (gh\u00E9 l\u1EA1i sau \u0027 \u002B HOLD_MINUTES \u002B \u0027 ph\u00FAt)\u0027; } why = \u0027 (bonus \u0027 \u002B bonus \u002B \u0027% \u2265 ng\u01B0\u1EE1ng \u0027 \u002B min \u002B \u0027%)\u0027; } else { why = \u0027 \u2014 C\u1EA2NH B\u00C1O: kh\u00F4ng \u0111\u1ECDc \u0111\u01B0\u1EE3c % bonus c\u1EE7a m\u1ECF n\u00EAn ng\u01B0\u1EE1ng \u0027 \u002B min \u002B \u0027% kh\u00F4ng \u00E1p \u0111\u01B0\u1EE3c, v\u1EABn nh\u1EADn \u0111\u1EC3 kh\u1ECFi m\u1EA5t ph\u1EA7n th\u01B0\u1EDFng\u0027; } } btn.classList.add(\u0027jvz-km-claim\u0027); if (body) body.classList.add(\u0027jvz-km-max\u0027); eta.textContent = \u0027\u0027; return \u0027!Khai th\u00E1c \u0110\u1EA0T T\u1ED0I \u0110A \u2014 nh\u1EADn th\u01B0\u1EDFng\u0027 \u002B why; } const row = btn.closest(\u0027.user-row\u0027); const rowText = fold(row ? row.textContent : \u0027\u0027); const m = rowText.match(/khai thac\\s*:?\\s*(?:dat toi da|([\\d.,]\u002B)\\s*(giay|phut|gio))/); let remain = MINE_MINUTES; if (m) { if (m[1] === undefined) { remain = 1; } else { const v = parseInt(m[1].replace(/\\D/g, \u0027\u0027), 10) || 0; const spent = m[2] === \u0027giay\u0027 ? Math.ceil(v / 60) : (m[2] === \u0027gio\u0027 ? v * 60 : v); remain = Math.max(MINE_MINUTES - spent, 1); } } eta.textContent = remain \u002B \u0027 ph\u00FAt\u0027; return \u0027!\u0110ang khai th\u00E1c (n\u00FAt: \u0027 \u002B (btn.textContent || \u0027\u0027).trim() \u002B \u0027) \u2014 c\u00F2n ~\u0027 \u002B remain \u002B \u0027 ph\u00FAt n\u1EEFa \u0111\u1EA1t t\u1ED1i \u0111a\u0027; }",
               "timeoutMs": 15000
             },
             {
@@ -2380,6 +2380,38 @@
           ],
           "allowCustom": true,
           "selectedValue": "Th\u00F4ng Thi\u00EAn Ki\u1EBFm Ph\u00E1i"
+        },
+        {
+          "key": "minBonus",
+          "label": "Ng\u01B0\u1EE1ng % tu vi \u0111\u1EC3 \u0111\u00E0o",
+          "choices": [
+            {
+              "value": "0",
+              "label": "Lu\u00F4n nh\u1EADn \u2014 kh\u00F4ng x\u00E9t bonus"
+            },
+            {
+              "value": "50",
+              "label": "\u2265 50%"
+            },
+            {
+              "value": "80",
+              "label": "\u2265 80%"
+            },
+            {
+              "value": "100",
+              "label": "\u2265 100%"
+            },
+            {
+              "value": "120",
+              "label": "\u2265 120%"
+            },
+            {
+              "value": "150",
+              "label": "\u2265 150%"
+            }
+          ],
+          "allowCustom": true,
+          "selectedValue": "0"
         },
         {
           "key": "hostMode",
@@ -3804,7 +3836,7 @@
           "steps": [
             {
               "action": "evaluateJavaScript",
-              "script": "() =\u003E { const MINE_MINUTES = 30; const body = document.body; if (body) { body.classList.remove(\u0027jvz-km-self-seen\u0027); body.classList.remove(\u0027jvz-km-max\u0027); } for (const el of document.querySelectorAll(\u0027.jvz-km-claim\u0027)) el.classList.remove(\u0027jvz-km-claim\u0027); const nextBtn = document.querySelector(\u0027#next-btn\u0027); if (nextBtn) nextBtn.classList.remove(\u0027jvz-km-next-go\u0027); const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027).trim(); const btn = document.querySelector(\u0027#user-list button.chua-dat, #user-list button.claim-reward\u0027); if (!btn) { if (nextBtn \u0026\u0026 !nextBtn.disabled) { nextBtn.classList.add(\u0027jvz-km-next-go\u0027); return \u0027self-scan: trang n\u00E0y ch\u01B0a c\u00F3 d\u00F2ng c\u1EE7a m\u00ECnh \u2014 sang trang k\u1EBF\u0027; } return \u0027self-scan: kh\u00F4ng th\u1EA5y d\u00F2ng c\u1EE7a m\u00ECnh v\u00E0 kh\u00F4ng c\u00F2n trang k\u1EBF\u0027; } if (body) body.classList.add(\u0027jvz-km-self-seen\u0027); let eta = document.getElementById(\u0027jvz-km-eta\u0027); if (!eta) { eta = document.createElement(\u0027span\u0027); eta.id = \u0027jvz-km-eta\u0027; eta.style.cssText = \u0027position:fixed;bottom:0;right:0;font-size:2px;color:transparent;pointer-events:none\u0027; (body || document.documentElement).appendChild(eta); } const btnText = fold(btn.textContent); if (btnText.indexOf(\u0027nhan thuong\u0027) \u003E= 0 \u0026\u0026 !btn.disabled) { btn.classList.add(\u0027jvz-km-claim\u0027); if (body) body.classList.add(\u0027jvz-km-max\u0027); eta.textContent = \u0027\u0027; return \u0027!Khai th\u00E1c \u0110\u1EA0T T\u1ED0I \u0110A \u2014 nh\u1EADn th\u01B0\u1EDFng\u0027; } const row = btn.closest(\u0027.user-row\u0027); const rowText = fold(row ? row.textContent : \u0027\u0027); const m = rowText.match(/khai thac\\s*:?\\s*(?:dat toi da|([\\d.,]\u002B)\\s*(giay|phut|gio))/); let remain = MINE_MINUTES; if (m) { if (m[1] === undefined) { remain = 1; } else { const v = parseInt(m[1].replace(/\\D/g, \u0027\u0027), 10) || 0; const spent = m[2] === \u0027giay\u0027 ? Math.ceil(v / 60) : (m[2] === \u0027gio\u0027 ? v * 60 : v); remain = Math.max(MINE_MINUTES - spent, 1); } } eta.textContent = remain \u002B \u0027 ph\u00FAt\u0027; return \u0027!\u0110ang khai th\u00E1c (n\u00FAt: \u0027 \u002B (btn.textContent || \u0027\u0027).trim() \u002B \u0027) \u2014 c\u00F2n ~\u0027 \u002B remain \u002B \u0027 ph\u00FAt n\u1EEFa \u0111\u1EA1t t\u1ED1i \u0111a\u0027; }",
+              "script": "() =\u003E { const MINE_MINUTES = 30; const HOLD_MINUTES = 10; const body = document.body; if (body) { body.classList.remove(\u0027jvz-km-self-seen\u0027); body.classList.remove(\u0027jvz-km-max\u0027); } for (const el of document.querySelectorAll(\u0027.jvz-km-claim\u0027)) el.classList.remove(\u0027jvz-km-claim\u0027); const nextBtn = document.querySelector(\u0027#next-btn\u0027); if (nextBtn) nextBtn.classList.remove(\u0027jvz-km-next-go\u0027); const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027).trim(); const btn = document.querySelector(\u0027#user-list button.chua-dat, #user-list button.claim-reward\u0027); if (!btn) { if (nextBtn \u0026\u0026 !nextBtn.disabled) { nextBtn.classList.add(\u0027jvz-km-next-go\u0027); return \u0027self-scan: trang n\u00E0y ch\u01B0a c\u00F3 d\u00F2ng c\u1EE7a m\u00ECnh \u2014 sang trang k\u1EBF\u0027; } return \u0027self-scan: kh\u00F4ng th\u1EA5y d\u00F2ng c\u1EE7a m\u00ECnh v\u00E0 kh\u00F4ng c\u00F2n trang k\u1EBF\u0027; } if (body) body.classList.add(\u0027jvz-km-self-seen\u0027); let eta = document.getElementById(\u0027jvz-km-eta\u0027); if (!eta) { eta = document.createElement(\u0027span\u0027); eta.id = \u0027jvz-km-eta\u0027; eta.style.cssText = \u0027position:fixed;bottom:0;right:0;font-size:2px;color:transparent;pointer-events:none\u0027; (body || document.documentElement).appendChild(eta); } const btnText = fold(btn.textContent); if (btnText.indexOf(\u0027nhan thuong\u0027) \u003E= 0 \u0026\u0026 !btn.disabled) { const min = parseInt(\u0027{{minBonus}}\u0027, 10) || 0; let why = \u0027\u0027; if (min \u003E 0) { const bEl = document.querySelector(\u0027#tuvi-bonus-percentage\u0027); const bonus = bEl ? parseInt((bEl.textContent || \u0027\u0027).replace(/\\D/g, \u0027\u0027), 10) : NaN; if (bonus \u003E= 0) { if (bonus \u003C min) { eta.textContent = HOLD_MINUTES \u002B \u0027 ph\u00FAt\u0027; return \u0027!\u0110\u00E3 \u0111\u1EA1t t\u1ED1i \u0111a NH\u01AFNG bonus tu vi c\u1EE7a m\u1ECF \u0027 \u002B bonus \u002B \u0027% d\u01B0\u1EDBi ng\u01B0\u1EE1ng \u0027 \u002B min \u002B \u0027% \u2014 ch\u01B0a nh\u1EADn, \u0111\u1EC3 d\u00E0nh ch\u1EDD m\u1ECF kh\u00E1 h\u01A1n (gh\u00E9 l\u1EA1i sau \u0027 \u002B HOLD_MINUTES \u002B \u0027 ph\u00FAt)\u0027; } why = \u0027 (bonus \u0027 \u002B bonus \u002B \u0027% \u2265 ng\u01B0\u1EE1ng \u0027 \u002B min \u002B \u0027%)\u0027; } else { why = \u0027 \u2014 C\u1EA2NH B\u00C1O: kh\u00F4ng \u0111\u1ECDc \u0111\u01B0\u1EE3c % bonus c\u1EE7a m\u1ECF n\u00EAn ng\u01B0\u1EE1ng \u0027 \u002B min \u002B \u0027% kh\u00F4ng \u00E1p \u0111\u01B0\u1EE3c, v\u1EABn nh\u1EADn \u0111\u1EC3 kh\u1ECFi m\u1EA5t ph\u1EA7n th\u01B0\u1EDFng\u0027; } } btn.classList.add(\u0027jvz-km-claim\u0027); if (body) body.classList.add(\u0027jvz-km-max\u0027); eta.textContent = \u0027\u0027; return \u0027!Khai th\u00E1c \u0110\u1EA0T T\u1ED0I \u0110A \u2014 nh\u1EADn th\u01B0\u1EDFng\u0027 \u002B why; } const row = btn.closest(\u0027.user-row\u0027); const rowText = fold(row ? row.textContent : \u0027\u0027); const m = rowText.match(/khai thac\\s*:?\\s*(?:dat toi da|([\\d.,]\u002B)\\s*(giay|phut|gio))/); let remain = MINE_MINUTES; if (m) { if (m[1] === undefined) { remain = 1; } else { const v = parseInt(m[1].replace(/\\D/g, \u0027\u0027), 10) || 0; const spent = m[2] === \u0027giay\u0027 ? Math.ceil(v / 60) : (m[2] === \u0027gio\u0027 ? v * 60 : v); remain = Math.max(MINE_MINUTES - spent, 1); } } eta.textContent = remain \u002B \u0027 ph\u00FAt\u0027; return \u0027!\u0110ang khai th\u00E1c (n\u00FAt: \u0027 \u002B (btn.textContent || \u0027\u0027).trim() \u002B \u0027) \u2014 c\u00F2n ~\u0027 \u002B remain \u002B \u0027 ph\u00FAt n\u1EEFa \u0111\u1EA1t t\u1ED1i \u0111a\u0027; }",
               "timeoutMs": 15000
             },
             {
@@ -3938,6 +3970,38 @@
           ],
           "allowCustom": true,
           "selectedValue": "Th\u00F4ng Thi\u00EAn Ki\u1EBFm Ph\u00E1i"
+        },
+        {
+          "key": "minBonus",
+          "label": "Ng\u01B0\u1EE1ng % tu vi \u0111\u1EC3 \u0111\u00E0o",
+          "choices": [
+            {
+              "value": "0",
+              "label": "Lu\u00F4n nh\u1EADn \u2014 kh\u00F4ng x\u00E9t bonus"
+            },
+            {
+              "value": "50",
+              "label": "\u2265 50%"
+            },
+            {
+              "value": "80",
+              "label": "\u2265 80%"
+            },
+            {
+              "value": "100",
+              "label": "\u2265 100%"
+            },
+            {
+              "value": "120",
+              "label": "\u2265 120%"
+            },
+            {
+              "value": "150",
+              "label": "\u2265 150%"
+            }
+          ],
+          "allowCustom": true,
+          "selectedValue": "0"
         },
         {
           "key": "hostMode",

@@ -190,6 +190,9 @@ export function profileForConfig(config, log) {
       // đọc chuỗi rỗng đúng nghĩa ấy nên vẫn phải được đặt vào, không được rơi về mặc định.
       setOption(khoangMach, "mineName", km.mineName ?? "", { allowFreeform: true, log });
 
+      // Ngưỡng CHỐT LỜI — con số tự do như kickHp của Mê Cung; 0 = luôn nhận.
+      setOption(khoangMach, "minBonus", String(km.minBonus ?? 0), { allowFreeform: true, log });
+
       // hostMode trên web là công tắc, trong hồ sơ là hai giá trị chuỗi mà «…» nghĩa là tắt
       // — cùng phép dịch với capCheck của Mê Cung ở trên.
       const hostOption = findOption(khoangMach, "hostMode");
