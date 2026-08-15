@@ -1,6 +1,6 @@
 {
   "name": "Ho\u1EA1t \u0111\u1ED9ng h\u00E0ng ng\u00E0y (m\u1EB7c \u0111\u1ECBnh)",
-  "schemaVersion": 59,
+  "schemaVersion": 60,
   "dailyQuestPath": "/nhiem-vu-hang-ngay",
   "quests": [
     {
@@ -1935,7 +1935,7 @@
         },
         {
           "action": "evaluateJavaScript",
-          "script": "() =\u003E { const MARK = \u0027jvz-km-done\u0027; if (document.body) document.body.classList.remove(MARK); const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase(); const text = fold(document.body ? document.body.textContent : \u0027\u0027).replace(/\\s\u002B/g, \u0027 \u0027); const read = (label) =\u003E { const m = text.match(new RegExp(label \u002B \u0027\\\\s*:?\\\\s*([\\\\d.,\\\\u00A0 ]\u002B?)\\\\s*\\\\/\\\\s*([\\\\d.,\\\\u00A0 ]\u002B)\u0027)); if (!m) return null; /* \u00221.200\u0022 l\u00E0 ph\u00E2n c\u00E1ch h\u00E0ng ngh\u00ECn vi-VN \u2014 b\u00F3c m\u1ECDi th\u1EE9 kh\u00F4ng ph\u1EA3i s\u1ED1 tr\u01B0\u1EDBc khi \u0111\u1ECDc, b\u00E0i h\u1ECDc MazeCapScan. */ const got = parseInt(m[1].replace(/\\D/g, \u0027\u0027), 10); const cap = parseInt(m[2].replace(/\\D/g, \u0027\u0027), 10); return cap \u003E 0 ? { got: got, cap: cap } : null; }; const tv = read(\u0027tu vi\u0027); const tt = read(\u0027tinh thach\u0027); if (!tv || !tt) return \u0027cap-scan: ch\u01B0a th\u1EA5y \u00F4 Tu Vi / Tinh Th\u1EA1ch tr\u00EAn trang\u0027; const full = tv.got \u003E= tv.cap \u0026\u0026 tt.got \u003E= tt.cap; if (full \u0026\u0026 document.body) document.body.classList.add(MARK); return \u0027!Tr\u1EA7n h\u00F4m nay: Tu Vi \u0027 \u002B tv.got \u002B \u0027/\u0027 \u002B tv.cap \u002B \u0027, Tinh Th\u1EA1ch \u0027 \u002B tt.got \u002B \u0027/\u0027 \u002B tt.cap \u002B (full ? \u0027 \u2014 \u0110\u00C3 \u0110\u1EA6Y, ngh\u1EC9 t\u1EDBi mai\u0027 : \u0027\u0027); }",
+          "script": "() =\u003E { const MARK = \u0027jvz-km-done\u0027; if (document.body) document.body.classList.remove(MARK); const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase(); const read = (el, label) =\u003E { const text = fold(el ? el.textContent : \u0027\u0027).replace(/\\s\u002B/g, \u0027 \u0027); const m = text.match(new RegExp(label \u002B \u0027\\\\s*:?\\\\s*([\\\\d.,\\\\u00A0 ]\u002B?)\\\\s*\\\\/\\\\s*([\\\\d.,\\\\u00A0 ]\u002B)\u0027)); if (!m) return null; /* \u00221.200\u0022 l\u00E0 ph\u00E2n c\u00E1ch h\u00E0ng ngh\u00ECn vi-VN \u2014 b\u00F3c m\u1ECDi th\u1EE9 kh\u00F4ng ph\u1EA3i s\u1ED1 tr\u01B0\u1EDBc khi \u0111\u1ECDc, b\u00E0i h\u1ECDc MazeCapScan. */ const got = parseInt(m[1].replace(/\\D/g, \u0027\u0027), 10); const cap = parseInt(m[2].replace(/\\D/g, \u0027\u0027), 10); return cap \u003E 0 ? { got: got, cap: cap } : null; }; const box = document.querySelector(\u0027.stats-container\u0027); const tvEl = box ? box.querySelector(\u0027.stat-tuvi\u0027) : null; const ttEl = box ? box.querySelector(\u0027.stat-tinhthach\u0027) : null; const via = tvEl \u0026\u0026 ttEl ? \u0027\u00F4 ch\u1EC9 s\u1ED1\u0027 : \u0027qu\u00E9t ch\u1EEF to\u00E0n trang (kh\u00F4ng th\u1EA5y .stats-container \u2014 markup tr\u00F4i?)\u0027; const tv = read(tvEl || document.body, \u0027tu vi\u0027); const tt = read(ttEl || document.body, \u0027tinh thach\u0027); if (!tv || !tt) return \u0027cap-scan: ch\u01B0a th\u1EA5y \u00F4 Tu Vi / Tinh Th\u1EA1ch tr\u00EAn trang\u0027; const full = tv.got \u003E= tv.cap \u0026\u0026 tt.got \u003E= tt.cap; if (full \u0026\u0026 document.body) document.body.classList.add(MARK); return \u0027!Tr\u1EA7n h\u00F4m nay (\u0027 \u002B via \u002B \u0027): Tu Vi \u0027 \u002B tv.got \u002B \u0027/\u0027 \u002B tv.cap \u002B \u0027, Tinh Th\u1EA1ch \u0027 \u002B tt.got \u002B \u0027/\u0027 \u002B tt.cap \u002B (full ? \u0027 \u2014 \u0110\u00C3 \u0110\u1EA6Y, ngh\u1EC9 t\u1EDBi mai\u0027 : \u0027 \u2014 c\u00F2n ch\u1ED7, \u0111\u00E0o ti\u1EBFp\u0027); }",
           "timeoutMs": 15000
         },
         {
@@ -2059,18 +2059,54 @@
           "timeoutMs": 800
         },
         {
+          "action": "repeat",
+          "timeoutMs": 15000,
+          "note": "s\u1ED5 t\u1ED1i \u0111a ~5 trang cho 50 ng\u01B0\u1EDDi; 6 v\u00F2ng l\u00E0 d\u01B0 m\u1ED9t v\u00F2ng an to\u00E0n",
+          "steps": [
+            {
+              "action": "evaluateJavaScript",
+              "script": "() =\u003E { const MINE_MINUTES = 30; const HOLD_MINUTES = 10; const body = document.body; if (body) { body.classList.remove(\u0027jvz-km-self-seen\u0027); body.classList.remove(\u0027jvz-km-max\u0027); body.classList.remove(\u0027jvz-km-ripe\u0027); } for (const el of document.querySelectorAll(\u0027.jvz-km-claim\u0027)) el.classList.remove(\u0027jvz-km-claim\u0027); const nextBtn = document.querySelector(\u0027#next-btn\u0027); if (nextBtn) nextBtn.classList.remove(\u0027jvz-km-next-go\u0027); const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027).trim(); const btn = document.querySelector(\u0027#user-list button.chua-dat, #user-list button.claim-reward\u0027); if (!btn) { if (nextBtn \u0026\u0026 !nextBtn.disabled) { nextBtn.classList.add(\u0027jvz-km-next-go\u0027); return \u0027self-scan: trang n\u00E0y ch\u01B0a c\u00F3 d\u00F2ng c\u1EE7a m\u00ECnh \u2014 sang trang k\u1EBF\u0027; } return \u0027self-scan: kh\u00F4ng th\u1EA5y d\u00F2ng c\u1EE7a m\u00ECnh v\u00E0 kh\u00F4ng c\u00F2n trang k\u1EBF\u0027; } if (body) body.classList.add(\u0027jvz-km-self-seen\u0027); let eta = document.getElementById(\u0027jvz-km-eta\u0027); if (!eta) { eta = document.createElement(\u0027span\u0027); eta.id = \u0027jvz-km-eta\u0027; eta.style.cssText = \u0027position:fixed;bottom:0;right:0;font-size:2px;color:transparent;pointer-events:none\u0027; (body || document.documentElement).appendChild(eta); } const btnText = fold(btn.textContent); if (btnText.indexOf(\u0027nhan thuong\u0027) \u003E= 0 \u0026\u0026 !btn.disabled) { if (body) body.classList.add(\u0027jvz-km-ripe\u0027); const min = parseInt(\u0027{{minBonus}}\u0027, 10) || 0; let why = \u0027\u0027; if (min \u003E 0) { const bEl = document.querySelector(\u0027#tuvi-bonus-percentage\u0027); const bonus = bEl ? parseInt((bEl.textContent || \u0027\u0027).replace(/\\D/g, \u0027\u0027), 10) : NaN; if (bonus \u003E= 0) { if (bonus \u003C min) { eta.textContent = HOLD_MINUTES \u002B \u0027 ph\u00FAt\u0027; return \u0027!\u0110\u00E3 \u0111\u1EA1t t\u1ED1i \u0111a NH\u01AFNG bonus tu vi c\u1EE7a m\u1ECF \u0027 \u002B bonus \u002B \u0027% d\u01B0\u1EDBi ng\u01B0\u1EE1ng \u0027 \u002B min \u002B \u0027% \u2014 ch\u01B0a nh\u1EADn, \u0111\u1EC3 d\u00E0nh ch\u1EDD m\u1ECF kh\u00E1 h\u01A1n (gh\u00E9 l\u1EA1i sau \u0027 \u002B HOLD_MINUTES \u002B \u0027 ph\u00FAt)\u0027; } why = \u0027 (bonus \u0027 \u002B bonus \u002B \u0027% \u2265 ng\u01B0\u1EE1ng \u0027 \u002B min \u002B \u0027%)\u0027; } else { why = \u0027 \u2014 C\u1EA2NH B\u00C1O: kh\u00F4ng \u0111\u1ECDc \u0111\u01B0\u1EE3c % bonus c\u1EE7a m\u1ECF n\u00EAn ng\u01B0\u1EE1ng \u0027 \u002B min \u002B \u0027% kh\u00F4ng \u00E1p \u0111\u01B0\u1EE3c, v\u1EABn nh\u1EADn \u0111\u1EC3 kh\u1ECFi m\u1EA5t ph\u1EA7n th\u01B0\u1EDFng\u0027; } } btn.classList.add(\u0027jvz-km-claim\u0027); if (body) body.classList.add(\u0027jvz-km-max\u0027); eta.textContent = \u0027\u0027; return \u0027!Khai th\u00E1c \u0110\u1EA0T T\u1ED0I \u0110A \u2014 nh\u1EADn th\u01B0\u1EDFng\u0027 \u002B why; } const row = btn.closest(\u0027.user-row\u0027); const rowText = fold(row ? row.textContent : \u0027\u0027); const m = rowText.match(/khai thac\\s*:?\\s*(?:dat toi da|([\\d.,]\u002B)\\s*(giay|phut|gio))/); let remain = MINE_MINUTES; if (m) { if (m[1] === undefined) { remain = 1; } else { const v = parseInt(m[1].replace(/\\D/g, \u0027\u0027), 10) || 0; const spent = m[2] === \u0027giay\u0027 ? Math.ceil(v / 60) : (m[2] === \u0027gio\u0027 ? v * 60 : v); remain = Math.max(MINE_MINUTES - spent, 1); } } eta.textContent = remain \u002B \u0027 ph\u00FAt\u0027; return \u0027!\u0110ang khai th\u00E1c (n\u00FAt: \u0027 \u002B (btn.textContent || \u0027\u0027).trim() \u002B \u0027) \u2014 c\u00F2n ~\u0027 \u002B remain \u002B \u0027 ph\u00FAt n\u1EEFa \u0111\u1EA1t t\u1ED1i \u0111a\u0027; }",
+              "timeoutMs": 15000
+            },
+            {
+              "action": "click",
+              "selector": "#next-btn.jvz-km-next-go",
+              "timeoutMs": 2500,
+              "note": "self-scan ch\u1EC9 \u0111\u00E1nh d\u1EA5u khi ch\u01B0a th\u1EA5y d\u00F2ng m\u00ECnh V\u00C0 c\u00F2n trang k\u1EBF \u2014 th\u1EA5y r\u1ED3i th\u00EC selector n\u00E0y kh\u00F4ng t\u1ED3n t\u1EA1i, optional cho n\u00F3 tr\u01B0\u1EE3t \u00EAm",
+              "optional": true
+            },
+            {
+              "action": "waitMilliseconds",
+              "timeoutMs": 900
+            }
+          ],
+          "until": {
+            "kind": "visible",
+            "selector": "body.jvz-km-self-seen"
+          },
+          "maxIterations": 6,
+          "maxSeconds": 90
+        },
+        {
+          "action": "expectVisible",
+          "selector": "body.jvz-km-self-seen",
+          "timeoutMs": 3000,
+          "note": "qu\u00E9t h\u1EBFt c\u00E1c trang m\u00E0 kh\u00F4ng th\u1EA5y d\u00F2ng m\u00ECnh \u2192 c\u00F3 chuy\u1EC7n th\u1EADt (ch\u01B0a v\u00E0o \u0111\u01B0\u1EE3c m\u1ECF?) \u2014 quest \u0111\u1ECF"
+        },
+        {
           "action": "evaluateJavaScript",
-          "script": "() =\u003E { const body = document.body; if (body) body.classList.remove(\u0027jvz-km-host-go\u0027); for (const el of document.querySelectorAll(\u0027.jvz-km-doat\u0027)) el.classList.remove(\u0027jvz-km-doat\u0027); if (\u0027{{hostMode}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) return \u0027host: tu\u1EF3 ch\u1ECDn \u0111o\u1EA1t m\u1ECF \u0111ang t\u1EAFt\u0027; const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); const bonusEl = document.querySelector(\u0027#tuvi-bonus-percentage\u0027); const bonus = bonusEl ? parseInt((bonusEl.textContent || \u0027\u0027).replace(/\\D/g, \u0027\u0027), 10) : NaN; if (!(bonus \u003E= 0)) return \u0027host: ch\u01B0a \u0111\u1ECDc \u0111\u01B0\u1EE3c % tu vi bonus c\u1EE7a m\u1ECF (#tuvi-bonus-percentage)\u0027; const thr = parseInt(\u0027{{hostMinBonus}}\u0027, 10) || 0; if (bonus \u003C thr) return \u0027!Bonus tu vi c\u1EE7a m\u1ECF \u0027 \u002B bonus \u002B \u0027% d\u01B0\u1EDBi ng\u01B0\u1EE1ng \u0027 \u002B thr \u002B \u0027% \u2014 kh\u00F4ng \u0111o\u1EA1t m\u1ECF n\u00E0y\u0027; const atk = fold(body ? body.textContent : \u0027\u0027).match(/luot tan cong\\s*:?\\s*(\\d\u002B)\\s*\\/\\s*(\\d\u002B)/); if (atk \u0026\u0026 parseInt(atk[1], 10) \u003E= parseInt(atk[2], 10)) return \u0027!H\u1EBFt l\u01B0\u1EE3t t\u1EA5n c\u00F4ng h\u00F4m nay (\u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] \u002B \u0027) \u2014 kh\u00F4ng \u0111o\u1EA1t\u0027; const doat = [...document.querySelectorAll(\u0027#user-list button.doat-mo-btn\u0027)].find((b) =\u003E !b.disabled); if (!doat) return \u0027!Kh\u00F4ng c\u00F3 n\u00FAt \u0110o\u1EA1t M\u1ECF trong s\u1ED5 \u2014 m\u00ECnh \u0111ang l\u00E0 ch\u1EE7, ho\u1EB7c ch\u1EE7 m\u1ECF \u0111ang \u0111\u01B0\u1EE3c b\u1EA3o h\u1ED9\u0027; doat.classList.add(\u0027jvz-km-doat\u0027); if (body) body.classList.add(\u0027jvz-km-host-go\u0027); return \u0027!\u0110\u1EE7 \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t m\u1ECF: bonus \u0027 \u002B bonus \u002B \u0027% \u2265 ng\u01B0\u1EE1ng \u0027 \u002B thr \u002B \u0027%\u0027 \u002B (atk ? \u0027, l\u01B0\u1EE3t t\u1EA5n c\u00F4ng \u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] : \u0027\u0027); }",
-          "timeoutMs": 15000
+          "script": "() =\u003E { const body = document.body; if (body) { body.classList.remove(\u0027jvz-km-host-phase\u0027); body.classList.remove(\u0027jvz-km-buy-go\u0027); body.classList.remove(\u0027jvz-km-refresh\u0027); } if (!body || !body.classList.contains(\u0027jvz-km-ripe\u0027)) return \u0027gate: ch\u01B0a \u0111\u1EA1t khai th\u00E1c t\u1ED1i \u0111a \u2014 l\u01B0\u1EE3t n\u00E0y kh\u00F4ng mua, kh\u00F4ng \u0111o\u1EA1t\u0027; const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); const parts = []; /* ---- su\u1EA5t mua ph\u00F9 c\u1EE7a ng\u00E0y ---- */ if (\u0027{{buyPhu}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) { parts.push(\u0027kh\u00F4ng mua ph\u00F9 (tu\u1EF3 ch\u1ECDn t\u1EAFt)\u0027); } else { const d = new Date(); const today = d.getFullYear() \u002B \u0027-\u0027 \u002B (d.getMonth() \u002B 1) \u002B \u0027-\u0027 \u002B d.getDate(); let last = null; try { last = localStorage.getItem(\u0027__jvz_km_phu\u0027); } catch (e) { } if (last === today) { parts.push(\u0027ph\u00F9 h\u00F4m nay \u0111\u00E3 d\u00F9ng su\u1EA5t \u2014 kh\u00F4ng mua n\u1EEFa\u0027); } else { try { localStorage.setItem(\u0027__jvz_km_phu\u0027, today); } catch (e) { } body.classList.add(\u0027jvz-km-buy-go\u0027); body.classList.add(\u0027jvz-km-refresh\u0027); parts.push(\u0027MUA 1 Linh Quang Ph\u00F9 (su\u1EA5t duy nh\u1EA5t c\u1EE7a ng\u00E0y)\u0027); } } /* ---- \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t ---- */ if (\u0027{{hostMode}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t (tu\u1EF3 ch\u1ECDn t\u1EAFt)\u0027); } else { const bonusEl = document.querySelector(\u0027#tuvi-bonus-percentage\u0027); const bonus = bonusEl ? parseInt((bonusEl.textContent || \u0027\u0027).replace(/\\D/g, \u0027\u0027), 10) : NaN; const thr = parseInt(\u0027{{hostMinBonus}}\u0027, 10) || 0; const atk = fold(body.textContent).match(/luot tan cong\\s*:?\\s*(\\d\u002B)\\s*\\/\\s*(\\d\u002B)/); if (!(bonus \u003E= 0)) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: ch\u01B0a \u0111\u1ECDc \u0111\u01B0\u1EE3c % bonus c\u1EE7a m\u1ECF\u0027); } else if (bonus \u003C thr) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: bonus \u0027 \u002B bonus \u002B \u0027% d\u01B0\u1EDBi ng\u01B0\u1EE1ng \u0027 \u002B thr \u002B \u0027%\u0027); } else if (atk \u0026\u0026 parseInt(atk[1], 10) \u003E= parseInt(atk[2], 10)) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: h\u1EBFt l\u01B0\u1EE3t t\u1EA5n c\u00F4ng (\u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] \u002B \u0027)\u0027); } else { body.classList.add(\u0027jvz-km-host-phase\u0027); body.classList.add(\u0027jvz-km-refresh\u0027); parts.push(\u0027\u0110O\u1EA0T M\u1ECE: bonus \u0027 \u002B bonus \u002B \u0027% \u2265 \u0027 \u002B thr \u002B \u0027%\u0027 \u002B (atk ? \u0027, t\u1EA5n c\u00F4ng \u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] : \u0027\u0027)); } } return \u0027!\u0110\u1EA1t t\u1ED1i \u0111a \u2014 quy\u1EBFt \u0111\u1ECBnh c\u1EE7a l\u01B0\u1EE3t: \u0027 \u002B parts.join(\u0027; \u0027); }",
+          "timeoutMs": 15000,
+          "note": "ba c\u1EDD ra kh\u1ECFi c\u1ED5ng: jvz-km-buy-go (mua 1 ph\u00F9 \u2014 su\u1EA5t ng\u00E0y ghi s\u1ED5 NGAY t\u1EA1i \u0111\u00E2y), jvz-km-host-phase (\u0111\u1EE7 \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t), jvz-km-refresh (c\u00F3 c\u1EE5m n\u00E0o s\u1EAFp m\u1EDF l\u1EA1i s\u1ED5)"
         },
         {
           "action": "click",
           "selector": "#close-btn",
           "timeoutMs": 8000,
-          "note": "\u0111\u00F3ng s\u1ED5 \u0111\u1EC3 t\u1EDBi TI\u1EC6M \u2014 c\u00F4ng th\u1EE9c host c\u1EE7a b\u1EA3n ghi: \u0111\u00F3ng \u2192 mua ph\u00F9 \u2192 m\u1EDF l\u1EA1i \u2192 \u0111o\u1EA1t",
+          "note": "\u0111\u00F3ng s\u1ED5 \u0111\u1EC3 t\u1EDBi TI\u1EC6M \u2014 c\u00F4ng th\u1EE9c c\u1EE7a b\u1EA3n ghi 14/08: \u0111\u00F3ng \u2192 mua \u2192 m\u1EDF l\u1EA1i",
           "when": {
             "kind": "visible",
-            "selector": "body.jvz-km-host-go"
+            "selector": "body.jvz-km-buy-go"
           }
         },
         {
@@ -2079,36 +2115,36 @@
           "timeoutMs": 8000,
           "when": {
             "kind": "visible",
-            "selector": "body.jvz-km-host-go"
+            "selector": "body.jvz-km-buy-go"
           }
         },
         {
           "action": "waitForCondition",
           "timeoutMs": 10000,
-          "note": "k\u1EC7 TI\u1EC6M \u0111\u00E3 render",
+          "note": "k\u1EC7 TI\u1EC6M \u0111\u00E3 render \u2014 b\u1EA3n ghi 15/08 \u0111\u1EBFm 6 m\u00F3n, t\u00ECm theo T\u00CAN ch\u1EE9 kh\u00F4ng theo v\u1ECB tr\u00ED",
           "condition": {
             "kind": "visible",
             "selector": "#shop-container .shop-item"
           },
           "when": {
             "kind": "visible",
-            "selector": "body.jvz-km-host-go"
+            "selector": "body.jvz-km-buy-go"
           }
         },
         {
           "action": "evaluateJavaScript",
-          "script": "() =\u003E { for (const el of document.querySelectorAll(\u0027.jvz-km-buy\u0027)) el.classList.remove(\u0027jvz-km-buy\u0027); const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); const items = [...document.querySelectorAll(\u0027#shop-container .shop-item\u0027)]; if (items.length === 0) return \u0027shop: #shop-container ch\u01B0a render m\u00F3n n\u00E0o\u0027; const item = items.find((i) =\u003E fold(i.textContent).indexOf(\u0027linh quang phu\u0027) \u003E= 0); if (!item) return \u0027shop: kh\u00F4ng th\u1EA5y m\u00F3n Linh Quang Ph\u00F9 tr\u00EAn k\u1EC7\u0027; const btn = item.querySelector(\u0027button.shop-item-button\u0027); if (!btn) return \u0027shop: m\u00F3n Linh Quang Ph\u00F9 kh\u00F4ng c\u00F3 n\u00FAt mua\u0027; btn.classList.add(\u0027jvz-km-buy\u0027); return \u0027!Mua Linh Quang Ph\u00F9 (\u002B20% tu vi trong 1 gi\u1EDD) tr\u01B0\u1EDBc khi \u0111o\u1EA1t m\u1ECF\u0027; }",
+          "script": "() =\u003E { for (const el of document.querySelectorAll(\u0027.jvz-km-buy\u0027)) el.classList.remove(\u0027jvz-km-buy\u0027); const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); const items = [...document.querySelectorAll(\u0027#shop-container .shop-item\u0027)]; if (items.length === 0) return \u0027shop: #shop-container ch\u01B0a render m\u00F3n n\u00E0o\u0027; const item = items.find((i) =\u003E fold(i.textContent).indexOf(\u0027linh quang phu\u0027) \u003E= 0); if (!item) return \u0027shop: kh\u00F4ng th\u1EA5y m\u00F3n Linh Quang Ph\u00F9 tr\u00EAn k\u1EC7\u0027; const btn = item.querySelector(\u0027button.shop-item-button\u0027); if (!btn) return \u0027shop: m\u00F3n Linh Quang Ph\u00F9 kh\u00F4ng c\u00F3 n\u00FAt mua\u0027; btn.classList.add(\u0027jvz-km-buy\u0027); return \u0027!Mua Linh Quang Ph\u00F9 (\u002B20% tu vi trong 1 gi\u1EDD) cho c\u00FA ch\u1ED1t l\u1EDDi s\u1EAFp t\u1EDBi\u0027; }",
           "timeoutMs": 15000,
           "when": {
             "kind": "visible",
-            "selector": "body.jvz-km-host-go"
+            "selector": "body.jvz-km-buy-go"
           }
         },
         {
           "action": "click",
           "selector": ".jvz-km-buy",
           "timeoutMs": 8000,
-          "note": "OPTIONAL c\u00F3 ch\u1EE7 \u00FD: thi\u1EBFu ti\u1EC1n hay k\u1EC7 \u0111\u1ED5i th\u00EC m\u1EA5t ph\u1EA7n \u002B20%, c\u00FA \u0111o\u1EA1t v\u1EABn \u0111i ti\u1EBFp",
+          "note": "OPTIONAL c\u00F3 ch\u1EE7 \u00FD: thi\u1EBFu ti\u1EC1n hay k\u1EC7 \u0111\u1ED5i th\u00EC ch\u1EC9 m\u1EA5t ph\u1EA7n \u002B20%, l\u01B0\u1EE3t \u0111\u00E0o v\u1EABn \u0111i ti\u1EBFp (su\u1EA5t ng\u00E0y \u0111\u00E3 b\u1ECB ti\u00EAu \u1EDF c\u1ED5ng \u2014 xem l\u00FD do t\u1EA1i KmHostGateScript)",
           "optional": true,
           "when": {
             "kind": "visible",
@@ -2153,7 +2189,7 @@
           },
           "when": {
             "kind": "visible",
-            "selector": "body.jvz-km-host-go"
+            "selector": "body.jvz-km-buy-go"
           }
         },
         {
@@ -2163,7 +2199,7 @@
           "note": "m\u1EDF l\u1EA1i s\u1ED5; TI\u1EC6M l\u00E0 tab ri\u00EAng n\u00EAn #mine-list v\u00E0 d\u1EA5u jvz-km-open c\u00F2n nguy\u00EAn (click#239 b\u1EA5m th\u1EB3ng \u0111\u01B0\u1EE3c)",
           "when": {
             "kind": "visible",
-            "selector": "body.jvz-km-host-go"
+            "selector": "body.jvz-km-buy-go"
           }
         },
         {
@@ -2175,7 +2211,37 @@
           },
           "when": {
             "kind": "visible",
-            "selector": "body.jvz-km-host-go"
+            "selector": "body.jvz-km-buy-go"
+          }
+        },
+        {
+          "action": "click",
+          "selector": "#close-btn",
+          "timeoutMs": 8000,
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-host-phase"
+          }
+        },
+        {
+          "action": "click",
+          "selector": ".jvz-km-open",
+          "timeoutMs": 10000,
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-host-phase"
+          }
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 15000,
+          "condition": {
+            "kind": "visible",
+            "selector": "#user-list .user-row"
+          },
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-host-phase"
           }
         },
         {
@@ -2183,17 +2249,17 @@
           "timeoutMs": 800,
           "when": {
             "kind": "visible",
-            "selector": "body.jvz-km-host-go"
+            "selector": "body.jvz-km-host-phase"
           }
         },
         {
           "action": "evaluateJavaScript",
-          "script": "() =\u003E { const body = document.body; if (body) body.classList.remove(\u0027jvz-km-host-go\u0027); for (const el of document.querySelectorAll(\u0027.jvz-km-doat\u0027)) el.classList.remove(\u0027jvz-km-doat\u0027); if (\u0027{{hostMode}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) return \u0027host: tu\u1EF3 ch\u1ECDn \u0111o\u1EA1t m\u1ECF \u0111ang t\u1EAFt\u0027; const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); const bonusEl = document.querySelector(\u0027#tuvi-bonus-percentage\u0027); const bonus = bonusEl ? parseInt((bonusEl.textContent || \u0027\u0027).replace(/\\D/g, \u0027\u0027), 10) : NaN; if (!(bonus \u003E= 0)) return \u0027host: ch\u01B0a \u0111\u1ECDc \u0111\u01B0\u1EE3c % tu vi bonus c\u1EE7a m\u1ECF (#tuvi-bonus-percentage)\u0027; const thr = parseInt(\u0027{{hostMinBonus}}\u0027, 10) || 0; if (bonus \u003C thr) return \u0027!Bonus tu vi c\u1EE7a m\u1ECF \u0027 \u002B bonus \u002B \u0027% d\u01B0\u1EDBi ng\u01B0\u1EE1ng \u0027 \u002B thr \u002B \u0027% \u2014 kh\u00F4ng \u0111o\u1EA1t m\u1ECF n\u00E0y\u0027; const atk = fold(body ? body.textContent : \u0027\u0027).match(/luot tan cong\\s*:?\\s*(\\d\u002B)\\s*\\/\\s*(\\d\u002B)/); if (atk \u0026\u0026 parseInt(atk[1], 10) \u003E= parseInt(atk[2], 10)) return \u0027!H\u1EBFt l\u01B0\u1EE3t t\u1EA5n c\u00F4ng h\u00F4m nay (\u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] \u002B \u0027) \u2014 kh\u00F4ng \u0111o\u1EA1t\u0027; const doat = [...document.querySelectorAll(\u0027#user-list button.doat-mo-btn\u0027)].find((b) =\u003E !b.disabled); if (!doat) return \u0027!Kh\u00F4ng c\u00F3 n\u00FAt \u0110o\u1EA1t M\u1ECF trong s\u1ED5 \u2014 m\u00ECnh \u0111ang l\u00E0 ch\u1EE7, ho\u1EB7c ch\u1EE7 m\u1ECF \u0111ang \u0111\u01B0\u1EE3c b\u1EA3o h\u1ED9\u0027; doat.classList.add(\u0027jvz-km-doat\u0027); if (body) body.classList.add(\u0027jvz-km-host-go\u0027); return \u0027!\u0110\u1EE7 \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t m\u1ECF: bonus \u0027 \u002B bonus \u002B \u0027% \u2265 ng\u01B0\u1EE1ng \u0027 \u002B thr \u002B \u0027%\u0027 \u002B (atk ? \u0027, l\u01B0\u1EE3t t\u1EA5n c\u00F4ng \u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] : \u0027\u0027); }",
+          "script": "() =\u003E { const body = document.body; if (body) body.classList.remove(\u0027jvz-km-host-go\u0027); for (const el of document.querySelectorAll(\u0027.jvz-km-doat\u0027)) el.classList.remove(\u0027jvz-km-doat\u0027); const doat = [...document.querySelectorAll(\u0027#user-list button.doat-mo-btn\u0027)].find((b) =\u003E !b.disabled); if (!doat) return \u0027!Kh\u00F4ng c\u00F3 n\u00FAt \u0110o\u1EA1t M\u1ECF trong s\u1ED5 \u2014 m\u00ECnh \u0111ang l\u00E0 ch\u1EE7, ho\u1EB7c ch\u1EE7 m\u1ECF \u0111ang \u0111\u01B0\u1EE3c b\u1EA3o h\u1ED9\u0027; doat.classList.add(\u0027jvz-km-doat\u0027); if (body) body.classList.add(\u0027jvz-km-host-go\u0027); return \u0027!Th\u1EA5y n\u00FAt \u0110o\u1EA1t M\u1ECF \u1EDF trang \u0111\u1EA7u s\u1ED5 \u2014 ti\u1EBFn h\u00E0nh \u0111o\u1EA1t\u0027; }",
           "timeoutMs": 15000,
-          "note": "s\u1ED5 v\u1EEBa render l\u1EA1i \u2014 qu\u00E9t l\u1EA1i \u0111\u1EC3 \u0111\u00E1nh d\u1EA5u n\u00FAt \u0110o\u1EA1t M\u1ECF tr\u00EAn DOM m\u1EDBi; ai \u0111\u00F3 \u0111o\u1EA1t tr\u01B0\u1EDBc th\u00EC c\u1EDD t\u1EF1 r\u1EDBt v\u00E0 c\u1EE5m c\u00F2n l\u1EA1i l\u1EB7n",
+          "note": "trang 1 v\u1EEBa render \u2014 t\u00ECm n\u00FAt \u0110o\u1EA1t M\u1ECF; m\u00ECnh \u0111\u00E3 l\u00E0 ch\u1EE7 hay ch\u1EE7 \u0111ang \u0111\u01B0\u1EE3c b\u1EA3o h\u1ED9 th\u00EC c\u1EDD kh\u00F4ng c\u1EAFm v\u00E0 c\u1EE5m d\u01B0\u1EDBi l\u1EB7n",
           "when": {
             "kind": "visible",
-            "selector": "body.jvz-km-host-go"
+            "selector": "body.jvz-km-host-phase"
           }
         },
         {
@@ -2233,27 +2299,39 @@
         {
           "action": "waitMilliseconds",
           "timeoutMs": 1200,
-          "note": "s\u1ED5 x\u1EBFp l\u1EA1i sau khi \u0111\u1ED5i ch\u1EE7 \u2014 d\u00F2ng m\u00ECnh d\u1EDDi l\u00EAn \u0111\u1EA7u trang 1, ph\u00E9p qu\u00E9t ngay d\u01B0\u1EDBi s\u1EBD th\u1EA5y",
+          "note": "s\u1ED5 x\u1EBFp l\u1EA1i sau khi \u0111\u1ED5i ch\u1EE7",
           "when": {
             "kind": "visible",
-            "selector": "body.jvz-km-host-go"
+            "selector": "body.jvz-km-host-phase"
+          }
+        },
+        {
+          "action": "evaluateJavaScript",
+          "script": "() =\u003E { const body = document.body; if (body) { body.classList.remove(\u0027jvz-km-self-seen\u0027); body.classList.remove(\u0027jvz-km-max\u0027); body.classList.remove(\u0027jvz-km-ripe\u0027); } for (const el of document.querySelectorAll(\u0027.jvz-km-claim\u0027)) el.classList.remove(\u0027jvz-km-claim\u0027); return \u0027rescan: s\u1ED5 v\u1EEBa render l\u1EA1i sau c\u1EE5m mua/\u0111o\u1EA1t \u2014 xo\u00E1 d\u1EA5u c\u0169, t\u00ECm l\u1EA1i d\u00F2ng m\u00ECnh t\u1EEB \u0111\u1EA7u\u0027; }",
+          "timeoutMs": 15000,
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-refresh"
           }
         },
         {
           "action": "repeat",
           "timeoutMs": 15000,
-          "note": "s\u1ED5 t\u1ED1i \u0111a ~5 trang cho 50 ng\u01B0\u1EDDi; 6 v\u00F2ng l\u00E0 d\u01B0 m\u1ED9t v\u00F2ng an to\u00E0n",
+          "note": "qu\u00E9t l\u1EA1i \u0111\u1EE7 trang ch\u1EE9 kh\u00F4ng \u0111o\u00E1n trang 1: \u0111o\u1EA1t TR\u01AF\u1EE2T (ai \u0111\u00F3 nhanh tay h\u01A1n) th\u00EC d\u00F2ng m\u00ECnh v\u1EABn n\u1EB1m trang c\u0169, v\u00E0 ph\u1EA7n th\u01B0\u1EDFng \u0111\u00E3 ch\u00EDn kh\u00F4ng \u0111\u01B0\u1EE3c ph\u00E9p m\u1EA5t theo c\u00FA tr\u01B0\u1EE3t \u1EA5y",
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-refresh"
+          },
           "steps": [
             {
               "action": "evaluateJavaScript",
-              "script": "() =\u003E { const MINE_MINUTES = 30; const HOLD_MINUTES = 10; const body = document.body; if (body) { body.classList.remove(\u0027jvz-km-self-seen\u0027); body.classList.remove(\u0027jvz-km-max\u0027); } for (const el of document.querySelectorAll(\u0027.jvz-km-claim\u0027)) el.classList.remove(\u0027jvz-km-claim\u0027); const nextBtn = document.querySelector(\u0027#next-btn\u0027); if (nextBtn) nextBtn.classList.remove(\u0027jvz-km-next-go\u0027); const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027).trim(); const btn = document.querySelector(\u0027#user-list button.chua-dat, #user-list button.claim-reward\u0027); if (!btn) { if (nextBtn \u0026\u0026 !nextBtn.disabled) { nextBtn.classList.add(\u0027jvz-km-next-go\u0027); return \u0027self-scan: trang n\u00E0y ch\u01B0a c\u00F3 d\u00F2ng c\u1EE7a m\u00ECnh \u2014 sang trang k\u1EBF\u0027; } return \u0027self-scan: kh\u00F4ng th\u1EA5y d\u00F2ng c\u1EE7a m\u00ECnh v\u00E0 kh\u00F4ng c\u00F2n trang k\u1EBF\u0027; } if (body) body.classList.add(\u0027jvz-km-self-seen\u0027); let eta = document.getElementById(\u0027jvz-km-eta\u0027); if (!eta) { eta = document.createElement(\u0027span\u0027); eta.id = \u0027jvz-km-eta\u0027; eta.style.cssText = \u0027position:fixed;bottom:0;right:0;font-size:2px;color:transparent;pointer-events:none\u0027; (body || document.documentElement).appendChild(eta); } const btnText = fold(btn.textContent); if (btnText.indexOf(\u0027nhan thuong\u0027) \u003E= 0 \u0026\u0026 !btn.disabled) { const min = parseInt(\u0027{{minBonus}}\u0027, 10) || 0; let why = \u0027\u0027; if (min \u003E 0) { const bEl = document.querySelector(\u0027#tuvi-bonus-percentage\u0027); const bonus = bEl ? parseInt((bEl.textContent || \u0027\u0027).replace(/\\D/g, \u0027\u0027), 10) : NaN; if (bonus \u003E= 0) { if (bonus \u003C min) { eta.textContent = HOLD_MINUTES \u002B \u0027 ph\u00FAt\u0027; return \u0027!\u0110\u00E3 \u0111\u1EA1t t\u1ED1i \u0111a NH\u01AFNG bonus tu vi c\u1EE7a m\u1ECF \u0027 \u002B bonus \u002B \u0027% d\u01B0\u1EDBi ng\u01B0\u1EE1ng \u0027 \u002B min \u002B \u0027% \u2014 ch\u01B0a nh\u1EADn, \u0111\u1EC3 d\u00E0nh ch\u1EDD m\u1ECF kh\u00E1 h\u01A1n (gh\u00E9 l\u1EA1i sau \u0027 \u002B HOLD_MINUTES \u002B \u0027 ph\u00FAt)\u0027; } why = \u0027 (bonus \u0027 \u002B bonus \u002B \u0027% \u2265 ng\u01B0\u1EE1ng \u0027 \u002B min \u002B \u0027%)\u0027; } else { why = \u0027 \u2014 C\u1EA2NH B\u00C1O: kh\u00F4ng \u0111\u1ECDc \u0111\u01B0\u1EE3c % bonus c\u1EE7a m\u1ECF n\u00EAn ng\u01B0\u1EE1ng \u0027 \u002B min \u002B \u0027% kh\u00F4ng \u00E1p \u0111\u01B0\u1EE3c, v\u1EABn nh\u1EADn \u0111\u1EC3 kh\u1ECFi m\u1EA5t ph\u1EA7n th\u01B0\u1EDFng\u0027; } } btn.classList.add(\u0027jvz-km-claim\u0027); if (body) body.classList.add(\u0027jvz-km-max\u0027); eta.textContent = \u0027\u0027; return \u0027!Khai th\u00E1c \u0110\u1EA0T T\u1ED0I \u0110A \u2014 nh\u1EADn th\u01B0\u1EDFng\u0027 \u002B why; } const row = btn.closest(\u0027.user-row\u0027); const rowText = fold(row ? row.textContent : \u0027\u0027); const m = rowText.match(/khai thac\\s*:?\\s*(?:dat toi da|([\\d.,]\u002B)\\s*(giay|phut|gio))/); let remain = MINE_MINUTES; if (m) { if (m[1] === undefined) { remain = 1; } else { const v = parseInt(m[1].replace(/\\D/g, \u0027\u0027), 10) || 0; const spent = m[2] === \u0027giay\u0027 ? Math.ceil(v / 60) : (m[2] === \u0027gio\u0027 ? v * 60 : v); remain = Math.max(MINE_MINUTES - spent, 1); } } eta.textContent = remain \u002B \u0027 ph\u00FAt\u0027; return \u0027!\u0110ang khai th\u00E1c (n\u00FAt: \u0027 \u002B (btn.textContent || \u0027\u0027).trim() \u002B \u0027) \u2014 c\u00F2n ~\u0027 \u002B remain \u002B \u0027 ph\u00FAt n\u1EEFa \u0111\u1EA1t t\u1ED1i \u0111a\u0027; }",
+              "script": "() =\u003E { const MINE_MINUTES = 30; const HOLD_MINUTES = 10; const body = document.body; if (body) { body.classList.remove(\u0027jvz-km-self-seen\u0027); body.classList.remove(\u0027jvz-km-max\u0027); body.classList.remove(\u0027jvz-km-ripe\u0027); } for (const el of document.querySelectorAll(\u0027.jvz-km-claim\u0027)) el.classList.remove(\u0027jvz-km-claim\u0027); const nextBtn = document.querySelector(\u0027#next-btn\u0027); if (nextBtn) nextBtn.classList.remove(\u0027jvz-km-next-go\u0027); const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027).trim(); const btn = document.querySelector(\u0027#user-list button.chua-dat, #user-list button.claim-reward\u0027); if (!btn) { if (nextBtn \u0026\u0026 !nextBtn.disabled) { nextBtn.classList.add(\u0027jvz-km-next-go\u0027); return \u0027self-scan: trang n\u00E0y ch\u01B0a c\u00F3 d\u00F2ng c\u1EE7a m\u00ECnh \u2014 sang trang k\u1EBF\u0027; } return \u0027self-scan: kh\u00F4ng th\u1EA5y d\u00F2ng c\u1EE7a m\u00ECnh v\u00E0 kh\u00F4ng c\u00F2n trang k\u1EBF\u0027; } if (body) body.classList.add(\u0027jvz-km-self-seen\u0027); let eta = document.getElementById(\u0027jvz-km-eta\u0027); if (!eta) { eta = document.createElement(\u0027span\u0027); eta.id = \u0027jvz-km-eta\u0027; eta.style.cssText = \u0027position:fixed;bottom:0;right:0;font-size:2px;color:transparent;pointer-events:none\u0027; (body || document.documentElement).appendChild(eta); } const btnText = fold(btn.textContent); if (btnText.indexOf(\u0027nhan thuong\u0027) \u003E= 0 \u0026\u0026 !btn.disabled) { if (body) body.classList.add(\u0027jvz-km-ripe\u0027); const min = parseInt(\u0027{{minBonus}}\u0027, 10) || 0; let why = \u0027\u0027; if (min \u003E 0) { const bEl = document.querySelector(\u0027#tuvi-bonus-percentage\u0027); const bonus = bEl ? parseInt((bEl.textContent || \u0027\u0027).replace(/\\D/g, \u0027\u0027), 10) : NaN; if (bonus \u003E= 0) { if (bonus \u003C min) { eta.textContent = HOLD_MINUTES \u002B \u0027 ph\u00FAt\u0027; return \u0027!\u0110\u00E3 \u0111\u1EA1t t\u1ED1i \u0111a NH\u01AFNG bonus tu vi c\u1EE7a m\u1ECF \u0027 \u002B bonus \u002B \u0027% d\u01B0\u1EDBi ng\u01B0\u1EE1ng \u0027 \u002B min \u002B \u0027% \u2014 ch\u01B0a nh\u1EADn, \u0111\u1EC3 d\u00E0nh ch\u1EDD m\u1ECF kh\u00E1 h\u01A1n (gh\u00E9 l\u1EA1i sau \u0027 \u002B HOLD_MINUTES \u002B \u0027 ph\u00FAt)\u0027; } why = \u0027 (bonus \u0027 \u002B bonus \u002B \u0027% \u2265 ng\u01B0\u1EE1ng \u0027 \u002B min \u002B \u0027%)\u0027; } else { why = \u0027 \u2014 C\u1EA2NH B\u00C1O: kh\u00F4ng \u0111\u1ECDc \u0111\u01B0\u1EE3c % bonus c\u1EE7a m\u1ECF n\u00EAn ng\u01B0\u1EE1ng \u0027 \u002B min \u002B \u0027% kh\u00F4ng \u00E1p \u0111\u01B0\u1EE3c, v\u1EABn nh\u1EADn \u0111\u1EC3 kh\u1ECFi m\u1EA5t ph\u1EA7n th\u01B0\u1EDFng\u0027; } } btn.classList.add(\u0027jvz-km-claim\u0027); if (body) body.classList.add(\u0027jvz-km-max\u0027); eta.textContent = \u0027\u0027; return \u0027!Khai th\u00E1c \u0110\u1EA0T T\u1ED0I \u0110A \u2014 nh\u1EADn th\u01B0\u1EDFng\u0027 \u002B why; } const row = btn.closest(\u0027.user-row\u0027); const rowText = fold(row ? row.textContent : \u0027\u0027); const m = rowText.match(/khai thac\\s*:?\\s*(?:dat toi da|([\\d.,]\u002B)\\s*(giay|phut|gio))/); let remain = MINE_MINUTES; if (m) { if (m[1] === undefined) { remain = 1; } else { const v = parseInt(m[1].replace(/\\D/g, \u0027\u0027), 10) || 0; const spent = m[2] === \u0027giay\u0027 ? Math.ceil(v / 60) : (m[2] === \u0027gio\u0027 ? v * 60 : v); remain = Math.max(MINE_MINUTES - spent, 1); } } eta.textContent = remain \u002B \u0027 ph\u00FAt\u0027; return \u0027!\u0110ang khai th\u00E1c (n\u00FAt: \u0027 \u002B (btn.textContent || \u0027\u0027).trim() \u002B \u0027) \u2014 c\u00F2n ~\u0027 \u002B remain \u002B \u0027 ph\u00FAt n\u1EEFa \u0111\u1EA1t t\u1ED1i \u0111a\u0027; }",
               "timeoutMs": 15000
             },
             {
               "action": "click",
               "selector": "#next-btn.jvz-km-next-go",
               "timeoutMs": 2500,
-              "note": "self-scan ch\u1EC9 \u0111\u00E1nh d\u1EA5u khi ch\u01B0a th\u1EA5y d\u00F2ng m\u00ECnh V\u00C0 c\u00F2n trang k\u1EBF \u2014 th\u1EA5y r\u1ED3i th\u00EC selector n\u00E0y kh\u00F4ng t\u1ED3n t\u1EA1i, optional cho n\u00F3 tr\u01B0\u1EE3t \u00EAm",
               "optional": true
             },
             {
@@ -2272,7 +2350,11 @@
           "action": "expectVisible",
           "selector": "body.jvz-km-self-seen",
           "timeoutMs": 3000,
-          "note": "qu\u00E9t h\u1EBFt c\u00E1c trang m\u00E0 kh\u00F4ng th\u1EA5y d\u00F2ng m\u00ECnh \u2192 c\u00F3 chuy\u1EC7n th\u1EADt (ch\u01B0a v\u00E0o \u0111\u01B0\u1EE3c m\u1ECF?) \u2014 quest \u0111\u1ECF"
+          "note": "sau c\u1EE5m mua/\u0111o\u1EA1t m\u00E0 kh\u00F4ng t\u00ECm l\u1EA1i \u0111\u01B0\u1EE3c d\u00F2ng m\u00ECnh \u2192 c\u00F3 chuy\u1EC7n th\u1EADt \u2014 quest \u0111\u1ECF, kh\u00F4ng \u0111o\u00E1n m\u00F2",
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-refresh"
+          }
         },
         {
           "action": "click",
@@ -2300,7 +2382,7 @@
         },
         {
           "action": "evaluateJavaScript",
-          "script": "() =\u003E { const eta = document.getElementById(\u0027jvz-km-eta\u0027); if (!eta) return \u0027tail: ch\u01B0a c\u00F3 node eta \u2014 self-scan ch\u01B0a ch\u1EA1y?\u0027; if (document.body \u0026\u0026 document.body.classList.contains(\u0027jvz-km-max\u0027)) { eta.textContent = \u002730 ph\u00FAt\u0027; return \u0027!\u0110\u00E3 nh\u1EADn th\u01B0\u1EDFng \u2014 chu k\u1EF3 khai th\u00E1c m\u1EDBi b\u1EAFt \u0111\u1EA7u, gh\u00E9 l\u1EA1i sau ~30 ph\u00FAt\u0027; } return \u0027tail: gi\u1EEF nh\u1ECBp gh\u00E9 l\u1EA1i \u0027 \u002B (eta.textContent || \u0027(tr\u1ED1ng)\u0027); }",
+          "script": "() =\u003E { const body = document.body; let eta = document.getElementById(\u0027jvz-km-eta\u0027); if (!eta) { eta = document.createElement(\u0027span\u0027); eta.id = \u0027jvz-km-eta\u0027; eta.style.cssText = \u0027position:fixed;bottom:0;right:0;font-size:2px;color:transparent;pointer-events:none\u0027; (body || document.documentElement).appendChild(eta); } if (body \u0026\u0026 body.classList.contains(\u0027jvz-km-max\u0027)) { eta.textContent = \u002730 ph\u00FAt\u0027; return \u0027!\u0110\u00E3 nh\u1EADn th\u01B0\u1EDFng \u2014 chu k\u1EF3 khai th\u00E1c m\u1EDBi b\u1EAFt \u0111\u1EA7u, gh\u00E9 l\u1EA1i sau ~30 ph\u00FAt\u0027; } if (!(eta.textContent || \u0027\u0027).trim()) { /* M\u1ECDi ng\u1EA3 kh\u00F4ng-nh\u1EADn \u0111\u1EC1u PH\u1EA2I mang \u0111\u1ED3ng h\u1ED3: StopIf kh\u00F4ng \u0111\u1ED3ng h\u1ED3 l\u00E0 alreadyDone, m\u00E0 alreadyDone c\u1EE7a quest n\u00E0y \u0111\u1ED3ng ngh\u0129a v\u00E0o s\u1ED5 kho\u00E1-c\u1EA3-ng\u00E0y. \u0110\u01B0\u1EDDng n\u00E0y ch\u1EC9 ch\u1EA1m t\u1EDBi khi s\u1ED5 \u0111\u1ED5i gi\u1EEFa ch\u1EEBng (\u0111o\u1EA1t tr\u01B0\u1EE3t, d\u00F2ng m\u00ECnh bi\u1EBFn m\u1EA5t) \u2014 5 ph\u00FAt l\u00E0 nh\u1ECBp th\u1EED l\u1EA1i r\u1EBB. */ eta.textContent = \u00275 ph\u00FAt\u0027; return \u0027!Kh\u00F4ng \u0111\u1ECDc \u0111\u01B0\u1EE3c nh\u1ECBp ch\u1EDD (s\u1ED5 \u0111\u1ED5i gi\u1EEFa ch\u1EEBng?) \u2014 gh\u00E9 l\u1EA1i sau 5 ph\u00FAt cho ch\u1EAFc\u0027; } return \u0027tail: gi\u1EEF nh\u1ECBp gh\u00E9 l\u1EA1i \u0027 \u002B eta.textContent; }",
           "timeoutMs": 15000
         },
         {
@@ -2414,6 +2496,22 @@
           "selectedValue": "0"
         },
         {
+          "key": "buyPhu",
+          "label": "Mua Linh Quang Ph\u00F9 (t\u1ED1i \u0111a 1/ng\u00E0y)",
+          "choices": [
+            {
+              "value": "mua 1 ph\u00F9 m\u1ED7i ng\u00E0y",
+              "label": "Mua \u2014 m\u1ED7i ng\u00E0y m\u1ED9t l\u00E1, ngay tr\u01B0\u1EDBc c\u00FA ch\u1ED1t l\u1EDDi"
+            },
+            {
+              "value": "\u00ABkh\u00F4ng mua\u00BB",
+              "label": "Kh\u00F4ng mua"
+            }
+          ],
+          "allowCustom": false,
+          "selectedValue": "mua 1 ph\u00F9 m\u1ED7i ng\u00E0y"
+        },
+        {
           "key": "hostMode",
           "label": "\u0110o\u1EA1t m\u1ECF (l\u00E0m ch\u1EE7)",
           "choices": [
@@ -2423,7 +2521,7 @@
             },
             {
               "value": "\u0111o\u1EA1t khi \u0111\u1EE7 ng\u01B0\u1EE1ng",
-              "label": "Mua Linh Quang Ph\u00F9 \u002B \u0111o\u1EA1t khi bonus \u2265 ng\u01B0\u1EE1ng"
+              "label": "\u0110o\u1EA1t khi bonus c\u1EE7a m\u1ECF \u2265 ng\u01B0\u1EE1ng"
             }
           ],
           "allowCustom": false,
@@ -2461,7 +2559,7 @@
       "fallbackCooldownSeconds": 600,
       "requiresVip": true,
       "order": 100,
-      "notes": "\u0110\u00E0o m\u1ECF \u0111\u00E3 c\u1EA5u h\u00ECnh: v\u00E0o m\u1ECF, \u0111\u1EE3i chu k\u1EF3 30 ph\u00FAt, nh\u1EADn th\u01B0\u1EDFng \u2014 2 l\u1EA7n/ng\u00E0y. \u0110o\u1EA1t m\u1ECF (l\u00E0m ch\u1EE7) l\u00E0 tu\u1EF3 ch\u1ECDn ri\u00EAng v\u00E0 ti\u00EAu ti\u1EC1n th\u1EADt."
+      "notes": "\u0110\u00E0o m\u1ECF \u0111\u00E3 c\u1EA5u h\u00ECnh: v\u00E0o m\u1ECF, \u0111\u1EE3i t\u1EEBng chu k\u1EF3 30 ph\u00FAt, nh\u1EADn th\u01B0\u1EDFng \u2014 t\u1EDBi khi \u0111\u1EA7y tr\u1EA7n Tu Vi \u002B Tinh Th\u1EA1ch c\u1EE7a ng\u00E0y. Mua ph\u00F9 v\u00E0 \u0111o\u1EA1t m\u1ECF l\u00E0 hai tu\u1EF3 ch\u1ECDn ri\u00EAng."
     },
     {
       "id": "me-cung",
@@ -3525,7 +3623,7 @@
         },
         {
           "action": "evaluateJavaScript",
-          "script": "() =\u003E { const MARK = \u0027jvz-km-done\u0027; if (document.body) document.body.classList.remove(MARK); const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase(); const text = fold(document.body ? document.body.textContent : \u0027\u0027).replace(/\\s\u002B/g, \u0027 \u0027); const read = (label) =\u003E { const m = text.match(new RegExp(label \u002B \u0027\\\\s*:?\\\\s*([\\\\d.,\\\\u00A0 ]\u002B?)\\\\s*\\\\/\\\\s*([\\\\d.,\\\\u00A0 ]\u002B)\u0027)); if (!m) return null; /* \u00221.200\u0022 l\u00E0 ph\u00E2n c\u00E1ch h\u00E0ng ngh\u00ECn vi-VN \u2014 b\u00F3c m\u1ECDi th\u1EE9 kh\u00F4ng ph\u1EA3i s\u1ED1 tr\u01B0\u1EDBc khi \u0111\u1ECDc, b\u00E0i h\u1ECDc MazeCapScan. */ const got = parseInt(m[1].replace(/\\D/g, \u0027\u0027), 10); const cap = parseInt(m[2].replace(/\\D/g, \u0027\u0027), 10); return cap \u003E 0 ? { got: got, cap: cap } : null; }; const tv = read(\u0027tu vi\u0027); const tt = read(\u0027tinh thach\u0027); if (!tv || !tt) return \u0027cap-scan: ch\u01B0a th\u1EA5y \u00F4 Tu Vi / Tinh Th\u1EA1ch tr\u00EAn trang\u0027; const full = tv.got \u003E= tv.cap \u0026\u0026 tt.got \u003E= tt.cap; if (full \u0026\u0026 document.body) document.body.classList.add(MARK); return \u0027!Tr\u1EA7n h\u00F4m nay: Tu Vi \u0027 \u002B tv.got \u002B \u0027/\u0027 \u002B tv.cap \u002B \u0027, Tinh Th\u1EA1ch \u0027 \u002B tt.got \u002B \u0027/\u0027 \u002B tt.cap \u002B (full ? \u0027 \u2014 \u0110\u00C3 \u0110\u1EA6Y, ngh\u1EC9 t\u1EDBi mai\u0027 : \u0027\u0027); }",
+          "script": "() =\u003E { const MARK = \u0027jvz-km-done\u0027; if (document.body) document.body.classList.remove(MARK); const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase(); const read = (el, label) =\u003E { const text = fold(el ? el.textContent : \u0027\u0027).replace(/\\s\u002B/g, \u0027 \u0027); const m = text.match(new RegExp(label \u002B \u0027\\\\s*:?\\\\s*([\\\\d.,\\\\u00A0 ]\u002B?)\\\\s*\\\\/\\\\s*([\\\\d.,\\\\u00A0 ]\u002B)\u0027)); if (!m) return null; /* \u00221.200\u0022 l\u00E0 ph\u00E2n c\u00E1ch h\u00E0ng ngh\u00ECn vi-VN \u2014 b\u00F3c m\u1ECDi th\u1EE9 kh\u00F4ng ph\u1EA3i s\u1ED1 tr\u01B0\u1EDBc khi \u0111\u1ECDc, b\u00E0i h\u1ECDc MazeCapScan. */ const got = parseInt(m[1].replace(/\\D/g, \u0027\u0027), 10); const cap = parseInt(m[2].replace(/\\D/g, \u0027\u0027), 10); return cap \u003E 0 ? { got: got, cap: cap } : null; }; const box = document.querySelector(\u0027.stats-container\u0027); const tvEl = box ? box.querySelector(\u0027.stat-tuvi\u0027) : null; const ttEl = box ? box.querySelector(\u0027.stat-tinhthach\u0027) : null; const via = tvEl \u0026\u0026 ttEl ? \u0027\u00F4 ch\u1EC9 s\u1ED1\u0027 : \u0027qu\u00E9t ch\u1EEF to\u00E0n trang (kh\u00F4ng th\u1EA5y .stats-container \u2014 markup tr\u00F4i?)\u0027; const tv = read(tvEl || document.body, \u0027tu vi\u0027); const tt = read(ttEl || document.body, \u0027tinh thach\u0027); if (!tv || !tt) return \u0027cap-scan: ch\u01B0a th\u1EA5y \u00F4 Tu Vi / Tinh Th\u1EA1ch tr\u00EAn trang\u0027; const full = tv.got \u003E= tv.cap \u0026\u0026 tt.got \u003E= tt.cap; if (full \u0026\u0026 document.body) document.body.classList.add(MARK); return \u0027!Tr\u1EA7n h\u00F4m nay (\u0027 \u002B via \u002B \u0027): Tu Vi \u0027 \u002B tv.got \u002B \u0027/\u0027 \u002B tv.cap \u002B \u0027, Tinh Th\u1EA1ch \u0027 \u002B tt.got \u002B \u0027/\u0027 \u002B tt.cap \u002B (full ? \u0027 \u2014 \u0110\u00C3 \u0110\u1EA6Y, ngh\u1EC9 t\u1EDBi mai\u0027 : \u0027 \u2014 c\u00F2n ch\u1ED7, \u0111\u00E0o ti\u1EBFp\u0027); }",
           "timeoutMs": 15000
         },
         {
@@ -3649,18 +3747,54 @@
           "timeoutMs": 800
         },
         {
+          "action": "repeat",
+          "timeoutMs": 15000,
+          "note": "s\u1ED5 t\u1ED1i \u0111a ~5 trang cho 50 ng\u01B0\u1EDDi; 6 v\u00F2ng l\u00E0 d\u01B0 m\u1ED9t v\u00F2ng an to\u00E0n",
+          "steps": [
+            {
+              "action": "evaluateJavaScript",
+              "script": "() =\u003E { const MINE_MINUTES = 30; const HOLD_MINUTES = 10; const body = document.body; if (body) { body.classList.remove(\u0027jvz-km-self-seen\u0027); body.classList.remove(\u0027jvz-km-max\u0027); body.classList.remove(\u0027jvz-km-ripe\u0027); } for (const el of document.querySelectorAll(\u0027.jvz-km-claim\u0027)) el.classList.remove(\u0027jvz-km-claim\u0027); const nextBtn = document.querySelector(\u0027#next-btn\u0027); if (nextBtn) nextBtn.classList.remove(\u0027jvz-km-next-go\u0027); const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027).trim(); const btn = document.querySelector(\u0027#user-list button.chua-dat, #user-list button.claim-reward\u0027); if (!btn) { if (nextBtn \u0026\u0026 !nextBtn.disabled) { nextBtn.classList.add(\u0027jvz-km-next-go\u0027); return \u0027self-scan: trang n\u00E0y ch\u01B0a c\u00F3 d\u00F2ng c\u1EE7a m\u00ECnh \u2014 sang trang k\u1EBF\u0027; } return \u0027self-scan: kh\u00F4ng th\u1EA5y d\u00F2ng c\u1EE7a m\u00ECnh v\u00E0 kh\u00F4ng c\u00F2n trang k\u1EBF\u0027; } if (body) body.classList.add(\u0027jvz-km-self-seen\u0027); let eta = document.getElementById(\u0027jvz-km-eta\u0027); if (!eta) { eta = document.createElement(\u0027span\u0027); eta.id = \u0027jvz-km-eta\u0027; eta.style.cssText = \u0027position:fixed;bottom:0;right:0;font-size:2px;color:transparent;pointer-events:none\u0027; (body || document.documentElement).appendChild(eta); } const btnText = fold(btn.textContent); if (btnText.indexOf(\u0027nhan thuong\u0027) \u003E= 0 \u0026\u0026 !btn.disabled) { if (body) body.classList.add(\u0027jvz-km-ripe\u0027); const min = parseInt(\u0027{{minBonus}}\u0027, 10) || 0; let why = \u0027\u0027; if (min \u003E 0) { const bEl = document.querySelector(\u0027#tuvi-bonus-percentage\u0027); const bonus = bEl ? parseInt((bEl.textContent || \u0027\u0027).replace(/\\D/g, \u0027\u0027), 10) : NaN; if (bonus \u003E= 0) { if (bonus \u003C min) { eta.textContent = HOLD_MINUTES \u002B \u0027 ph\u00FAt\u0027; return \u0027!\u0110\u00E3 \u0111\u1EA1t t\u1ED1i \u0111a NH\u01AFNG bonus tu vi c\u1EE7a m\u1ECF \u0027 \u002B bonus \u002B \u0027% d\u01B0\u1EDBi ng\u01B0\u1EE1ng \u0027 \u002B min \u002B \u0027% \u2014 ch\u01B0a nh\u1EADn, \u0111\u1EC3 d\u00E0nh ch\u1EDD m\u1ECF kh\u00E1 h\u01A1n (gh\u00E9 l\u1EA1i sau \u0027 \u002B HOLD_MINUTES \u002B \u0027 ph\u00FAt)\u0027; } why = \u0027 (bonus \u0027 \u002B bonus \u002B \u0027% \u2265 ng\u01B0\u1EE1ng \u0027 \u002B min \u002B \u0027%)\u0027; } else { why = \u0027 \u2014 C\u1EA2NH B\u00C1O: kh\u00F4ng \u0111\u1ECDc \u0111\u01B0\u1EE3c % bonus c\u1EE7a m\u1ECF n\u00EAn ng\u01B0\u1EE1ng \u0027 \u002B min \u002B \u0027% kh\u00F4ng \u00E1p \u0111\u01B0\u1EE3c, v\u1EABn nh\u1EADn \u0111\u1EC3 kh\u1ECFi m\u1EA5t ph\u1EA7n th\u01B0\u1EDFng\u0027; } } btn.classList.add(\u0027jvz-km-claim\u0027); if (body) body.classList.add(\u0027jvz-km-max\u0027); eta.textContent = \u0027\u0027; return \u0027!Khai th\u00E1c \u0110\u1EA0T T\u1ED0I \u0110A \u2014 nh\u1EADn th\u01B0\u1EDFng\u0027 \u002B why; } const row = btn.closest(\u0027.user-row\u0027); const rowText = fold(row ? row.textContent : \u0027\u0027); const m = rowText.match(/khai thac\\s*:?\\s*(?:dat toi da|([\\d.,]\u002B)\\s*(giay|phut|gio))/); let remain = MINE_MINUTES; if (m) { if (m[1] === undefined) { remain = 1; } else { const v = parseInt(m[1].replace(/\\D/g, \u0027\u0027), 10) || 0; const spent = m[2] === \u0027giay\u0027 ? Math.ceil(v / 60) : (m[2] === \u0027gio\u0027 ? v * 60 : v); remain = Math.max(MINE_MINUTES - spent, 1); } } eta.textContent = remain \u002B \u0027 ph\u00FAt\u0027; return \u0027!\u0110ang khai th\u00E1c (n\u00FAt: \u0027 \u002B (btn.textContent || \u0027\u0027).trim() \u002B \u0027) \u2014 c\u00F2n ~\u0027 \u002B remain \u002B \u0027 ph\u00FAt n\u1EEFa \u0111\u1EA1t t\u1ED1i \u0111a\u0027; }",
+              "timeoutMs": 15000
+            },
+            {
+              "action": "click",
+              "selector": "#next-btn.jvz-km-next-go",
+              "timeoutMs": 2500,
+              "note": "self-scan ch\u1EC9 \u0111\u00E1nh d\u1EA5u khi ch\u01B0a th\u1EA5y d\u00F2ng m\u00ECnh V\u00C0 c\u00F2n trang k\u1EBF \u2014 th\u1EA5y r\u1ED3i th\u00EC selector n\u00E0y kh\u00F4ng t\u1ED3n t\u1EA1i, optional cho n\u00F3 tr\u01B0\u1EE3t \u00EAm",
+              "optional": true
+            },
+            {
+              "action": "waitMilliseconds",
+              "timeoutMs": 900
+            }
+          ],
+          "until": {
+            "kind": "visible",
+            "selector": "body.jvz-km-self-seen"
+          },
+          "maxIterations": 6,
+          "maxSeconds": 90
+        },
+        {
+          "action": "expectVisible",
+          "selector": "body.jvz-km-self-seen",
+          "timeoutMs": 3000,
+          "note": "qu\u00E9t h\u1EBFt c\u00E1c trang m\u00E0 kh\u00F4ng th\u1EA5y d\u00F2ng m\u00ECnh \u2192 c\u00F3 chuy\u1EC7n th\u1EADt (ch\u01B0a v\u00E0o \u0111\u01B0\u1EE3c m\u1ECF?) \u2014 quest \u0111\u1ECF"
+        },
+        {
           "action": "evaluateJavaScript",
-          "script": "() =\u003E { const body = document.body; if (body) body.classList.remove(\u0027jvz-km-host-go\u0027); for (const el of document.querySelectorAll(\u0027.jvz-km-doat\u0027)) el.classList.remove(\u0027jvz-km-doat\u0027); if (\u0027{{hostMode}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) return \u0027host: tu\u1EF3 ch\u1ECDn \u0111o\u1EA1t m\u1ECF \u0111ang t\u1EAFt\u0027; const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); const bonusEl = document.querySelector(\u0027#tuvi-bonus-percentage\u0027); const bonus = bonusEl ? parseInt((bonusEl.textContent || \u0027\u0027).replace(/\\D/g, \u0027\u0027), 10) : NaN; if (!(bonus \u003E= 0)) return \u0027host: ch\u01B0a \u0111\u1ECDc \u0111\u01B0\u1EE3c % tu vi bonus c\u1EE7a m\u1ECF (#tuvi-bonus-percentage)\u0027; const thr = parseInt(\u0027{{hostMinBonus}}\u0027, 10) || 0; if (bonus \u003C thr) return \u0027!Bonus tu vi c\u1EE7a m\u1ECF \u0027 \u002B bonus \u002B \u0027% d\u01B0\u1EDBi ng\u01B0\u1EE1ng \u0027 \u002B thr \u002B \u0027% \u2014 kh\u00F4ng \u0111o\u1EA1t m\u1ECF n\u00E0y\u0027; const atk = fold(body ? body.textContent : \u0027\u0027).match(/luot tan cong\\s*:?\\s*(\\d\u002B)\\s*\\/\\s*(\\d\u002B)/); if (atk \u0026\u0026 parseInt(atk[1], 10) \u003E= parseInt(atk[2], 10)) return \u0027!H\u1EBFt l\u01B0\u1EE3t t\u1EA5n c\u00F4ng h\u00F4m nay (\u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] \u002B \u0027) \u2014 kh\u00F4ng \u0111o\u1EA1t\u0027; const doat = [...document.querySelectorAll(\u0027#user-list button.doat-mo-btn\u0027)].find((b) =\u003E !b.disabled); if (!doat) return \u0027!Kh\u00F4ng c\u00F3 n\u00FAt \u0110o\u1EA1t M\u1ECF trong s\u1ED5 \u2014 m\u00ECnh \u0111ang l\u00E0 ch\u1EE7, ho\u1EB7c ch\u1EE7 m\u1ECF \u0111ang \u0111\u01B0\u1EE3c b\u1EA3o h\u1ED9\u0027; doat.classList.add(\u0027jvz-km-doat\u0027); if (body) body.classList.add(\u0027jvz-km-host-go\u0027); return \u0027!\u0110\u1EE7 \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t m\u1ECF: bonus \u0027 \u002B bonus \u002B \u0027% \u2265 ng\u01B0\u1EE1ng \u0027 \u002B thr \u002B \u0027%\u0027 \u002B (atk ? \u0027, l\u01B0\u1EE3t t\u1EA5n c\u00F4ng \u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] : \u0027\u0027); }",
-          "timeoutMs": 15000
+          "script": "() =\u003E { const body = document.body; if (body) { body.classList.remove(\u0027jvz-km-host-phase\u0027); body.classList.remove(\u0027jvz-km-buy-go\u0027); body.classList.remove(\u0027jvz-km-refresh\u0027); } if (!body || !body.classList.contains(\u0027jvz-km-ripe\u0027)) return \u0027gate: ch\u01B0a \u0111\u1EA1t khai th\u00E1c t\u1ED1i \u0111a \u2014 l\u01B0\u1EE3t n\u00E0y kh\u00F4ng mua, kh\u00F4ng \u0111o\u1EA1t\u0027; const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); const parts = []; /* ---- su\u1EA5t mua ph\u00F9 c\u1EE7a ng\u00E0y ---- */ if (\u0027{{buyPhu}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) { parts.push(\u0027kh\u00F4ng mua ph\u00F9 (tu\u1EF3 ch\u1ECDn t\u1EAFt)\u0027); } else { const d = new Date(); const today = d.getFullYear() \u002B \u0027-\u0027 \u002B (d.getMonth() \u002B 1) \u002B \u0027-\u0027 \u002B d.getDate(); let last = null; try { last = localStorage.getItem(\u0027__jvz_km_phu\u0027); } catch (e) { } if (last === today) { parts.push(\u0027ph\u00F9 h\u00F4m nay \u0111\u00E3 d\u00F9ng su\u1EA5t \u2014 kh\u00F4ng mua n\u1EEFa\u0027); } else { try { localStorage.setItem(\u0027__jvz_km_phu\u0027, today); } catch (e) { } body.classList.add(\u0027jvz-km-buy-go\u0027); body.classList.add(\u0027jvz-km-refresh\u0027); parts.push(\u0027MUA 1 Linh Quang Ph\u00F9 (su\u1EA5t duy nh\u1EA5t c\u1EE7a ng\u00E0y)\u0027); } } /* ---- \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t ---- */ if (\u0027{{hostMode}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t (tu\u1EF3 ch\u1ECDn t\u1EAFt)\u0027); } else { const bonusEl = document.querySelector(\u0027#tuvi-bonus-percentage\u0027); const bonus = bonusEl ? parseInt((bonusEl.textContent || \u0027\u0027).replace(/\\D/g, \u0027\u0027), 10) : NaN; const thr = parseInt(\u0027{{hostMinBonus}}\u0027, 10) || 0; const atk = fold(body.textContent).match(/luot tan cong\\s*:?\\s*(\\d\u002B)\\s*\\/\\s*(\\d\u002B)/); if (!(bonus \u003E= 0)) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: ch\u01B0a \u0111\u1ECDc \u0111\u01B0\u1EE3c % bonus c\u1EE7a m\u1ECF\u0027); } else if (bonus \u003C thr) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: bonus \u0027 \u002B bonus \u002B \u0027% d\u01B0\u1EDBi ng\u01B0\u1EE1ng \u0027 \u002B thr \u002B \u0027%\u0027); } else if (atk \u0026\u0026 parseInt(atk[1], 10) \u003E= parseInt(atk[2], 10)) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: h\u1EBFt l\u01B0\u1EE3t t\u1EA5n c\u00F4ng (\u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] \u002B \u0027)\u0027); } else { body.classList.add(\u0027jvz-km-host-phase\u0027); body.classList.add(\u0027jvz-km-refresh\u0027); parts.push(\u0027\u0110O\u1EA0T M\u1ECE: bonus \u0027 \u002B bonus \u002B \u0027% \u2265 \u0027 \u002B thr \u002B \u0027%\u0027 \u002B (atk ? \u0027, t\u1EA5n c\u00F4ng \u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] : \u0027\u0027)); } } return \u0027!\u0110\u1EA1t t\u1ED1i \u0111a \u2014 quy\u1EBFt \u0111\u1ECBnh c\u1EE7a l\u01B0\u1EE3t: \u0027 \u002B parts.join(\u0027; \u0027); }",
+          "timeoutMs": 15000,
+          "note": "ba c\u1EDD ra kh\u1ECFi c\u1ED5ng: jvz-km-buy-go (mua 1 ph\u00F9 \u2014 su\u1EA5t ng\u00E0y ghi s\u1ED5 NGAY t\u1EA1i \u0111\u00E2y), jvz-km-host-phase (\u0111\u1EE7 \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t), jvz-km-refresh (c\u00F3 c\u1EE5m n\u00E0o s\u1EAFp m\u1EDF l\u1EA1i s\u1ED5)"
         },
         {
           "action": "click",
           "selector": "#close-btn",
           "timeoutMs": 8000,
-          "note": "\u0111\u00F3ng s\u1ED5 \u0111\u1EC3 t\u1EDBi TI\u1EC6M \u2014 c\u00F4ng th\u1EE9c host c\u1EE7a b\u1EA3n ghi: \u0111\u00F3ng \u2192 mua ph\u00F9 \u2192 m\u1EDF l\u1EA1i \u2192 \u0111o\u1EA1t",
+          "note": "\u0111\u00F3ng s\u1ED5 \u0111\u1EC3 t\u1EDBi TI\u1EC6M \u2014 c\u00F4ng th\u1EE9c c\u1EE7a b\u1EA3n ghi 14/08: \u0111\u00F3ng \u2192 mua \u2192 m\u1EDF l\u1EA1i",
           "when": {
             "kind": "visible",
-            "selector": "body.jvz-km-host-go"
+            "selector": "body.jvz-km-buy-go"
           }
         },
         {
@@ -3669,36 +3803,36 @@
           "timeoutMs": 8000,
           "when": {
             "kind": "visible",
-            "selector": "body.jvz-km-host-go"
+            "selector": "body.jvz-km-buy-go"
           }
         },
         {
           "action": "waitForCondition",
           "timeoutMs": 10000,
-          "note": "k\u1EC7 TI\u1EC6M \u0111\u00E3 render",
+          "note": "k\u1EC7 TI\u1EC6M \u0111\u00E3 render \u2014 b\u1EA3n ghi 15/08 \u0111\u1EBFm 6 m\u00F3n, t\u00ECm theo T\u00CAN ch\u1EE9 kh\u00F4ng theo v\u1ECB tr\u00ED",
           "condition": {
             "kind": "visible",
             "selector": "#shop-container .shop-item"
           },
           "when": {
             "kind": "visible",
-            "selector": "body.jvz-km-host-go"
+            "selector": "body.jvz-km-buy-go"
           }
         },
         {
           "action": "evaluateJavaScript",
-          "script": "() =\u003E { for (const el of document.querySelectorAll(\u0027.jvz-km-buy\u0027)) el.classList.remove(\u0027jvz-km-buy\u0027); const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); const items = [...document.querySelectorAll(\u0027#shop-container .shop-item\u0027)]; if (items.length === 0) return \u0027shop: #shop-container ch\u01B0a render m\u00F3n n\u00E0o\u0027; const item = items.find((i) =\u003E fold(i.textContent).indexOf(\u0027linh quang phu\u0027) \u003E= 0); if (!item) return \u0027shop: kh\u00F4ng th\u1EA5y m\u00F3n Linh Quang Ph\u00F9 tr\u00EAn k\u1EC7\u0027; const btn = item.querySelector(\u0027button.shop-item-button\u0027); if (!btn) return \u0027shop: m\u00F3n Linh Quang Ph\u00F9 kh\u00F4ng c\u00F3 n\u00FAt mua\u0027; btn.classList.add(\u0027jvz-km-buy\u0027); return \u0027!Mua Linh Quang Ph\u00F9 (\u002B20% tu vi trong 1 gi\u1EDD) tr\u01B0\u1EDBc khi \u0111o\u1EA1t m\u1ECF\u0027; }",
+          "script": "() =\u003E { for (const el of document.querySelectorAll(\u0027.jvz-km-buy\u0027)) el.classList.remove(\u0027jvz-km-buy\u0027); const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); const items = [...document.querySelectorAll(\u0027#shop-container .shop-item\u0027)]; if (items.length === 0) return \u0027shop: #shop-container ch\u01B0a render m\u00F3n n\u00E0o\u0027; const item = items.find((i) =\u003E fold(i.textContent).indexOf(\u0027linh quang phu\u0027) \u003E= 0); if (!item) return \u0027shop: kh\u00F4ng th\u1EA5y m\u00F3n Linh Quang Ph\u00F9 tr\u00EAn k\u1EC7\u0027; const btn = item.querySelector(\u0027button.shop-item-button\u0027); if (!btn) return \u0027shop: m\u00F3n Linh Quang Ph\u00F9 kh\u00F4ng c\u00F3 n\u00FAt mua\u0027; btn.classList.add(\u0027jvz-km-buy\u0027); return \u0027!Mua Linh Quang Ph\u00F9 (\u002B20% tu vi trong 1 gi\u1EDD) cho c\u00FA ch\u1ED1t l\u1EDDi s\u1EAFp t\u1EDBi\u0027; }",
           "timeoutMs": 15000,
           "when": {
             "kind": "visible",
-            "selector": "body.jvz-km-host-go"
+            "selector": "body.jvz-km-buy-go"
           }
         },
         {
           "action": "click",
           "selector": ".jvz-km-buy",
           "timeoutMs": 8000,
-          "note": "OPTIONAL c\u00F3 ch\u1EE7 \u00FD: thi\u1EBFu ti\u1EC1n hay k\u1EC7 \u0111\u1ED5i th\u00EC m\u1EA5t ph\u1EA7n \u002B20%, c\u00FA \u0111o\u1EA1t v\u1EABn \u0111i ti\u1EBFp",
+          "note": "OPTIONAL c\u00F3 ch\u1EE7 \u00FD: thi\u1EBFu ti\u1EC1n hay k\u1EC7 \u0111\u1ED5i th\u00EC ch\u1EC9 m\u1EA5t ph\u1EA7n \u002B20%, l\u01B0\u1EE3t \u0111\u00E0o v\u1EABn \u0111i ti\u1EBFp (su\u1EA5t ng\u00E0y \u0111\u00E3 b\u1ECB ti\u00EAu \u1EDF c\u1ED5ng \u2014 xem l\u00FD do t\u1EA1i KmHostGateScript)",
           "optional": true,
           "when": {
             "kind": "visible",
@@ -3743,7 +3877,7 @@
           },
           "when": {
             "kind": "visible",
-            "selector": "body.jvz-km-host-go"
+            "selector": "body.jvz-km-buy-go"
           }
         },
         {
@@ -3753,7 +3887,7 @@
           "note": "m\u1EDF l\u1EA1i s\u1ED5; TI\u1EC6M l\u00E0 tab ri\u00EAng n\u00EAn #mine-list v\u00E0 d\u1EA5u jvz-km-open c\u00F2n nguy\u00EAn (click#239 b\u1EA5m th\u1EB3ng \u0111\u01B0\u1EE3c)",
           "when": {
             "kind": "visible",
-            "selector": "body.jvz-km-host-go"
+            "selector": "body.jvz-km-buy-go"
           }
         },
         {
@@ -3765,7 +3899,37 @@
           },
           "when": {
             "kind": "visible",
-            "selector": "body.jvz-km-host-go"
+            "selector": "body.jvz-km-buy-go"
+          }
+        },
+        {
+          "action": "click",
+          "selector": "#close-btn",
+          "timeoutMs": 8000,
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-host-phase"
+          }
+        },
+        {
+          "action": "click",
+          "selector": ".jvz-km-open",
+          "timeoutMs": 10000,
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-host-phase"
+          }
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 15000,
+          "condition": {
+            "kind": "visible",
+            "selector": "#user-list .user-row"
+          },
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-host-phase"
           }
         },
         {
@@ -3773,17 +3937,17 @@
           "timeoutMs": 800,
           "when": {
             "kind": "visible",
-            "selector": "body.jvz-km-host-go"
+            "selector": "body.jvz-km-host-phase"
           }
         },
         {
           "action": "evaluateJavaScript",
-          "script": "() =\u003E { const body = document.body; if (body) body.classList.remove(\u0027jvz-km-host-go\u0027); for (const el of document.querySelectorAll(\u0027.jvz-km-doat\u0027)) el.classList.remove(\u0027jvz-km-doat\u0027); if (\u0027{{hostMode}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) return \u0027host: tu\u1EF3 ch\u1ECDn \u0111o\u1EA1t m\u1ECF \u0111ang t\u1EAFt\u0027; const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); const bonusEl = document.querySelector(\u0027#tuvi-bonus-percentage\u0027); const bonus = bonusEl ? parseInt((bonusEl.textContent || \u0027\u0027).replace(/\\D/g, \u0027\u0027), 10) : NaN; if (!(bonus \u003E= 0)) return \u0027host: ch\u01B0a \u0111\u1ECDc \u0111\u01B0\u1EE3c % tu vi bonus c\u1EE7a m\u1ECF (#tuvi-bonus-percentage)\u0027; const thr = parseInt(\u0027{{hostMinBonus}}\u0027, 10) || 0; if (bonus \u003C thr) return \u0027!Bonus tu vi c\u1EE7a m\u1ECF \u0027 \u002B bonus \u002B \u0027% d\u01B0\u1EDBi ng\u01B0\u1EE1ng \u0027 \u002B thr \u002B \u0027% \u2014 kh\u00F4ng \u0111o\u1EA1t m\u1ECF n\u00E0y\u0027; const atk = fold(body ? body.textContent : \u0027\u0027).match(/luot tan cong\\s*:?\\s*(\\d\u002B)\\s*\\/\\s*(\\d\u002B)/); if (atk \u0026\u0026 parseInt(atk[1], 10) \u003E= parseInt(atk[2], 10)) return \u0027!H\u1EBFt l\u01B0\u1EE3t t\u1EA5n c\u00F4ng h\u00F4m nay (\u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] \u002B \u0027) \u2014 kh\u00F4ng \u0111o\u1EA1t\u0027; const doat = [...document.querySelectorAll(\u0027#user-list button.doat-mo-btn\u0027)].find((b) =\u003E !b.disabled); if (!doat) return \u0027!Kh\u00F4ng c\u00F3 n\u00FAt \u0110o\u1EA1t M\u1ECF trong s\u1ED5 \u2014 m\u00ECnh \u0111ang l\u00E0 ch\u1EE7, ho\u1EB7c ch\u1EE7 m\u1ECF \u0111ang \u0111\u01B0\u1EE3c b\u1EA3o h\u1ED9\u0027; doat.classList.add(\u0027jvz-km-doat\u0027); if (body) body.classList.add(\u0027jvz-km-host-go\u0027); return \u0027!\u0110\u1EE7 \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t m\u1ECF: bonus \u0027 \u002B bonus \u002B \u0027% \u2265 ng\u01B0\u1EE1ng \u0027 \u002B thr \u002B \u0027%\u0027 \u002B (atk ? \u0027, l\u01B0\u1EE3t t\u1EA5n c\u00F4ng \u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] : \u0027\u0027); }",
+          "script": "() =\u003E { const body = document.body; if (body) body.classList.remove(\u0027jvz-km-host-go\u0027); for (const el of document.querySelectorAll(\u0027.jvz-km-doat\u0027)) el.classList.remove(\u0027jvz-km-doat\u0027); const doat = [...document.querySelectorAll(\u0027#user-list button.doat-mo-btn\u0027)].find((b) =\u003E !b.disabled); if (!doat) return \u0027!Kh\u00F4ng c\u00F3 n\u00FAt \u0110o\u1EA1t M\u1ECF trong s\u1ED5 \u2014 m\u00ECnh \u0111ang l\u00E0 ch\u1EE7, ho\u1EB7c ch\u1EE7 m\u1ECF \u0111ang \u0111\u01B0\u1EE3c b\u1EA3o h\u1ED9\u0027; doat.classList.add(\u0027jvz-km-doat\u0027); if (body) body.classList.add(\u0027jvz-km-host-go\u0027); return \u0027!Th\u1EA5y n\u00FAt \u0110o\u1EA1t M\u1ECF \u1EDF trang \u0111\u1EA7u s\u1ED5 \u2014 ti\u1EBFn h\u00E0nh \u0111o\u1EA1t\u0027; }",
           "timeoutMs": 15000,
-          "note": "s\u1ED5 v\u1EEBa render l\u1EA1i \u2014 qu\u00E9t l\u1EA1i \u0111\u1EC3 \u0111\u00E1nh d\u1EA5u n\u00FAt \u0110o\u1EA1t M\u1ECF tr\u00EAn DOM m\u1EDBi; ai \u0111\u00F3 \u0111o\u1EA1t tr\u01B0\u1EDBc th\u00EC c\u1EDD t\u1EF1 r\u1EDBt v\u00E0 c\u1EE5m c\u00F2n l\u1EA1i l\u1EB7n",
+          "note": "trang 1 v\u1EEBa render \u2014 t\u00ECm n\u00FAt \u0110o\u1EA1t M\u1ECF; m\u00ECnh \u0111\u00E3 l\u00E0 ch\u1EE7 hay ch\u1EE7 \u0111ang \u0111\u01B0\u1EE3c b\u1EA3o h\u1ED9 th\u00EC c\u1EDD kh\u00F4ng c\u1EAFm v\u00E0 c\u1EE5m d\u01B0\u1EDBi l\u1EB7n",
           "when": {
             "kind": "visible",
-            "selector": "body.jvz-km-host-go"
+            "selector": "body.jvz-km-host-phase"
           }
         },
         {
@@ -3823,27 +3987,39 @@
         {
           "action": "waitMilliseconds",
           "timeoutMs": 1200,
-          "note": "s\u1ED5 x\u1EBFp l\u1EA1i sau khi \u0111\u1ED5i ch\u1EE7 \u2014 d\u00F2ng m\u00ECnh d\u1EDDi l\u00EAn \u0111\u1EA7u trang 1, ph\u00E9p qu\u00E9t ngay d\u01B0\u1EDBi s\u1EBD th\u1EA5y",
+          "note": "s\u1ED5 x\u1EBFp l\u1EA1i sau khi \u0111\u1ED5i ch\u1EE7",
           "when": {
             "kind": "visible",
-            "selector": "body.jvz-km-host-go"
+            "selector": "body.jvz-km-host-phase"
+          }
+        },
+        {
+          "action": "evaluateJavaScript",
+          "script": "() =\u003E { const body = document.body; if (body) { body.classList.remove(\u0027jvz-km-self-seen\u0027); body.classList.remove(\u0027jvz-km-max\u0027); body.classList.remove(\u0027jvz-km-ripe\u0027); } for (const el of document.querySelectorAll(\u0027.jvz-km-claim\u0027)) el.classList.remove(\u0027jvz-km-claim\u0027); return \u0027rescan: s\u1ED5 v\u1EEBa render l\u1EA1i sau c\u1EE5m mua/\u0111o\u1EA1t \u2014 xo\u00E1 d\u1EA5u c\u0169, t\u00ECm l\u1EA1i d\u00F2ng m\u00ECnh t\u1EEB \u0111\u1EA7u\u0027; }",
+          "timeoutMs": 15000,
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-refresh"
           }
         },
         {
           "action": "repeat",
           "timeoutMs": 15000,
-          "note": "s\u1ED5 t\u1ED1i \u0111a ~5 trang cho 50 ng\u01B0\u1EDDi; 6 v\u00F2ng l\u00E0 d\u01B0 m\u1ED9t v\u00F2ng an to\u00E0n",
+          "note": "qu\u00E9t l\u1EA1i \u0111\u1EE7 trang ch\u1EE9 kh\u00F4ng \u0111o\u00E1n trang 1: \u0111o\u1EA1t TR\u01AF\u1EE2T (ai \u0111\u00F3 nhanh tay h\u01A1n) th\u00EC d\u00F2ng m\u00ECnh v\u1EABn n\u1EB1m trang c\u0169, v\u00E0 ph\u1EA7n th\u01B0\u1EDFng \u0111\u00E3 ch\u00EDn kh\u00F4ng \u0111\u01B0\u1EE3c ph\u00E9p m\u1EA5t theo c\u00FA tr\u01B0\u1EE3t \u1EA5y",
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-refresh"
+          },
           "steps": [
             {
               "action": "evaluateJavaScript",
-              "script": "() =\u003E { const MINE_MINUTES = 30; const HOLD_MINUTES = 10; const body = document.body; if (body) { body.classList.remove(\u0027jvz-km-self-seen\u0027); body.classList.remove(\u0027jvz-km-max\u0027); } for (const el of document.querySelectorAll(\u0027.jvz-km-claim\u0027)) el.classList.remove(\u0027jvz-km-claim\u0027); const nextBtn = document.querySelector(\u0027#next-btn\u0027); if (nextBtn) nextBtn.classList.remove(\u0027jvz-km-next-go\u0027); const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027).trim(); const btn = document.querySelector(\u0027#user-list button.chua-dat, #user-list button.claim-reward\u0027); if (!btn) { if (nextBtn \u0026\u0026 !nextBtn.disabled) { nextBtn.classList.add(\u0027jvz-km-next-go\u0027); return \u0027self-scan: trang n\u00E0y ch\u01B0a c\u00F3 d\u00F2ng c\u1EE7a m\u00ECnh \u2014 sang trang k\u1EBF\u0027; } return \u0027self-scan: kh\u00F4ng th\u1EA5y d\u00F2ng c\u1EE7a m\u00ECnh v\u00E0 kh\u00F4ng c\u00F2n trang k\u1EBF\u0027; } if (body) body.classList.add(\u0027jvz-km-self-seen\u0027); let eta = document.getElementById(\u0027jvz-km-eta\u0027); if (!eta) { eta = document.createElement(\u0027span\u0027); eta.id = \u0027jvz-km-eta\u0027; eta.style.cssText = \u0027position:fixed;bottom:0;right:0;font-size:2px;color:transparent;pointer-events:none\u0027; (body || document.documentElement).appendChild(eta); } const btnText = fold(btn.textContent); if (btnText.indexOf(\u0027nhan thuong\u0027) \u003E= 0 \u0026\u0026 !btn.disabled) { const min = parseInt(\u0027{{minBonus}}\u0027, 10) || 0; let why = \u0027\u0027; if (min \u003E 0) { const bEl = document.querySelector(\u0027#tuvi-bonus-percentage\u0027); const bonus = bEl ? parseInt((bEl.textContent || \u0027\u0027).replace(/\\D/g, \u0027\u0027), 10) : NaN; if (bonus \u003E= 0) { if (bonus \u003C min) { eta.textContent = HOLD_MINUTES \u002B \u0027 ph\u00FAt\u0027; return \u0027!\u0110\u00E3 \u0111\u1EA1t t\u1ED1i \u0111a NH\u01AFNG bonus tu vi c\u1EE7a m\u1ECF \u0027 \u002B bonus \u002B \u0027% d\u01B0\u1EDBi ng\u01B0\u1EE1ng \u0027 \u002B min \u002B \u0027% \u2014 ch\u01B0a nh\u1EADn, \u0111\u1EC3 d\u00E0nh ch\u1EDD m\u1ECF kh\u00E1 h\u01A1n (gh\u00E9 l\u1EA1i sau \u0027 \u002B HOLD_MINUTES \u002B \u0027 ph\u00FAt)\u0027; } why = \u0027 (bonus \u0027 \u002B bonus \u002B \u0027% \u2265 ng\u01B0\u1EE1ng \u0027 \u002B min \u002B \u0027%)\u0027; } else { why = \u0027 \u2014 C\u1EA2NH B\u00C1O: kh\u00F4ng \u0111\u1ECDc \u0111\u01B0\u1EE3c % bonus c\u1EE7a m\u1ECF n\u00EAn ng\u01B0\u1EE1ng \u0027 \u002B min \u002B \u0027% kh\u00F4ng \u00E1p \u0111\u01B0\u1EE3c, v\u1EABn nh\u1EADn \u0111\u1EC3 kh\u1ECFi m\u1EA5t ph\u1EA7n th\u01B0\u1EDFng\u0027; } } btn.classList.add(\u0027jvz-km-claim\u0027); if (body) body.classList.add(\u0027jvz-km-max\u0027); eta.textContent = \u0027\u0027; return \u0027!Khai th\u00E1c \u0110\u1EA0T T\u1ED0I \u0110A \u2014 nh\u1EADn th\u01B0\u1EDFng\u0027 \u002B why; } const row = btn.closest(\u0027.user-row\u0027); const rowText = fold(row ? row.textContent : \u0027\u0027); const m = rowText.match(/khai thac\\s*:?\\s*(?:dat toi da|([\\d.,]\u002B)\\s*(giay|phut|gio))/); let remain = MINE_MINUTES; if (m) { if (m[1] === undefined) { remain = 1; } else { const v = parseInt(m[1].replace(/\\D/g, \u0027\u0027), 10) || 0; const spent = m[2] === \u0027giay\u0027 ? Math.ceil(v / 60) : (m[2] === \u0027gio\u0027 ? v * 60 : v); remain = Math.max(MINE_MINUTES - spent, 1); } } eta.textContent = remain \u002B \u0027 ph\u00FAt\u0027; return \u0027!\u0110ang khai th\u00E1c (n\u00FAt: \u0027 \u002B (btn.textContent || \u0027\u0027).trim() \u002B \u0027) \u2014 c\u00F2n ~\u0027 \u002B remain \u002B \u0027 ph\u00FAt n\u1EEFa \u0111\u1EA1t t\u1ED1i \u0111a\u0027; }",
+              "script": "() =\u003E { const MINE_MINUTES = 30; const HOLD_MINUTES = 10; const body = document.body; if (body) { body.classList.remove(\u0027jvz-km-self-seen\u0027); body.classList.remove(\u0027jvz-km-max\u0027); body.classList.remove(\u0027jvz-km-ripe\u0027); } for (const el of document.querySelectorAll(\u0027.jvz-km-claim\u0027)) el.classList.remove(\u0027jvz-km-claim\u0027); const nextBtn = document.querySelector(\u0027#next-btn\u0027); if (nextBtn) nextBtn.classList.remove(\u0027jvz-km-next-go\u0027); const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027).trim(); const btn = document.querySelector(\u0027#user-list button.chua-dat, #user-list button.claim-reward\u0027); if (!btn) { if (nextBtn \u0026\u0026 !nextBtn.disabled) { nextBtn.classList.add(\u0027jvz-km-next-go\u0027); return \u0027self-scan: trang n\u00E0y ch\u01B0a c\u00F3 d\u00F2ng c\u1EE7a m\u00ECnh \u2014 sang trang k\u1EBF\u0027; } return \u0027self-scan: kh\u00F4ng th\u1EA5y d\u00F2ng c\u1EE7a m\u00ECnh v\u00E0 kh\u00F4ng c\u00F2n trang k\u1EBF\u0027; } if (body) body.classList.add(\u0027jvz-km-self-seen\u0027); let eta = document.getElementById(\u0027jvz-km-eta\u0027); if (!eta) { eta = document.createElement(\u0027span\u0027); eta.id = \u0027jvz-km-eta\u0027; eta.style.cssText = \u0027position:fixed;bottom:0;right:0;font-size:2px;color:transparent;pointer-events:none\u0027; (body || document.documentElement).appendChild(eta); } const btnText = fold(btn.textContent); if (btnText.indexOf(\u0027nhan thuong\u0027) \u003E= 0 \u0026\u0026 !btn.disabled) { if (body) body.classList.add(\u0027jvz-km-ripe\u0027); const min = parseInt(\u0027{{minBonus}}\u0027, 10) || 0; let why = \u0027\u0027; if (min \u003E 0) { const bEl = document.querySelector(\u0027#tuvi-bonus-percentage\u0027); const bonus = bEl ? parseInt((bEl.textContent || \u0027\u0027).replace(/\\D/g, \u0027\u0027), 10) : NaN; if (bonus \u003E= 0) { if (bonus \u003C min) { eta.textContent = HOLD_MINUTES \u002B \u0027 ph\u00FAt\u0027; return \u0027!\u0110\u00E3 \u0111\u1EA1t t\u1ED1i \u0111a NH\u01AFNG bonus tu vi c\u1EE7a m\u1ECF \u0027 \u002B bonus \u002B \u0027% d\u01B0\u1EDBi ng\u01B0\u1EE1ng \u0027 \u002B min \u002B \u0027% \u2014 ch\u01B0a nh\u1EADn, \u0111\u1EC3 d\u00E0nh ch\u1EDD m\u1ECF kh\u00E1 h\u01A1n (gh\u00E9 l\u1EA1i sau \u0027 \u002B HOLD_MINUTES \u002B \u0027 ph\u00FAt)\u0027; } why = \u0027 (bonus \u0027 \u002B bonus \u002B \u0027% \u2265 ng\u01B0\u1EE1ng \u0027 \u002B min \u002B \u0027%)\u0027; } else { why = \u0027 \u2014 C\u1EA2NH B\u00C1O: kh\u00F4ng \u0111\u1ECDc \u0111\u01B0\u1EE3c % bonus c\u1EE7a m\u1ECF n\u00EAn ng\u01B0\u1EE1ng \u0027 \u002B min \u002B \u0027% kh\u00F4ng \u00E1p \u0111\u01B0\u1EE3c, v\u1EABn nh\u1EADn \u0111\u1EC3 kh\u1ECFi m\u1EA5t ph\u1EA7n th\u01B0\u1EDFng\u0027; } } btn.classList.add(\u0027jvz-km-claim\u0027); if (body) body.classList.add(\u0027jvz-km-max\u0027); eta.textContent = \u0027\u0027; return \u0027!Khai th\u00E1c \u0110\u1EA0T T\u1ED0I \u0110A \u2014 nh\u1EADn th\u01B0\u1EDFng\u0027 \u002B why; } const row = btn.closest(\u0027.user-row\u0027); const rowText = fold(row ? row.textContent : \u0027\u0027); const m = rowText.match(/khai thac\\s*:?\\s*(?:dat toi da|([\\d.,]\u002B)\\s*(giay|phut|gio))/); let remain = MINE_MINUTES; if (m) { if (m[1] === undefined) { remain = 1; } else { const v = parseInt(m[1].replace(/\\D/g, \u0027\u0027), 10) || 0; const spent = m[2] === \u0027giay\u0027 ? Math.ceil(v / 60) : (m[2] === \u0027gio\u0027 ? v * 60 : v); remain = Math.max(MINE_MINUTES - spent, 1); } } eta.textContent = remain \u002B \u0027 ph\u00FAt\u0027; return \u0027!\u0110ang khai th\u00E1c (n\u00FAt: \u0027 \u002B (btn.textContent || \u0027\u0027).trim() \u002B \u0027) \u2014 c\u00F2n ~\u0027 \u002B remain \u002B \u0027 ph\u00FAt n\u1EEFa \u0111\u1EA1t t\u1ED1i \u0111a\u0027; }",
               "timeoutMs": 15000
             },
             {
               "action": "click",
               "selector": "#next-btn.jvz-km-next-go",
               "timeoutMs": 2500,
-              "note": "self-scan ch\u1EC9 \u0111\u00E1nh d\u1EA5u khi ch\u01B0a th\u1EA5y d\u00F2ng m\u00ECnh V\u00C0 c\u00F2n trang k\u1EBF \u2014 th\u1EA5y r\u1ED3i th\u00EC selector n\u00E0y kh\u00F4ng t\u1ED3n t\u1EA1i, optional cho n\u00F3 tr\u01B0\u1EE3t \u00EAm",
               "optional": true
             },
             {
@@ -3862,7 +4038,11 @@
           "action": "expectVisible",
           "selector": "body.jvz-km-self-seen",
           "timeoutMs": 3000,
-          "note": "qu\u00E9t h\u1EBFt c\u00E1c trang m\u00E0 kh\u00F4ng th\u1EA5y d\u00F2ng m\u00ECnh \u2192 c\u00F3 chuy\u1EC7n th\u1EADt (ch\u01B0a v\u00E0o \u0111\u01B0\u1EE3c m\u1ECF?) \u2014 quest \u0111\u1ECF"
+          "note": "sau c\u1EE5m mua/\u0111o\u1EA1t m\u00E0 kh\u00F4ng t\u00ECm l\u1EA1i \u0111\u01B0\u1EE3c d\u00F2ng m\u00ECnh \u2192 c\u00F3 chuy\u1EC7n th\u1EADt \u2014 quest \u0111\u1ECF, kh\u00F4ng \u0111o\u00E1n m\u00F2",
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-refresh"
+          }
         },
         {
           "action": "click",
@@ -3890,7 +4070,7 @@
         },
         {
           "action": "evaluateJavaScript",
-          "script": "() =\u003E { const eta = document.getElementById(\u0027jvz-km-eta\u0027); if (!eta) return \u0027tail: ch\u01B0a c\u00F3 node eta \u2014 self-scan ch\u01B0a ch\u1EA1y?\u0027; if (document.body \u0026\u0026 document.body.classList.contains(\u0027jvz-km-max\u0027)) { eta.textContent = \u002730 ph\u00FAt\u0027; return \u0027!\u0110\u00E3 nh\u1EADn th\u01B0\u1EDFng \u2014 chu k\u1EF3 khai th\u00E1c m\u1EDBi b\u1EAFt \u0111\u1EA7u, gh\u00E9 l\u1EA1i sau ~30 ph\u00FAt\u0027; } return \u0027tail: gi\u1EEF nh\u1ECBp gh\u00E9 l\u1EA1i \u0027 \u002B (eta.textContent || \u0027(tr\u1ED1ng)\u0027); }",
+          "script": "() =\u003E { const body = document.body; let eta = document.getElementById(\u0027jvz-km-eta\u0027); if (!eta) { eta = document.createElement(\u0027span\u0027); eta.id = \u0027jvz-km-eta\u0027; eta.style.cssText = \u0027position:fixed;bottom:0;right:0;font-size:2px;color:transparent;pointer-events:none\u0027; (body || document.documentElement).appendChild(eta); } if (body \u0026\u0026 body.classList.contains(\u0027jvz-km-max\u0027)) { eta.textContent = \u002730 ph\u00FAt\u0027; return \u0027!\u0110\u00E3 nh\u1EADn th\u01B0\u1EDFng \u2014 chu k\u1EF3 khai th\u00E1c m\u1EDBi b\u1EAFt \u0111\u1EA7u, gh\u00E9 l\u1EA1i sau ~30 ph\u00FAt\u0027; } if (!(eta.textContent || \u0027\u0027).trim()) { /* M\u1ECDi ng\u1EA3 kh\u00F4ng-nh\u1EADn \u0111\u1EC1u PH\u1EA2I mang \u0111\u1ED3ng h\u1ED3: StopIf kh\u00F4ng \u0111\u1ED3ng h\u1ED3 l\u00E0 alreadyDone, m\u00E0 alreadyDone c\u1EE7a quest n\u00E0y \u0111\u1ED3ng ngh\u0129a v\u00E0o s\u1ED5 kho\u00E1-c\u1EA3-ng\u00E0y. \u0110\u01B0\u1EDDng n\u00E0y ch\u1EC9 ch\u1EA1m t\u1EDBi khi s\u1ED5 \u0111\u1ED5i gi\u1EEFa ch\u1EEBng (\u0111o\u1EA1t tr\u01B0\u1EE3t, d\u00F2ng m\u00ECnh bi\u1EBFn m\u1EA5t) \u2014 5 ph\u00FAt l\u00E0 nh\u1ECBp th\u1EED l\u1EA1i r\u1EBB. */ eta.textContent = \u00275 ph\u00FAt\u0027; return \u0027!Kh\u00F4ng \u0111\u1ECDc \u0111\u01B0\u1EE3c nh\u1ECBp ch\u1EDD (s\u1ED5 \u0111\u1ED5i gi\u1EEFa ch\u1EEBng?) \u2014 gh\u00E9 l\u1EA1i sau 5 ph\u00FAt cho ch\u1EAFc\u0027; } return \u0027tail: gi\u1EEF nh\u1ECBp gh\u00E9 l\u1EA1i \u0027 \u002B eta.textContent; }",
           "timeoutMs": 15000
         },
         {
@@ -4004,6 +4184,22 @@
           "selectedValue": "0"
         },
         {
+          "key": "buyPhu",
+          "label": "Mua Linh Quang Ph\u00F9 (t\u1ED1i \u0111a 1/ng\u00E0y)",
+          "choices": [
+            {
+              "value": "mua 1 ph\u00F9 m\u1ED7i ng\u00E0y",
+              "label": "Mua \u2014 m\u1ED7i ng\u00E0y m\u1ED9t l\u00E1, ngay tr\u01B0\u1EDBc c\u00FA ch\u1ED1t l\u1EDDi"
+            },
+            {
+              "value": "\u00ABkh\u00F4ng mua\u00BB",
+              "label": "Kh\u00F4ng mua"
+            }
+          ],
+          "allowCustom": false,
+          "selectedValue": "mua 1 ph\u00F9 m\u1ED7i ng\u00E0y"
+        },
+        {
           "key": "hostMode",
           "label": "\u0110o\u1EA1t m\u1ECF (l\u00E0m ch\u1EE7)",
           "choices": [
@@ -4013,7 +4209,7 @@
             },
             {
               "value": "\u0111o\u1EA1t khi \u0111\u1EE7 ng\u01B0\u1EE1ng",
-              "label": "Mua Linh Quang Ph\u00F9 \u002B \u0111o\u1EA1t khi bonus \u2265 ng\u01B0\u1EE1ng"
+              "label": "\u0110o\u1EA1t khi bonus c\u1EE7a m\u1ECF \u2265 ng\u01B0\u1EE1ng"
             }
           ],
           "allowCustom": false,
@@ -4051,7 +4247,7 @@
       "fallbackCooldownSeconds": 600,
       "requiresVip": false,
       "order": 100,
-      "notes": "\u0110\u00E0o m\u1ECF \u0111\u00E3 c\u1EA5u h\u00ECnh: v\u00E0o m\u1ECF, \u0111\u1EE3i chu k\u1EF3 30 ph\u00FAt, nh\u1EADn th\u01B0\u1EDFng \u2014 2 l\u1EA7n/ng\u00E0y. \u0110o\u1EA1t m\u1ECF (l\u00E0m ch\u1EE7) l\u00E0 tu\u1EF3 ch\u1ECDn ri\u00EAng v\u00E0 ti\u00EAu ti\u1EC1n th\u1EADt."
+      "notes": "\u0110\u00E0o m\u1ECF \u0111\u00E3 c\u1EA5u h\u00ECnh: v\u00E0o m\u1ECF, \u0111\u1EE3i t\u1EEBng chu k\u1EF3 30 ph\u00FAt, nh\u1EADn th\u01B0\u1EDFng \u2014 t\u1EDBi khi \u0111\u1EA7y tr\u1EA7n Tu Vi \u002B Tinh Th\u1EA1ch c\u1EE7a ng\u00E0y. Mua ph\u00F9 v\u00E0 \u0111o\u1EA1t m\u1ECF l\u00E0 hai tu\u1EF3 ch\u1ECDn ri\u00EAng."
     },
     {
       "id": "me-cung-thuong",

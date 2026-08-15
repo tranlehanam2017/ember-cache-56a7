@@ -193,8 +193,14 @@ export function profileForConfig(config, log) {
       // Ngưỡng CHỐT LỜI — con số tự do như kickHp của Mê Cung; 0 = luôn nhận.
       setOption(khoangMach, "minBonus", String(km.minBonus ?? 0), { allowFreeform: true, log });
 
-      // hostMode trên web là công tắc, trong hồ sơ là hai giá trị chuỗi mà «…» nghĩa là tắt
-      // — cùng phép dịch với capCheck của Mê Cung ở trên.
+      // buyPhu và hostMode trên web là công tắc, trong hồ sơ là hai giá trị chuỗi mà «…» nghĩa
+      // là tắt — cùng phép dịch với capCheck của Mê Cung ở trên.
+      const phuOption = findOption(khoangMach, "buyPhu");
+      const phuOff = phuOption?.choices?.find((c) => c.value.includes("«"));
+      const phuOn = phuOption?.choices?.find((c) => !c.value.includes("«"));
+      const phuWanted = km.buyPhu === false ? phuOff : phuOn;
+      if (phuWanted) setOption(khoangMach, "buyPhu", phuWanted.value, { log });
+
       const hostOption = findOption(khoangMach, "hostMode");
       const hostOff = hostOption?.choices?.find((c) => c.value.includes("«"));
       const hostOn = hostOption?.choices?.find((c) => !c.value.includes("«"));
