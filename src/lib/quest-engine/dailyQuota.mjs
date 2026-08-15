@@ -70,6 +70,53 @@ export function isDailyQuotaQuest(quest) {
 export const COMPLETION_ENDS_DAY_QUEST_IDS = new Set(["van-dap", "van-dap-thuong"]);
 
 /**
+ * Nhiệm vụ mà「hết lượt」CHƯA CHẮC là hết ngày, vì lượt CUỐI của nó chỉ mở ra sau khi các
+ * nhiệm vụ ngày khác đã xong.
+ *
+ * Vòng Quay Phúc Vận là đúng hình dạng ấy, và cho tới nay là cái duy nhất: site cho 4 lượt một
+ * ngày nhưng khoá lượt thứ 4 cho tới khi xong hết nhiệm vụ ngày. Trước lúc ấy nút quay biến
+ * khỏi DOM (bản VIP) hoặc tự viết lại thành「Hết lượt」(bản thường) — cùng một hình dạng với
+ * hết lượt THẬT, và không có gì phân biệt được hai cái ngay tại chỗ.
+ *
+ * Không có danh sách này thì lượt ghé đầu tiên gặp「hết lượt」ghi thẳng vào sổ, và ĐÚNG cái lượt
+ * ghé có thể lấy vòng thứ 4 — lượt sau khi mọi nhiệm vụ khác đã xong — là lượt bị sổ cấm mở
+ * trang. Đo trên trạm đang phục vụ ngày 15/08/2026, trọn chuỗi trên năm đàn: 20:41「hết lượt
+ * quay hôm nay」→ 20:44「Đã đủ lượt hôm nay … Vòng Quay Phúc Vận」→ 20:51–20:54「Bỏ qua … Vòng
+ * Quay Phúc Vận」. Mỗi ngày mất trắng một vòng quay, và mất im lặng: mọi dòng nhật ký đều xanh,
+ * vì theo chỗ đứng của runner thì nó đã làm đúng.
+ *
+ * Thuốc: chỉ tin「hết lượt」của chúng KHI mọi nhiệm vụ ngày khác trong kế hoạch đã vào sổ — lúc
+ * ấy điều kiện mở lượt cuối đã thoả, nên「vẫn hết lượt」mới thật là hết. Giá phải trả là một
+ * hai lượt ghé thừa vào cuối ngày; đổi lại là vòng quay thứ 4, mỗi ngày, cho mọi đàn.
+ *
+ * Bản desktop KHÔNG cần danh sách này vì nó không có sổ: `AccountRunner` ghi log rồi quay lại ở
+ * vòng sau, đúng như XML doc của `LotteryWheel` dự tính («a later visit's business»).
+ */
+export const PEER_GATED_QUEST_IDS = new Set(["vong-quay-phuc-van", "vong-quay-phuc-van-thuong"]);
+
+/**
+ * Mọi nhiệm vụ ngày KHÁC trong kế hoạch đã đủ lượt hôm nay chưa — câu hỏi mà
+ * `PEER_GATED_QUEST_IDS` cần trả lời trước khi cho một cái vào sổ.
+ *
+ * `plan` là kế hoạch của CHÍNH vòng này, tức đã trừ đi những nhiệm vụ vào sổ từ các vòng
+ * TRƯỚC; nên chỉ còn phải trừ nốt những cái vừa vào sổ trong vòng NÀY (`cappedSoFar`).
+ *
+ * Nhiệm vụ chạy xong mà chưa vào sổ vẫn tính là CÒN DỞ — đúng như vậy: Phúc Lợi Đường có 4
+ * lượt, xong một lượt không mở được vòng quay thứ 4. Và một nhiệm vụ hỏng cả ngày cũng giữ
+ * vòng quay ở trạng thái chờ cả ngày; đó là cái giá đã biết, vì lượt cuối kia có thể mở ra
+ * ngay khi nhiệm vụ ấy chạy được.
+ *
+ * Kế hoạch không có nhiệm vụ ngày nào khác thì câu trả lời là CÓ, và đó cũng đúng: không có gì
+ * để xong thì cũng chẳng có gì mở khoá lượt cuối, nên「hết lượt」là hết thật.
+ */
+export function peersDoneForQuota(quest, plan, cappedSoFar = []) {
+  const capped = new Set(cappedSoFar);
+  return !(plan ?? []).some(
+    (other) => other?.id !== quest?.id && isDailyQuotaQuest(other) && !capped.has(other.id),
+  );
+}
+
+/**
  * Kết quả vừa rồi có phải lời khai「hôm nay hết lượt」không.
  *
  * HAI đường vào sổ, và cả hai đều đòi chính TRANG GAME xác nhận — khác nhau ở chỗ nó xác nhận
@@ -86,9 +133,16 @@ export const COMPLETION_ENDS_DAY_QUEST_IDS = new Set(["van-dap", "van-dap-thuong
  *
  * `isDailyQuotaQuest` gác trước cả hai nhánh: một ID không phải nhiệm vụ ngày thì không có
  * đường nào vào sổ, kể cả khi ai đó lỡ tay thêm nó vào danh sách thứ hai.
+ *
+ * `peersDone` là cổng THỨ BA, và chỉ những ID trong `PEER_GATED_QUEST_IDS` phải qua nó: lời khai
+ * của trang game là thật, nhưng với chúng nó chỉ trả lời「lúc này hết lượt」chứ không trả lời
+ * 「hôm nay hết lượt」. Tính bằng `peersDoneForQuota`.
  */
-export function reachedDailyQuota(quest, outcome) {
+export function reachedDailyQuota(quest, outcome, { peersDone = false } = {}) {
   if (!isDailyQuotaQuest(quest)) return false;
+  // Mặc định `false` là phía AN TOÀN, có chủ ý: người gọi quên truyền thì cùng lắm mở thừa một
+  // trang mỗi vòng, còn ngả nhầm về phía kia là mất hẳn một vòng quay mỗi ngày — im lặng.
+  if (!peersDone && PEER_GATED_QUEST_IDS.has(quest.id)) return false;
   if (outcome?.outcome === "alreadyDone" && outcome?.dailyCapReached === true) return true;
   return outcome?.outcome === "completed" && COMPLETION_ENDS_DAY_QUEST_IDS.has(quest.id);
 }

@@ -11,7 +11,7 @@ import { readinessProbe, vipProbe } from "./boardScripts.mjs";
 import { closeBrowserWithin } from "./browserShutdown.mjs";
 import { computeNextDelaySeconds } from "./cooldown.mjs";
 import { DEFAULT_GAME_BASE_URL, parseCookieString } from "./cookies.mjs";
-import { isDailyQuotaQuest, reachedDailyQuota } from "./dailyQuota.mjs";
+import { isDailyQuotaQuest, peersDoneForQuota, reachedDailyQuota } from "./dailyQuota.mjs";
 import { createQuestEngine, enabledQuestsInOrder, questsForAccount, QuestAborted } from "./engine.mjs";
 import { profileForConfig } from "./profile.mjs";
 import { acquireQuestSlot, isDedicatedPageQuest } from "./questGate.mjs";
@@ -645,7 +645,12 @@ export async function runCycle(deps) {
         publishProgress();
 
         results.push(outcome);
-        if (reachedDailyQuota(quest, outcome)) cappedToday.push(quest.id);
+        // `peersDone` chỉ đổi số phận của Vòng Quay Phúc Vận (xem `PEER_GATED_QUEST_IDS`): lượt
+        // thứ 4 của nó chỉ mở sau khi các nhiệm vụ ngày khác xong, nên「hết lượt」nghe được TRƯỚC
+        // lúc ấy là lời khai đúng về hiện tại và sai về cả ngày. Tính ngay tại đây, không cầm
+        // sẵn từ đầu vòng: `cappedToday` mọc dần trong lúc vòng chạy.
+        const peersDone = peersDoneForQuota(quest, quests, cappedToday);
+        if (reachedDailyQuota(quest, outcome, { peersDone })) cappedToday.push(quest.id);
 
         const shape = OUTCOME_TEXT[outcome.outcome] ?? OUTCOME_TEXT.skipped;
         await say(`${quest.name}: ${shape.say(outcome)}`, shape.level);
