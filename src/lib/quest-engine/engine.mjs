@@ -50,6 +50,23 @@ const MAX_REPEAT_DEPTH = 2;
 const MAX_PAGE_RENDER_ATTEMPTS = 3;
 
 /**
+ * DẤU NGÀY — kênh thứ ba của một script, bên cạnh tường thuật (`!`) và số liệu (không dấu).
+ *
+ * Một dòng `@khoá` nghĩa là「việc mang tên KHOÁ này đã làm xong hôm nay cho đàn này」. Engine
+ * gom các khoá ấy lên tới `runCycle`, khôi lỗi gửi về cùng lời khai cuối vòng, và server ghi
+ * vào `automation_jobs.daily_done` — nên dấu sống qua CẢ việc đàn nhảy sang khôi lỗi khác.
+ *
+ * Vì sao phải là một kênh riêng thay vì dò chữ trong câu tường thuật: sổ ngày là thứ quyết
+ * định tiêu tiền thật (Linh Quang Phù), và một phép dò chữ sẽ chết lặng vào ngày ai đó sửa
+ * lời văn của script — đúng lập luận đã viết cho `dailyCapReached` ở nhánh `stopIf`.
+ *
+ * Cố ý CHỈ MỘT ký tự và không có cú pháp nào khác: mọi engine đời cũ (bản desktop, khôi lỗi
+ * GitHub chưa cập nhật) đọc dòng ấy như một dòng số liệu và ghi nó vào Debug — không hiểu thì
+ * cũng không hỏng.
+ */
+const MARK_PREFIX = "@";
+
+/**
  * Một `stopIf` dạng VẮNG MẶT được cho bao lâu để trang chứng minh nó chỉ đang vẽ chậm.
  *
  * Chỉ tiêu tốn khi selector KHÔNG khớp phần tử nào — tức đúng những lúc câu trả lời còn mơ
@@ -427,6 +444,15 @@ export function createQuestEngine(deps) {
     let state;
     let error;
 
+    /**
+     * DẤU NGÀY nhặt được trong lượt chạy này — xem `MARK_PREFIX`.
+     *
+     * Sống NGOÀI vòng thử lại, khác mọi thứ trong `state`: một dấu nghĩa là「việc ấy đã làm
+     * rồi ngoài đời」, và một lượt thử lại không hoàn tác được nó. Đặt trong `state` thì lượt
+     * thử lại sau một trang chưa dựng xong sẽ quên mất rằng phù vừa được mua — rồi mua lần nữa.
+     */
+    const dailyMarks = new Set();
+
     // Chạy lại từ bước 0 khi — và CHỈ khi — script gục vì trang chưa dựng xong. Xem
     // MAX_PAGE_RENDER_ATTEMPTS để biết vì sao đơn vị thử lại là cả nhiệm vụ.
     //
@@ -443,6 +469,7 @@ export function createQuestEngine(deps) {
         stopReason: null,
         pageNotRendered: false,
         dailyCapReached: false,
+        dailyMarks,
       };
       error = await executeSteps(session, quest, quest.steps, state, 0);
 
@@ -456,31 +483,46 @@ export function createQuestEngine(deps) {
       );
     }
 
-    if (error) return result(quest, "failed", { message: error });
+    /**
+     * Dấu ngày đi kèm MỌI kết cục, kể cả `failed`.
+     *
+     * Không có ngoại lệ nào cho lượt hỏng, và đó là chủ ý: dấu nói về một việc ĐÃ XẢY RA
+     * ngoài đời (một lá phù đã trả tiền), không phải về việc nhiệm vụ có chạy trót lọt hay
+     * không. Giữ lại dấu của một vòng hỏng là cùng lắm mất một lá phù của hôm ấy; đánh rơi nó
+     * là mua lá thứ hai — đúng cái lỗi bản này sinh ra để chữa.
+     */
+    const withMarks = (outcome) =>
+      dailyMarks.size > 0 ? { ...outcome, dailyMarks: [...dailyMarks] } : outcome;
+
+    if (error) return withMarks(result(quest, "failed", { message: error }));
 
     if (state.stopReason) {
       // Hai trạng thái khác nhau cùng kết thúc sớm một script, và chúng đáng được kể khác
       // nhau. Còn giữ một đồng hồ đếm ngược thật nghĩa là nhiệm vụ đang CHỜ — đó là
       // onCooldown, ghi ở mức Info kèm thời gian còn lại. Dừng mà không có đồng hồ nghĩa là
       // hết lượt hôm nay: hôm nay sẽ không có gì nữa, nên nó ở yên mức alreadyDone.
-      return state.cooldown > 0
-        ? result(quest, "onCooldown", { cooldownSeconds: state.cooldown, message: state.stopReason })
-        : result(quest, "alreadyDone", {
-            cooldownSeconds: quest.fallbackCooldownSeconds,
-            message: state.stopReason,
-            // Thứ quyết định là NGUỒN của câu「không còn gì để làm」, không phải bản thân câu
-            // ấy. `true` = một bước `stopIf` khớp, tức chính TRANG GAME trả lời; các ngả khác
-            // cùng về `alreadyDone` (Vấn Đáp gặp câu chưa biết đáp án) là giới hạn của khôi
-            // lỗi, và nhớ chúng thành「đã đủ lượt」là khoá nhầm cả ngày — xem dailyQuota.mjs.
-            dailyCapReached: state.dailyCapReached === true,
-          });
+      return withMarks(
+        state.cooldown > 0
+          ? result(quest, "onCooldown", { cooldownSeconds: state.cooldown, message: state.stopReason })
+          : result(quest, "alreadyDone", {
+              cooldownSeconds: quest.fallbackCooldownSeconds,
+              message: state.stopReason,
+              // Thứ quyết định là NGUỒN của câu「không còn gì để làm」, không phải bản thân câu
+              // ấy. `true` = một bước `stopIf` khớp, tức chính TRANG GAME trả lời; các ngả khác
+              // cùng về `alreadyDone` (Vấn Đáp gặp câu chưa biết đáp án) là giới hạn của khôi
+              // lỗi, và nhớ chúng thành「đã đủ lượt」là khoá nhầm cả ngày — xem dailyQuota.mjs.
+              dailyCapReached: state.dailyCapReached === true,
+            }),
+      );
     }
 
-    return result(quest, "completed", {
-      matchedLabel: quest.name,
-      cooldownSeconds: state.cooldown ?? quest.fallbackCooldownSeconds,
-      message: state.lastRead,
-    });
+    return withMarks(
+      result(quest, "completed", {
+        matchedLabel: quest.name,
+        cooldownSeconds: state.cooldown ?? quest.fallbackCooldownSeconds,
+        message: state.lastRead,
+      }),
+    );
   }
 
   /** Chạy một danh sách bước theo thứ tự. Trả null khi xong, hoặc câu báo lỗi. */
@@ -588,18 +630,28 @@ export function createQuestEngine(deps) {
       case "evaluateJavaScript": {
         state.lastRead = await session.evaluate(step.script ?? "");
 
-        // Giá trị trả về của một script là TIẾNG NÓI của nó, trên hai kênh. Dòng bắt đầu
+        // Giá trị trả về của một script là TIẾNG NÓI của nó, trên BA kênh. Dòng bắt đầu
         // bằng '!' là TƯỜNG THUẬT — thứ người theo dõi nên đọc ("X vừa vào phòng", "Trục
-        // xuất Y — HP dưới ngưỡng") — và đi vào Info. Còn lại là số liệu ("kick-scan thr=…")
-        // và đi vào Debug. Một script, một lần trả về, phục vụ cả hai người đọc; '' nghĩa là
-        // nó không có gì để nói.
+        // xuất Y — HP dưới ngưỡng") — và đi vào Info. Dòng bắt đầu bằng '@' là một DẤU NGÀY
+        // (xem MARK_PREFIX). Còn lại là số liệu ("kick-scan thr=…") và đi vào Debug. Một
+        // script, một lần trả về, phục vụ cả ba người đọc; '' nghĩa là nó không có gì để nói.
         if (typeof state.lastRead === "string" && state.lastRead.trim()) {
           const debugLines = [];
           for (const raw of state.lastRead.split("\n")) {
             const line = raw.trim();
             if (!line) continue;
             if (line.startsWith("!")) log.info(scope, line.slice(1).trim());
-            else debugLines.push(line);
+            else if (line.startsWith(MARK_PREFIX)) {
+              const key = line.slice(MARK_PREFIX.length).trim();
+              // Dấu rỗng là script viết hỏng, không phải một sự thật — vứt, và để nó lộ ra ở
+              // Debug thay vì lặng lẽ ghi một chuỗi rỗng vào sổ của đàn.
+              if (key) {
+                state.dailyMarks?.add(key);
+                debugLines.push(`dấu ngày: ${key}`);
+              } else {
+                debugLines.push(`dấu ngày RỖNG từ ${line} — script viết hỏng?`);
+              }
+            } else debugLines.push(line);
           }
           if (debugLines.length > 0) {
             const text = debugLines.join(" | ");

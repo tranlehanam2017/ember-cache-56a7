@@ -319,7 +319,10 @@ export async function runCycle(deps) {
   };
 
   const translationNotes = [];
-  const profile = profileForConfig(config, (m) => translationNotes.push(m));
+  // Sổ ngày đi CÙNG lúc dịch cấu hình, không phải một phép kiểm rời rạc ở đâu đó sau này:
+  // một tuỳ chọn đã hết suất hôm nay thì phải TẮT ngay trong hồ sơ, để không script nào còn
+  // nhánh cân nhắc nó. Xem `PHU_DAILY_MARK`.
+  const profile = profileForConfig(config, (m) => translationNotes.push(m), dailyDone?.questIds);
   const enabled = enabledQuestsInOrder(profile);
 
   if (enabled.length === 0) {
@@ -651,6 +654,20 @@ export async function runCycle(deps) {
         // sẵn từ đầu vòng: `cappedToday` mọc dần trong lúc vòng chạy.
         const peersDone = peersDoneForQuota(quest, quests, cappedToday);
         if (reachedDailyQuota(quest, outcome, { peersDone })) cappedToday.push(quest.id);
+
+        /**
+         * DẤU NGÀY của nhiệm vụ vừa chạy — đi CHUNG một sổ với「đã đủ lượt hôm nay」, vì
+         * chúng là cùng một loại sự thật: một việc của hôm nay, của đàn này, đã xong.
+         *
+         * Khác nhau ở phạm vi, và đó là lý do khoá phải mang tiền tố không thể trùng một
+         * ID nhiệm vụ: `cappedToday` khoá cả NHIỆM VỤ khỏi vòng sau, còn một dấu chỉ khoá
+         * một VIỆC BÊN TRONG nhiệm vụ (mua phù) — nhiệm vụ vẫn phải chạy để đào tiếp.
+         * `splitPlanForToday` lọc lại bằng `isDailyQuotaQuest` nên một dấu không bao giờ
+         * cắt nhầm nhiệm vụ nào.
+         */
+        for (const mark of outcome.dailyMarks ?? []) {
+          if (!cappedToday.includes(mark)) cappedToday.push(mark);
+        }
 
         const shape = OUTCOME_TEXT[outcome.outcome] ?? OUTCOME_TEXT.skipped;
         await say(`${quest.name}: ${shape.say(outcome)}`, shape.level);

@@ -1,6 +1,6 @@
 {
   "name": "Ho\u1EA1t \u0111\u1ED9ng h\u00E0ng ng\u00E0y (m\u1EB7c \u0111\u1ECBnh)",
-  "schemaVersion": 61,
+  "schemaVersion": 62,
   "dailyQuestPath": "/nhiem-vu-hang-ngay",
   "quests": [
     {
@@ -2125,7 +2125,7 @@
           "action": "evaluateJavaScript",
           "script": "() =\u003E { const body = document.body; if (body) { body.classList.remove(\u0027jvz-km-host-phase\u0027); body.classList.remove(\u0027jvz-km-buy-go\u0027); body.classList.remove(\u0027jvz-km-refresh\u0027); } if (!body || !body.classList.contains(\u0027jvz-km-ripe\u0027)) return \u0027gate: ch\u01B0a \u0111\u1EA1t khai th\u00E1c t\u1ED1i \u0111a \u2014 l\u01B0\u1EE3t n\u00E0y kh\u00F4ng mua, kh\u00F4ng \u0111o\u1EA1t\u0027; const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); const parts = []; /* ---- su\u1EA5t mua ph\u00F9 c\u1EE7a ng\u00E0y ---- */ if (\u0027{{buyPhu}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) { parts.push(\u0027kh\u00F4ng mua ph\u00F9 (tu\u1EF3 ch\u1ECDn t\u1EAFt)\u0027); } else { const d = new Date(); const today = d.getFullYear() \u002B \u0027-\u0027 \u002B (d.getMonth() \u002B 1) \u002B \u0027-\u0027 \u002B d.getDate(); let last = null; try { last = localStorage.getItem(\u0027__jvz_km_phu\u0027); } catch (e) { } if (last === today) { parts.push(\u0027ph\u00F9 h\u00F4m nay \u0111\u00E3 d\u00F9ng su\u1EA5t \u2014 kh\u00F4ng mua n\u1EEFa\u0027); } else { try { localStorage.setItem(\u0027__jvz_km_phu\u0027, today); } catch (e) { } body.classList.add(\u0027jvz-km-buy-go\u0027); body.classList.add(\u0027jvz-km-refresh\u0027); parts.push(\u0027MUA 1 Linh Quang Ph\u00F9 (su\u1EA5t duy nh\u1EA5t c\u1EE7a ng\u00E0y)\u0027); } } /* ---- \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t ---- */ if (\u0027{{hostMode}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t (tu\u1EF3 ch\u1ECDn t\u1EAFt)\u0027); } else { const bonusEl = document.querySelector(\u0027#tuvi-bonus-percentage\u0027); const bonus = bonusEl ? parseInt((bonusEl.textContent || \u0027\u0027).replace(/\\D/g, \u0027\u0027), 10) : NaN; const thr = parseInt(\u0027{{hostMinBonus}}\u0027, 10) || 0; const atk = fold(body.textContent).match(/luot tan cong\\s*:?\\s*(\\d\u002B)\\s*\\/\\s*(\\d\u002B)/); if (!(bonus \u003E= 0)) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: ch\u01B0a \u0111\u1ECDc \u0111\u01B0\u1EE3c % bonus c\u1EE7a m\u1ECF\u0027); } else if (bonus \u003C thr) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: bonus \u0027 \u002B bonus \u002B \u0027% d\u01B0\u1EDBi ng\u01B0\u1EE1ng \u0027 \u002B thr \u002B \u0027%\u0027); } else if (atk \u0026\u0026 parseInt(atk[1], 10) \u003E= parseInt(atk[2], 10)) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: h\u1EBFt l\u01B0\u1EE3t t\u1EA5n c\u00F4ng (\u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] \u002B \u0027)\u0027); } else { body.classList.add(\u0027jvz-km-host-phase\u0027); body.classList.add(\u0027jvz-km-refresh\u0027); parts.push(\u0027\u0110O\u1EA0T M\u1ECE: bonus \u0027 \u002B bonus \u002B \u0027% \u2265 \u0027 \u002B thr \u002B \u0027%\u0027 \u002B (atk ? \u0027, t\u1EA5n c\u00F4ng \u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] : \u0027\u0027)); } } return \u0027!\u0110\u1EA1t t\u1ED1i \u0111a \u2014 quy\u1EBFt \u0111\u1ECBnh c\u1EE7a l\u01B0\u1EE3t: \u0027 \u002B parts.join(\u0027; \u0027); }",
           "timeoutMs": 15000,
-          "note": "ba c\u1EDD ra kh\u1ECFi c\u1ED5ng: jvz-km-buy-go (mua 1 ph\u00F9 \u2014 su\u1EA5t ng\u00E0y ghi s\u1ED5 NGAY t\u1EA1i \u0111\u00E2y), jvz-km-host-phase (\u0111\u1EE7 \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t), jvz-km-refresh (c\u00F3 c\u1EE5m n\u00E0o s\u1EAFp m\u1EDF l\u1EA1i s\u1ED5)"
+          "note": "ba c\u1EDD ra kh\u1ECFi c\u1ED5ng: jvz-km-buy-go (mua 1 ph\u00F9 \u2014 c\u1ED5ng localStorage c\u1EE7a M\u00C1Y N\u00C0Y ti\u00EAu su\u1EA5t ngay t\u1EA1i \u0111\u00E2y; s\u1ED5 ng\u00E0y c\u1EE7a \u0110\u00C0N th\u00EC do b\u01B0\u1EDBc d\u1EA5u sau c\u00FA b\u1EA5m ghi, xem KmPhuMarkScript), jvz-km-host-phase (\u0111\u1EE7 \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t), jvz-km-refresh (c\u00F3 c\u1EE5m n\u00E0o s\u1EAFp m\u1EDF l\u1EA1i s\u1ED5)"
         },
         {
           "action": "click",
@@ -2200,6 +2200,16 @@
           "timeoutMs": 8000,
           "note": "\u300CMua Ngay\u300Dtrong h\u1ED9p x\u00E1c nh\u1EADn (click#236)",
           "optional": true,
+          "when": {
+            "kind": "visible",
+            "selector": ".jvz-km-buy"
+          }
+        },
+        {
+          "action": "evaluateJavaScript",
+          "script": "() =\u003E \u0027@khoang-mach:phu\u0027",
+          "timeoutMs": 15000,
+          "note": "ghi D\u1EA4U NG\u00C0Y\u300Csu\u1EA5t ph\u00F9 \u0111\u00E3 ti\u00EAu\u300Dv\u00E0o s\u1ED5 c\u1EE7a \u0111\u00E0n (b\u1EA3n web) \u2014 c\u00F9ng c\u1EDD v\u1EDBi ch\u00EDnh c\u00FA b\u1EA5m mua, n\u00EAn kh\u00F4ng c\u00F3 \u0111\u01B0\u1EDDng n\u00E0o ghi d\u1EA5u m\u00E0 ch\u01B0a \u0111i qua ti\u1EC7m. Xem KmPhuMarkScript",
           "when": {
             "kind": "visible",
             "selector": ".jvz-km-buy"
@@ -3813,7 +3823,7 @@
           "action": "evaluateJavaScript",
           "script": "() =\u003E { const body = document.body; if (body) { body.classList.remove(\u0027jvz-km-host-phase\u0027); body.classList.remove(\u0027jvz-km-buy-go\u0027); body.classList.remove(\u0027jvz-km-refresh\u0027); } if (!body || !body.classList.contains(\u0027jvz-km-ripe\u0027)) return \u0027gate: ch\u01B0a \u0111\u1EA1t khai th\u00E1c t\u1ED1i \u0111a \u2014 l\u01B0\u1EE3t n\u00E0y kh\u00F4ng mua, kh\u00F4ng \u0111o\u1EA1t\u0027; const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); const parts = []; /* ---- su\u1EA5t mua ph\u00F9 c\u1EE7a ng\u00E0y ---- */ if (\u0027{{buyPhu}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) { parts.push(\u0027kh\u00F4ng mua ph\u00F9 (tu\u1EF3 ch\u1ECDn t\u1EAFt)\u0027); } else { const d = new Date(); const today = d.getFullYear() \u002B \u0027-\u0027 \u002B (d.getMonth() \u002B 1) \u002B \u0027-\u0027 \u002B d.getDate(); let last = null; try { last = localStorage.getItem(\u0027__jvz_km_phu\u0027); } catch (e) { } if (last === today) { parts.push(\u0027ph\u00F9 h\u00F4m nay \u0111\u00E3 d\u00F9ng su\u1EA5t \u2014 kh\u00F4ng mua n\u1EEFa\u0027); } else { try { localStorage.setItem(\u0027__jvz_km_phu\u0027, today); } catch (e) { } body.classList.add(\u0027jvz-km-buy-go\u0027); body.classList.add(\u0027jvz-km-refresh\u0027); parts.push(\u0027MUA 1 Linh Quang Ph\u00F9 (su\u1EA5t duy nh\u1EA5t c\u1EE7a ng\u00E0y)\u0027); } } /* ---- \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t ---- */ if (\u0027{{hostMode}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t (tu\u1EF3 ch\u1ECDn t\u1EAFt)\u0027); } else { const bonusEl = document.querySelector(\u0027#tuvi-bonus-percentage\u0027); const bonus = bonusEl ? parseInt((bonusEl.textContent || \u0027\u0027).replace(/\\D/g, \u0027\u0027), 10) : NaN; const thr = parseInt(\u0027{{hostMinBonus}}\u0027, 10) || 0; const atk = fold(body.textContent).match(/luot tan cong\\s*:?\\s*(\\d\u002B)\\s*\\/\\s*(\\d\u002B)/); if (!(bonus \u003E= 0)) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: ch\u01B0a \u0111\u1ECDc \u0111\u01B0\u1EE3c % bonus c\u1EE7a m\u1ECF\u0027); } else if (bonus \u003C thr) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: bonus \u0027 \u002B bonus \u002B \u0027% d\u01B0\u1EDBi ng\u01B0\u1EE1ng \u0027 \u002B thr \u002B \u0027%\u0027); } else if (atk \u0026\u0026 parseInt(atk[1], 10) \u003E= parseInt(atk[2], 10)) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: h\u1EBFt l\u01B0\u1EE3t t\u1EA5n c\u00F4ng (\u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] \u002B \u0027)\u0027); } else { body.classList.add(\u0027jvz-km-host-phase\u0027); body.classList.add(\u0027jvz-km-refresh\u0027); parts.push(\u0027\u0110O\u1EA0T M\u1ECE: bonus \u0027 \u002B bonus \u002B \u0027% \u2265 \u0027 \u002B thr \u002B \u0027%\u0027 \u002B (atk ? \u0027, t\u1EA5n c\u00F4ng \u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] : \u0027\u0027)); } } return \u0027!\u0110\u1EA1t t\u1ED1i \u0111a \u2014 quy\u1EBFt \u0111\u1ECBnh c\u1EE7a l\u01B0\u1EE3t: \u0027 \u002B parts.join(\u0027; \u0027); }",
           "timeoutMs": 15000,
-          "note": "ba c\u1EDD ra kh\u1ECFi c\u1ED5ng: jvz-km-buy-go (mua 1 ph\u00F9 \u2014 su\u1EA5t ng\u00E0y ghi s\u1ED5 NGAY t\u1EA1i \u0111\u00E2y), jvz-km-host-phase (\u0111\u1EE7 \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t), jvz-km-refresh (c\u00F3 c\u1EE5m n\u00E0o s\u1EAFp m\u1EDF l\u1EA1i s\u1ED5)"
+          "note": "ba c\u1EDD ra kh\u1ECFi c\u1ED5ng: jvz-km-buy-go (mua 1 ph\u00F9 \u2014 c\u1ED5ng localStorage c\u1EE7a M\u00C1Y N\u00C0Y ti\u00EAu su\u1EA5t ngay t\u1EA1i \u0111\u00E2y; s\u1ED5 ng\u00E0y c\u1EE7a \u0110\u00C0N th\u00EC do b\u01B0\u1EDBc d\u1EA5u sau c\u00FA b\u1EA5m ghi, xem KmPhuMarkScript), jvz-km-host-phase (\u0111\u1EE7 \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t), jvz-km-refresh (c\u00F3 c\u1EE5m n\u00E0o s\u1EAFp m\u1EDF l\u1EA1i s\u1ED5)"
         },
         {
           "action": "click",
@@ -3888,6 +3898,16 @@
           "timeoutMs": 8000,
           "note": "\u300CMua Ngay\u300Dtrong h\u1ED9p x\u00E1c nh\u1EADn (click#236)",
           "optional": true,
+          "when": {
+            "kind": "visible",
+            "selector": ".jvz-km-buy"
+          }
+        },
+        {
+          "action": "evaluateJavaScript",
+          "script": "() =\u003E \u0027@khoang-mach:phu\u0027",
+          "timeoutMs": 15000,
+          "note": "ghi D\u1EA4U NG\u00C0Y\u300Csu\u1EA5t ph\u00F9 \u0111\u00E3 ti\u00EAu\u300Dv\u00E0o s\u1ED5 c\u1EE7a \u0111\u00E0n (b\u1EA3n web) \u2014 c\u00F9ng c\u1EDD v\u1EDBi ch\u00EDnh c\u00FA b\u1EA5m mua, n\u00EAn kh\u00F4ng c\u00F3 \u0111\u01B0\u1EDDng n\u00E0o ghi d\u1EA5u m\u00E0 ch\u01B0a \u0111i qua ti\u1EC7m. Xem KmPhuMarkScript",
           "when": {
             "kind": "visible",
             "selector": ".jvz-km-buy"

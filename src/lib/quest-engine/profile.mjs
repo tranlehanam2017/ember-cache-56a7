@@ -93,6 +93,22 @@ const SIMPLE_QUESTS = [
 ];
 
 /**
+ * Khoá DẤU NGÀY của suất Linh Quang Phù — một lá mỗi ngày cho mỗi đàn.
+ *
+ * Nằm chung sổ với「nhiệm vụ đã đủ lượt hôm nay」(`daily_done.questIds`) nên phải mang hình
+ * dạng KHÔNG THỂ trùng một ID nhiệm vụ: dấu hai chấm không có trong ID nào của hồ sơ, và
+ * `splitPlanForToday` còn lọc lại bằng `isDailyQuotaQuest` trước khi dám bỏ qua nhiệm vụ nào.
+ *
+ * MỘT khoá cho cả hai bản VIP/thường: suất phù là của TÀI KHOẢN, không phải của cái flow chạy
+ * nó — y như lập luận đã viết cho `DAILY_QUOTA_QUEST_IDS`. Một tài khoản rớt hạng giữa ngày
+ * vẫn là tài khoản đã tiêu một lá phù hôm nay.
+ *
+ * Chuỗi này phải TRÙNG với dòng `@…` trong script của hồ sơ quest; `npm run smoke` đối chiếu
+ * hai bên và đỏ khi chúng lệch nhau.
+ */
+export const PHU_DAILY_MARK = "khoang-mach:phu";
+
+/**
  * Áp cấu hình người dùng lên một hồ sơ mới và trả về nó.
  *
  * Mọi quest bắt đầu từ trạng thái tắt (hồ sơ trong repo đã vậy), nên thứ chạy đúng bằng thứ
@@ -100,8 +116,12 @@ const SIMPLE_QUESTS = [
  *
  * @param {object} config  UserConfig đã qua Zod (xem services/configs.ts)
  * @param {(msg: string) => void} [log]  nơi kể lại những chỗ dịch không khớp
+ * @param {Iterable<string>} [marksToday]  sổ ngày của đàn (`daily_done.questIds`) — những gì
+ *   đã làm xong hôm nay. Vắng mặt = sổ trắng, đúng nghĩa cho mọi người gọi chỉ muốn dịch cấu
+ *   hình (smoke test, lưới kiểm chứng) chứ không chạy một vòng thật.
  */
-export function profileForConfig(config, log) {
+export function profileForConfig(config, log, marksToday) {
+  const doneToday = marksToday instanceof Set ? marksToday : new Set(marksToday ?? []);
   const profile = loadProfile();
 
   // ---- Mê Cung ----------------------------------------------------------------------
@@ -198,8 +218,25 @@ export function profileForConfig(config, log) {
       const phuOption = findOption(khoangMach, "buyPhu");
       const phuOff = phuOption?.choices?.find((c) => c.value.includes("«"));
       const phuOn = phuOption?.choices?.find((c) => !c.value.includes("«"));
-      const phuWanted = km.buyPhu === false ? phuOff : phuOn;
+      /**
+       * SUẤT PHÙ CỦA NGÀY — cổng thứ hai, và là cổng DUY NHẤT sống qua việc đàn đổi khôi lỗi.
+       *
+       * Cổng thứ nhất nằm trong chính script cổng (một khoá `localStorage`), và nó chỉ nhớ
+       * được trong PHẠM VI MỘT HỒ SƠ TRÌNH DUYỆT. Đàn thì không đứng yên một máy: đo trên đàn
+       * 7cf87cfb ngày 15/08/2026 — mua lúc 17:10, chặn đúng ở 17:30 và 17:58, rồi MUA LẦN HAI
+       * lúc 18:08 khi vòng ấy rơi vào một khôi lỗi khác với hồ sơ trắng. Khôi lỗi GitHub còn
+       * tệ hơn: mỗi lượt Actions là một máy mới tinh, nên cổng ấy chưa bao giờ chặn được gì.
+       *
+       * Nên sổ thật nằm ở server (`automation_jobs.daily_done`, khoá `PHU_DAILY_MARK`) và
+       * được đọc ngay tại đây: đã có dấu thì ép tuỳ chọn về TẮT, script cổng thậm chí không
+       * còn nhánh nào để cân nhắc. Dấu được ghi ở bước chọn món trong tiệm (xem hồ sơ quest).
+       */
+      const phuSpent = doneToday.has(PHU_DAILY_MARK);
+      const phuWanted = km.buyPhu === false || phuSpent ? phuOff : phuOn;
       if (phuWanted) setOption(khoangMach, "buyPhu", phuWanted.value, { log });
+      if (phuSpent && km.buyPhu !== false) {
+        log?.("Linh Quang Phù: đàn này đã mua đúng một lá hôm nay — vòng này không mua nữa.");
+      }
 
       const hostOption = findOption(khoangMach, "hostMode");
       const hostOff = hostOption?.choices?.find((c) => c.value.includes("«"));
