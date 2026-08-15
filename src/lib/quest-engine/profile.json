@@ -1,6 +1,6 @@
 {
   "name": "Ho\u1EA1t \u0111\u1ED9ng h\u00E0ng ng\u00E0y (m\u1EB7c \u0111\u1ECBnh)",
-  "schemaVersion": 62,
+  "schemaVersion": 63,
   "dailyQuestPath": "/nhiem-vu-hang-ngay",
   "quests": [
     {
@@ -2123,134 +2123,9 @@
         },
         {
           "action": "evaluateJavaScript",
-          "script": "() =\u003E { const body = document.body; if (body) { body.classList.remove(\u0027jvz-km-host-phase\u0027); body.classList.remove(\u0027jvz-km-buy-go\u0027); body.classList.remove(\u0027jvz-km-refresh\u0027); } if (!body || !body.classList.contains(\u0027jvz-km-ripe\u0027)) return \u0027gate: ch\u01B0a \u0111\u1EA1t khai th\u00E1c t\u1ED1i \u0111a \u2014 l\u01B0\u1EE3t n\u00E0y kh\u00F4ng mua, kh\u00F4ng \u0111o\u1EA1t\u0027; const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); const parts = []; /* ---- su\u1EA5t mua ph\u00F9 c\u1EE7a ng\u00E0y ---- */ if (\u0027{{buyPhu}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) { parts.push(\u0027kh\u00F4ng mua ph\u00F9 (tu\u1EF3 ch\u1ECDn t\u1EAFt)\u0027); } else { const d = new Date(); const today = d.getFullYear() \u002B \u0027-\u0027 \u002B (d.getMonth() \u002B 1) \u002B \u0027-\u0027 \u002B d.getDate(); let last = null; try { last = localStorage.getItem(\u0027__jvz_km_phu\u0027); } catch (e) { } if (last === today) { parts.push(\u0027ph\u00F9 h\u00F4m nay \u0111\u00E3 d\u00F9ng su\u1EA5t \u2014 kh\u00F4ng mua n\u1EEFa\u0027); } else { try { localStorage.setItem(\u0027__jvz_km_phu\u0027, today); } catch (e) { } body.classList.add(\u0027jvz-km-buy-go\u0027); body.classList.add(\u0027jvz-km-refresh\u0027); parts.push(\u0027MUA 1 Linh Quang Ph\u00F9 (su\u1EA5t duy nh\u1EA5t c\u1EE7a ng\u00E0y)\u0027); } } /* ---- \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t ---- */ if (\u0027{{hostMode}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t (tu\u1EF3 ch\u1ECDn t\u1EAFt)\u0027); } else { const bonusEl = document.querySelector(\u0027#tuvi-bonus-percentage\u0027); const bonus = bonusEl ? parseInt((bonusEl.textContent || \u0027\u0027).replace(/\\D/g, \u0027\u0027), 10) : NaN; const thr = parseInt(\u0027{{hostMinBonus}}\u0027, 10) || 0; const atk = fold(body.textContent).match(/luot tan cong\\s*:?\\s*(\\d\u002B)\\s*\\/\\s*(\\d\u002B)/); if (!(bonus \u003E= 0)) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: ch\u01B0a \u0111\u1ECDc \u0111\u01B0\u1EE3c % bonus c\u1EE7a m\u1ECF\u0027); } else if (bonus \u003C thr) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: bonus \u0027 \u002B bonus \u002B \u0027% d\u01B0\u1EDBi ng\u01B0\u1EE1ng \u0027 \u002B thr \u002B \u0027%\u0027); } else if (atk \u0026\u0026 parseInt(atk[1], 10) \u003E= parseInt(atk[2], 10)) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: h\u1EBFt l\u01B0\u1EE3t t\u1EA5n c\u00F4ng (\u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] \u002B \u0027)\u0027); } else { body.classList.add(\u0027jvz-km-host-phase\u0027); body.classList.add(\u0027jvz-km-refresh\u0027); parts.push(\u0027\u0110O\u1EA0T M\u1ECE: bonus \u0027 \u002B bonus \u002B \u0027% \u2265 \u0027 \u002B thr \u002B \u0027%\u0027 \u002B (atk ? \u0027, t\u1EA5n c\u00F4ng \u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] : \u0027\u0027)); } } return \u0027!\u0110\u1EA1t t\u1ED1i \u0111a \u2014 quy\u1EBFt \u0111\u1ECBnh c\u1EE7a l\u01B0\u1EE3t: \u0027 \u002B parts.join(\u0027; \u0027); }",
+          "script": "() =\u003E { const body = document.body; if (body) { body.classList.remove(\u0027jvz-km-host-phase\u0027); body.classList.remove(\u0027jvz-km-buy-go\u0027); body.classList.remove(\u0027jvz-km-buy-now\u0027); body.classList.remove(\u0027jvz-km-refresh\u0027); } if (!body || !body.classList.contains(\u0027jvz-km-ripe\u0027)) return \u0027gate: ch\u01B0a \u0111\u1EA1t khai th\u00E1c t\u1ED1i \u0111a \u2014 l\u01B0\u1EE3t n\u00E0y kh\u00F4ng mua, kh\u00F4ng \u0111o\u1EA1t\u0027; const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); const parts = []; /* ---- su\u1EA5t mua ph\u00F9 c\u1EE7a ng\u00E0y ---- */ if (\u0027{{buyPhu}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) { parts.push(\u0027kh\u00F4ng mua ph\u00F9 (tu\u1EF3 ch\u1ECDn t\u1EAFt)\u0027); } else { const d = new Date(); const today = d.getFullYear() \u002B \u0027-\u0027 \u002B (d.getMonth() \u002B 1) \u002B \u0027-\u0027 \u002B d.getDate(); let last = null; try { last = localStorage.getItem(\u0027__jvz_km_phu\u0027); } catch (e) { } if (last === today) { parts.push(\u0027ph\u00F9 h\u00F4m nay \u0111\u00E3 d\u00F9ng su\u1EA5t \u2014 kh\u00F4ng mua n\u1EEFa\u0027); } else { body.classList.add(\u0027jvz-km-buy-go\u0027); parts.push(\u0027ph\u00F9: C\u00D2N su\u1EA5t h\u00F4m nay \u2014 s\u1EBD mua n\u1EBFu \u0111o\u1EA1t \u0111\u01B0\u1EE3c m\u1ECF\u0027); } } /* ---- \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t ---- */ if (\u0027{{hostMode}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t (tu\u1EF3 ch\u1ECDn t\u1EAFt)\u0027); } else { const bonusEl = document.querySelector(\u0027#tuvi-bonus-percentage\u0027); const bonus = bonusEl ? parseInt((bonusEl.textContent || \u0027\u0027).replace(/\\D/g, \u0027\u0027), 10) : NaN; const thr = parseInt(\u0027{{hostMinBonus}}\u0027, 10) || 0; const atk = fold(body.textContent).match(/luot tan cong\\s*:?\\s*(\\d\u002B)\\s*\\/\\s*(\\d\u002B)/); if (!(bonus \u003E= 0)) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: ch\u01B0a \u0111\u1ECDc \u0111\u01B0\u1EE3c % bonus c\u1EE7a m\u1ECF\u0027); } else if (bonus \u003C thr) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: bonus \u0027 \u002B bonus \u002B \u0027% d\u01B0\u1EDBi ng\u01B0\u1EE1ng \u0027 \u002B thr \u002B \u0027%\u0027); } else if (atk \u0026\u0026 parseInt(atk[1], 10) \u003E= parseInt(atk[2], 10)) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: h\u1EBFt l\u01B0\u1EE3t t\u1EA5n c\u00F4ng (\u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] \u002B \u0027)\u0027); } else { body.classList.add(\u0027jvz-km-host-phase\u0027); body.classList.add(\u0027jvz-km-refresh\u0027); parts.push(\u0027\u0110O\u1EA0T M\u1ECE: bonus \u0027 \u002B bonus \u002B \u0027% \u2265 \u0027 \u002B thr \u002B \u0027%\u0027 \u002B (atk ? \u0027, t\u1EA5n c\u00F4ng \u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] : \u0027\u0027)); } } return \u0027!\u0110\u1EA1t t\u1ED1i \u0111a \u2014 quy\u1EBFt \u0111\u1ECBnh c\u1EE7a l\u01B0\u1EE3t: \u0027 \u002B parts.join(\u0027; \u0027); }",
           "timeoutMs": 15000,
-          "note": "ba c\u1EDD ra kh\u1ECFi c\u1ED5ng: jvz-km-buy-go (mua 1 ph\u00F9 \u2014 c\u1ED5ng localStorage c\u1EE7a M\u00C1Y N\u00C0Y ti\u00EAu su\u1EA5t ngay t\u1EA1i \u0111\u00E2y; s\u1ED5 ng\u00E0y c\u1EE7a \u0110\u00C0N th\u00EC do b\u01B0\u1EDBc d\u1EA5u sau c\u00FA b\u1EA5m ghi, xem KmPhuMarkScript), jvz-km-host-phase (\u0111\u1EE7 \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t), jvz-km-refresh (c\u00F3 c\u1EE5m n\u00E0o s\u1EAFp m\u1EDF l\u1EA1i s\u1ED5)"
-        },
-        {
-          "action": "click",
-          "selector": "#close-btn",
-          "timeoutMs": 8000,
-          "note": "\u0111\u00F3ng s\u1ED5 \u0111\u1EC3 t\u1EDBi TI\u1EC6M \u2014 c\u00F4ng th\u1EE9c c\u1EE7a b\u1EA3n ghi 14/08: \u0111\u00F3ng \u2192 mua \u2192 m\u1EDF l\u1EA1i",
-          "when": {
-            "kind": "visible",
-            "selector": "body.jvz-km-buy-go"
-          }
-        },
-        {
-          "action": "click",
-          "selector": "#shopButton",
-          "timeoutMs": 8000,
-          "when": {
-            "kind": "visible",
-            "selector": "body.jvz-km-buy-go"
-          }
-        },
-        {
-          "action": "waitForCondition",
-          "timeoutMs": 10000,
-          "note": "k\u1EC7 TI\u1EC6M \u0111\u00E3 render \u2014 b\u1EA3n ghi 15/08 \u0111\u1EBFm 6 m\u00F3n, t\u00ECm theo T\u00CAN ch\u1EE9 kh\u00F4ng theo v\u1ECB tr\u00ED",
-          "condition": {
-            "kind": "visible",
-            "selector": "#shop-container .shop-item"
-          },
-          "when": {
-            "kind": "visible",
-            "selector": "body.jvz-km-buy-go"
-          }
-        },
-        {
-          "action": "evaluateJavaScript",
-          "script": "() =\u003E { for (const el of document.querySelectorAll(\u0027.jvz-km-buy\u0027)) el.classList.remove(\u0027jvz-km-buy\u0027); const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); const items = [...document.querySelectorAll(\u0027#shop-container .shop-item\u0027)]; if (items.length === 0) return \u0027shop: #shop-container ch\u01B0a render m\u00F3n n\u00E0o\u0027; const item = items.find((i) =\u003E fold(i.textContent).indexOf(\u0027linh quang phu\u0027) \u003E= 0); if (!item) return \u0027shop: kh\u00F4ng th\u1EA5y m\u00F3n Linh Quang Ph\u00F9 tr\u00EAn k\u1EC7\u0027; const btn = item.querySelector(\u0027button.shop-item-button\u0027); if (!btn) return \u0027shop: m\u00F3n Linh Quang Ph\u00F9 kh\u00F4ng c\u00F3 n\u00FAt mua\u0027; btn.classList.add(\u0027jvz-km-buy\u0027); return \u0027!Mua Linh Quang Ph\u00F9 (\u002B20% tu vi trong 1 gi\u1EDD) cho c\u00FA ch\u1ED1t l\u1EDDi s\u1EAFp t\u1EDBi\u0027; }",
-          "timeoutMs": 15000,
-          "when": {
-            "kind": "visible",
-            "selector": "body.jvz-km-buy-go"
-          }
-        },
-        {
-          "action": "click",
-          "selector": ".jvz-km-buy",
-          "timeoutMs": 8000,
-          "note": "OPTIONAL c\u00F3 ch\u1EE7 \u00FD: thi\u1EBFu ti\u1EC1n hay k\u1EC7 \u0111\u1ED5i th\u00EC ch\u1EC9 m\u1EA5t ph\u1EA7n \u002B20%, l\u01B0\u1EE3t \u0111\u00E0o v\u1EABn \u0111i ti\u1EBFp (su\u1EA5t ng\u00E0y \u0111\u00E3 b\u1ECB ti\u00EAu \u1EDF c\u1ED5ng \u2014 xem l\u00FD do t\u1EA1i KmHostGateScript)",
-          "optional": true,
-          "when": {
-            "kind": "visible",
-            "selector": ".jvz-km-buy"
-          }
-        },
-        {
-          "action": "waitForCondition",
-          "timeoutMs": 8000,
-          "note": "v\u0103n b\u1EA3n popup mua KH\u00D4NG \u0111\u01B0\u1EE3c b\u1EA3n ghi ch\u1EE5p tr\u1ECDn \u2014 \u0111i\u1EC1u ki\u1EC7n l\u1ECFng h\u01A1n c\u00E1c popup kh\u00E1c, v\u00E0 optional",
-          "optional": true,
-          "condition": {
-            "kind": "textMatches",
-            "selector": ".swal2-container .swal2-popup",
-            "text": "mua|linh quang"
-          },
-          "when": {
-            "kind": "visible",
-            "selector": ".jvz-km-buy"
-          }
-        },
-        {
-          "action": "click",
-          "selector": ".swal2-container button.swal2-confirm",
-          "timeoutMs": 8000,
-          "note": "\u300CMua Ngay\u300Dtrong h\u1ED9p x\u00E1c nh\u1EADn (click#236)",
-          "optional": true,
-          "when": {
-            "kind": "visible",
-            "selector": ".jvz-km-buy"
-          }
-        },
-        {
-          "action": "evaluateJavaScript",
-          "script": "() =\u003E \u0027@khoang-mach:phu\u0027",
-          "timeoutMs": 15000,
-          "note": "ghi D\u1EA4U NG\u00C0Y\u300Csu\u1EA5t ph\u00F9 \u0111\u00E3 ti\u00EAu\u300Dv\u00E0o s\u1ED5 c\u1EE7a \u0111\u00E0n (b\u1EA3n web) \u2014 c\u00F9ng c\u1EDD v\u1EDBi ch\u00EDnh c\u00FA b\u1EA5m mua, n\u00EAn kh\u00F4ng c\u00F3 \u0111\u01B0\u1EDDng n\u00E0o ghi d\u1EA5u m\u00E0 ch\u01B0a \u0111i qua ti\u1EC7m. Xem KmPhuMarkScript",
-          "when": {
-            "kind": "visible",
-            "selector": ".jvz-km-buy"
-          }
-        },
-        {
-          "action": "waitForCondition",
-          "timeoutMs": 8000,
-          "note": "toast\u300C\u0110\u1EA1o h\u1EEFu \u0111\u00E3 mua th\u00E0nh c\u00F4ng Linh Quang Ph\u00F9!\u300D\u2014 optional v\u00EC toast s\u1ED1ng ng\u1EAFn",
-          "optional": true,
-          "condition": {
-            "kind": "textMatches",
-            "selector": "body",
-            "text": "mua th\u00E0nh c\u00F4ng"
-          },
-          "when": {
-            "kind": "visible",
-            "selector": "body.jvz-km-buy-go"
-          }
-        },
-        {
-          "action": "click",
-          "selector": ".jvz-km-open",
-          "timeoutMs": 10000,
-          "note": "m\u1EDF l\u1EA1i s\u1ED5; TI\u1EC6M l\u00E0 tab ri\u00EAng n\u00EAn #mine-list v\u00E0 d\u1EA5u jvz-km-open c\u00F2n nguy\u00EAn (click#239 b\u1EA5m th\u1EB3ng \u0111\u01B0\u1EE3c)",
-          "when": {
-            "kind": "visible",
-            "selector": "body.jvz-km-buy-go"
-          }
-        },
-        {
-          "action": "waitForCondition",
-          "timeoutMs": 15000,
-          "condition": {
-            "kind": "visible",
-            "selector": "#user-list .user-row"
-          },
-          "when": {
-            "kind": "visible",
-            "selector": "body.jvz-km-buy-go"
-          }
+          "note": "hai c\u1EDD ra kh\u1ECFi c\u1ED5ng: jvz-km-buy-go (ph\u00F9 C\u00D2N su\u1EA5t h\u00F4m nay \u2014 m\u1EDBi l\u00E0 \u0110\u1EE6 T\u01AF C\u00C1CH mua, ch\u01B0a ph\u1EA3i l\u1EC7nh mua) v\u00E0 jvz-km-host-phase (\u0111\u1EE7 \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t, c\u0169ng l\u00E0 c\u1EDD k\u00E9o theo jvz-km-refresh). L\u1EC7nh mua th\u1EADt l\u00E0 jvz-km-buy-now, ch\u1EC9 c\u1EAFm sau khi \u0111o\u1EA1t TH\u00C0NH \u2014 xem KmHostWonScript"
         },
         {
           "action": "click",
@@ -2335,12 +2210,162 @@
           }
         },
         {
+          "action": "waitForCondition",
+          "timeoutMs": 8000,
+          "note": "ch\u1EDD ch\u00EDnh l\u1EDDi x\u00E1c nh\u1EADn c\u1EE7a trang; OPTIONAL v\u00EC n\u00F3 l\u00E0 toast s\u1ED1ng ng\u1EAFn \u2014 h\u1EE5t th\u00EC KmHostWonScript ngay d\u01B0\u1EDBi \u0111\u1ECDc ra\u300Ckh\u00F4ng th\u00E0nh\u300Dv\u00E0 c\u1EEDa mua \u0111\u00F3ng l\u1EA1i, ph\u00EDa an to\u00E0n",
+          "optional": true,
+          "condition": {
+            "kind": "textMatches",
+            "selector": "body",
+            "text": "\u0111o\u1EA1t th\u00E0nh c\u00F4ng"
+          },
+          "when": {
+            "kind": "visible",
+            "selector": ".jvz-km-doat"
+          }
+        },
+        {
+          "action": "evaluateJavaScript",
+          "script": "() =\u003E { const body = document.body; if (body) body.classList.remove(\u0027jvz-km-buy-now\u0027); if (!body) return \u0027host-won: kh\u00F4ng c\u00F3 body\u0027; if (!body.classList.contains(\u0027jvz-km-host-go\u0027)) return \u0027!L\u01B0\u1EE3t n\u00E0y kh\u00F4ng b\u1EA5m \u0111\u01B0\u1EE3c n\u00FAt \u0110o\u1EA1t M\u1ECF n\u00E0o (\u0111\u00E3 l\u00E0 ch\u1EE7, ho\u1EB7c ch\u1EE7 \u0111ang \u0111\u01B0\u1EE3c b\u1EA3o h\u1ED9) \u2014 KH\u00D4NG mua ph\u00F9\u0027; const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); if (fold(body.textContent).indexOf(\u0027doat thanh cong\u0027) \u003C 0) return \u0027!\u0110o\u1EA1t m\u1ECF KH\u00D4NG th\u00E0nh (trang kh\u00F4ng n\u00F3i c\u00E2u x\u00E1c nh\u1EADn n\u00E0o) \u2014 l\u01B0\u1EE3t n\u00E0y KH\u00D4NG mua ph\u00F9\u0027; if (!body.classList.contains(\u0027jvz-km-buy-go\u0027)) return \u0027!\u0110\u00E3 \u0111o\u1EA1t \u0111\u01B0\u1EE3c quy\u1EC1n ch\u1EE7 m\u1ECF \u2014 kh\u00F4ng mua ph\u00F9 (tu\u1EF3 ch\u1ECDn t\u1EAFt, ho\u1EB7c su\u1EA5t h\u00F4m nay \u0111\u00E3 d\u00F9ng)\u0027; body.classList.add(\u0027jvz-km-buy-now\u0027); return \u0027!\u0110\u00E3 \u0111o\u1EA1t \u0111\u01B0\u1EE3c quy\u1EC1n ch\u1EE7 m\u1ECF \u2014 mua 1 Linh Quang Ph\u00F9 ngay tr\u01B0\u1EDBc c\u00FA ch\u1ED1t l\u1EDDi\u0027; }",
+          "timeoutMs": 15000,
+          "note": "c\u1EAFm jvz-km-buy-now KHI V\u00C0 CH\u1EC8 KHI trang x\u00E1c nh\u1EADn \u0111\u00E3 \u0111o\u1EA1t \u0111\u01B0\u1EE3c \u2014 c\u1EEDa duy nh\u1EA5t m\u1EDF c\u1EE5m mua",
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-host-phase"
+          }
+        },
+        {
           "action": "waitMilliseconds",
           "timeoutMs": 1200,
           "note": "s\u1ED5 x\u1EBFp l\u1EA1i sau khi \u0111\u1ED5i ch\u1EE7",
           "when": {
             "kind": "visible",
             "selector": "body.jvz-km-host-phase"
+          }
+        },
+        {
+          "action": "click",
+          "selector": "#close-btn",
+          "timeoutMs": 8000,
+          "note": "\u0111\u00F3ng s\u1ED5 \u0111\u1EC3 t\u1EDBi TI\u1EC6M \u2014 c\u00F4ng th\u1EE9c c\u1EE7a b\u1EA3n ghi 14/08: \u0111\u00F3ng \u2192 mua \u2192 m\u1EDF l\u1EA1i",
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-buy-now"
+          }
+        },
+        {
+          "action": "click",
+          "selector": "#shopButton",
+          "timeoutMs": 8000,
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-buy-now"
+          }
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 10000,
+          "note": "k\u1EC7 TI\u1EC6M \u0111\u00E3 render \u2014 b\u1EA3n ghi 15/08 \u0111\u1EBFm 6 m\u00F3n, t\u00ECm theo T\u00CAN ch\u1EE9 kh\u00F4ng theo v\u1ECB tr\u00ED",
+          "condition": {
+            "kind": "visible",
+            "selector": "#shop-container .shop-item"
+          },
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-buy-now"
+          }
+        },
+        {
+          "action": "evaluateJavaScript",
+          "script": "() =\u003E { for (const el of document.querySelectorAll(\u0027.jvz-km-buy\u0027)) el.classList.remove(\u0027jvz-km-buy\u0027); const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); const items = [...document.querySelectorAll(\u0027#shop-container .shop-item\u0027)]; if (items.length === 0) return \u0027shop: #shop-container ch\u01B0a render m\u00F3n n\u00E0o\u0027; const item = items.find((i) =\u003E fold(i.textContent).indexOf(\u0027linh quang phu\u0027) \u003E= 0); if (!item) return \u0027shop: kh\u00F4ng th\u1EA5y m\u00F3n Linh Quang Ph\u00F9 tr\u00EAn k\u1EC7\u0027; const btn = item.querySelector(\u0027button.shop-item-button\u0027); if (!btn) return \u0027shop: m\u00F3n Linh Quang Ph\u00F9 kh\u00F4ng c\u00F3 n\u00FAt mua\u0027; btn.classList.add(\u0027jvz-km-buy\u0027); return \u0027!Mua Linh Quang Ph\u00F9 (\u002B20% tu vi trong 1 gi\u1EDD) cho c\u00FA ch\u1ED1t l\u1EDDi s\u1EAFp t\u1EDBi\u0027; }",
+          "timeoutMs": 15000,
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-buy-now"
+          }
+        },
+        {
+          "action": "click",
+          "selector": ".jvz-km-buy",
+          "timeoutMs": 8000,
+          "note": "OPTIONAL c\u00F3 ch\u1EE7 \u00FD: thi\u1EBFu ti\u1EC1n hay k\u1EC7 \u0111\u1ED5i th\u00EC ch\u1EC9 m\u1EA5t ph\u1EA7n \u002B20%, l\u01B0\u1EE3t \u0111\u00E0o v\u1EABn \u0111i ti\u1EBFp",
+          "optional": true,
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-buy-now .jvz-km-buy"
+          }
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 8000,
+          "note": "v\u0103n b\u1EA3n popup mua KH\u00D4NG \u0111\u01B0\u1EE3c b\u1EA3n ghi ch\u1EE5p tr\u1ECDn \u2014 \u0111i\u1EC1u ki\u1EC7n l\u1ECFng h\u01A1n c\u00E1c popup kh\u00E1c, v\u00E0 optional",
+          "optional": true,
+          "condition": {
+            "kind": "textMatches",
+            "selector": ".swal2-container .swal2-popup",
+            "text": "mua|linh quang"
+          },
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-buy-now .jvz-km-buy"
+          }
+        },
+        {
+          "action": "click",
+          "selector": ".swal2-container button.swal2-confirm",
+          "timeoutMs": 8000,
+          "note": "\u300CMua Ngay\u300Dtrong h\u1ED9p x\u00E1c nh\u1EADn (click#236)",
+          "optional": true,
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-buy-now .jvz-km-buy"
+          }
+        },
+        {
+          "action": "evaluateJavaScript",
+          "script": "() =\u003E { const d = new Date(); const today = d.getFullYear() \u002B \u0027-\u0027 \u002B (d.getMonth() \u002B 1) \u002B \u0027-\u0027 \u002B d.getDate(); try { localStorage.setItem(\u0027__jvz_km_phu\u0027, today); } catch (e) { } return \u0027@khoang-mach:phu\u0027; }",
+          "timeoutMs": 15000,
+          "note": "TI\u00CAU su\u1EA5t c\u1EE7a ng\u00E0y \u2014 c\u1EA3 kho\u00E1 localStorage c\u1EE7a m\u00E1y n\u00E0y l\u1EABn D\u1EA4U NG\u00C0Y v\u1EC1 s\u1ED5 c\u1EE7a \u0111\u00E0n. C\u00F9ng c\u1EDD v\u1EDBi ch\u00EDnh c\u00FA b\u1EA5m mua, v\u00E0 \u0110\u1EE8NG SAU n\u00F3: m\u1ED9t c\u00FA \u0111o\u1EA1t tr\u01B0\u1EE3t kh\u00F4ng c\u00F2n \u0111\u1ED1t su\u1EA5t nh\u01B0 b\u1EA3n c\u0169 (c\u1ED5ng ti\u00EAu su\u1EA5t ngay l\u00FAc quy\u1EBFt \u0111\u1ECBnh). Xem KmPhuMarkScript",
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-buy-now .jvz-km-buy"
+          }
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 8000,
+          "note": "toast\u300C\u0110\u1EA1o h\u1EEFu \u0111\u00E3 mua th\u00E0nh c\u00F4ng Linh Quang Ph\u00F9!\u300D\u2014 optional v\u00EC toast s\u1ED1ng ng\u1EAFn",
+          "optional": true,
+          "condition": {
+            "kind": "textMatches",
+            "selector": "body",
+            "text": "mua th\u00E0nh c\u00F4ng"
+          },
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-buy-now"
+          }
+        },
+        {
+          "action": "click",
+          "selector": ".jvz-km-open",
+          "timeoutMs": 10000,
+          "note": "m\u1EDF l\u1EA1i s\u1ED5; TI\u1EC6M l\u00E0 tab ri\u00EAng n\u00EAn #mine-list v\u00E0 d\u1EA5u jvz-km-open c\u00F2n nguy\u00EAn (click#239 b\u1EA5m th\u1EB3ng \u0111\u01B0\u1EE3c)",
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-buy-now"
+          }
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 15000,
+          "condition": {
+            "kind": "visible",
+            "selector": "#user-list .user-row"
+          },
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-buy-now"
           }
         },
         {
@@ -2535,11 +2560,11 @@
         },
         {
           "key": "buyPhu",
-          "label": "Mua Linh Quang Ph\u00F9 (t\u1ED1i \u0111a 1/ng\u00E0y)",
+          "label": "Mua Linh Quang Ph\u00F9 sau khi \u0111o\u1EA1t m\u1ECF (t\u1ED1i \u0111a 1/ng\u00E0y)",
           "choices": [
             {
               "value": "mua 1 ph\u00F9 m\u1ED7i ng\u00E0y",
-              "label": "Mua \u2014 m\u1ED7i ng\u00E0y m\u1ED9t l\u00E1, ngay tr\u01B0\u1EDBc c\u00FA ch\u1ED1t l\u1EDDi"
+              "label": "Mua \u2014 m\u1ED7i ng\u00E0y m\u1ED9t l\u00E1, ch\u1EC9 sau khi \u0111o\u1EA1t \u0111\u01B0\u1EE3c m\u1ECF"
             },
             {
               "value": "\u00ABkh\u00F4ng mua\u00BB",
@@ -3821,134 +3846,9 @@
         },
         {
           "action": "evaluateJavaScript",
-          "script": "() =\u003E { const body = document.body; if (body) { body.classList.remove(\u0027jvz-km-host-phase\u0027); body.classList.remove(\u0027jvz-km-buy-go\u0027); body.classList.remove(\u0027jvz-km-refresh\u0027); } if (!body || !body.classList.contains(\u0027jvz-km-ripe\u0027)) return \u0027gate: ch\u01B0a \u0111\u1EA1t khai th\u00E1c t\u1ED1i \u0111a \u2014 l\u01B0\u1EE3t n\u00E0y kh\u00F4ng mua, kh\u00F4ng \u0111o\u1EA1t\u0027; const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); const parts = []; /* ---- su\u1EA5t mua ph\u00F9 c\u1EE7a ng\u00E0y ---- */ if (\u0027{{buyPhu}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) { parts.push(\u0027kh\u00F4ng mua ph\u00F9 (tu\u1EF3 ch\u1ECDn t\u1EAFt)\u0027); } else { const d = new Date(); const today = d.getFullYear() \u002B \u0027-\u0027 \u002B (d.getMonth() \u002B 1) \u002B \u0027-\u0027 \u002B d.getDate(); let last = null; try { last = localStorage.getItem(\u0027__jvz_km_phu\u0027); } catch (e) { } if (last === today) { parts.push(\u0027ph\u00F9 h\u00F4m nay \u0111\u00E3 d\u00F9ng su\u1EA5t \u2014 kh\u00F4ng mua n\u1EEFa\u0027); } else { try { localStorage.setItem(\u0027__jvz_km_phu\u0027, today); } catch (e) { } body.classList.add(\u0027jvz-km-buy-go\u0027); body.classList.add(\u0027jvz-km-refresh\u0027); parts.push(\u0027MUA 1 Linh Quang Ph\u00F9 (su\u1EA5t duy nh\u1EA5t c\u1EE7a ng\u00E0y)\u0027); } } /* ---- \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t ---- */ if (\u0027{{hostMode}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t (tu\u1EF3 ch\u1ECDn t\u1EAFt)\u0027); } else { const bonusEl = document.querySelector(\u0027#tuvi-bonus-percentage\u0027); const bonus = bonusEl ? parseInt((bonusEl.textContent || \u0027\u0027).replace(/\\D/g, \u0027\u0027), 10) : NaN; const thr = parseInt(\u0027{{hostMinBonus}}\u0027, 10) || 0; const atk = fold(body.textContent).match(/luot tan cong\\s*:?\\s*(\\d\u002B)\\s*\\/\\s*(\\d\u002B)/); if (!(bonus \u003E= 0)) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: ch\u01B0a \u0111\u1ECDc \u0111\u01B0\u1EE3c % bonus c\u1EE7a m\u1ECF\u0027); } else if (bonus \u003C thr) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: bonus \u0027 \u002B bonus \u002B \u0027% d\u01B0\u1EDBi ng\u01B0\u1EE1ng \u0027 \u002B thr \u002B \u0027%\u0027); } else if (atk \u0026\u0026 parseInt(atk[1], 10) \u003E= parseInt(atk[2], 10)) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: h\u1EBFt l\u01B0\u1EE3t t\u1EA5n c\u00F4ng (\u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] \u002B \u0027)\u0027); } else { body.classList.add(\u0027jvz-km-host-phase\u0027); body.classList.add(\u0027jvz-km-refresh\u0027); parts.push(\u0027\u0110O\u1EA0T M\u1ECE: bonus \u0027 \u002B bonus \u002B \u0027% \u2265 \u0027 \u002B thr \u002B \u0027%\u0027 \u002B (atk ? \u0027, t\u1EA5n c\u00F4ng \u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] : \u0027\u0027)); } } return \u0027!\u0110\u1EA1t t\u1ED1i \u0111a \u2014 quy\u1EBFt \u0111\u1ECBnh c\u1EE7a l\u01B0\u1EE3t: \u0027 \u002B parts.join(\u0027; \u0027); }",
+          "script": "() =\u003E { const body = document.body; if (body) { body.classList.remove(\u0027jvz-km-host-phase\u0027); body.classList.remove(\u0027jvz-km-buy-go\u0027); body.classList.remove(\u0027jvz-km-buy-now\u0027); body.classList.remove(\u0027jvz-km-refresh\u0027); } if (!body || !body.classList.contains(\u0027jvz-km-ripe\u0027)) return \u0027gate: ch\u01B0a \u0111\u1EA1t khai th\u00E1c t\u1ED1i \u0111a \u2014 l\u01B0\u1EE3t n\u00E0y kh\u00F4ng mua, kh\u00F4ng \u0111o\u1EA1t\u0027; const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); const parts = []; /* ---- su\u1EA5t mua ph\u00F9 c\u1EE7a ng\u00E0y ---- */ if (\u0027{{buyPhu}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) { parts.push(\u0027kh\u00F4ng mua ph\u00F9 (tu\u1EF3 ch\u1ECDn t\u1EAFt)\u0027); } else { const d = new Date(); const today = d.getFullYear() \u002B \u0027-\u0027 \u002B (d.getMonth() \u002B 1) \u002B \u0027-\u0027 \u002B d.getDate(); let last = null; try { last = localStorage.getItem(\u0027__jvz_km_phu\u0027); } catch (e) { } if (last === today) { parts.push(\u0027ph\u00F9 h\u00F4m nay \u0111\u00E3 d\u00F9ng su\u1EA5t \u2014 kh\u00F4ng mua n\u1EEFa\u0027); } else { body.classList.add(\u0027jvz-km-buy-go\u0027); parts.push(\u0027ph\u00F9: C\u00D2N su\u1EA5t h\u00F4m nay \u2014 s\u1EBD mua n\u1EBFu \u0111o\u1EA1t \u0111\u01B0\u1EE3c m\u1ECF\u0027); } } /* ---- \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t ---- */ if (\u0027{{hostMode}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t (tu\u1EF3 ch\u1ECDn t\u1EAFt)\u0027); } else { const bonusEl = document.querySelector(\u0027#tuvi-bonus-percentage\u0027); const bonus = bonusEl ? parseInt((bonusEl.textContent || \u0027\u0027).replace(/\\D/g, \u0027\u0027), 10) : NaN; const thr = parseInt(\u0027{{hostMinBonus}}\u0027, 10) || 0; const atk = fold(body.textContent).match(/luot tan cong\\s*:?\\s*(\\d\u002B)\\s*\\/\\s*(\\d\u002B)/); if (!(bonus \u003E= 0)) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: ch\u01B0a \u0111\u1ECDc \u0111\u01B0\u1EE3c % bonus c\u1EE7a m\u1ECF\u0027); } else if (bonus \u003C thr) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: bonus \u0027 \u002B bonus \u002B \u0027% d\u01B0\u1EDBi ng\u01B0\u1EE1ng \u0027 \u002B thr \u002B \u0027%\u0027); } else if (atk \u0026\u0026 parseInt(atk[1], 10) \u003E= parseInt(atk[2], 10)) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: h\u1EBFt l\u01B0\u1EE3t t\u1EA5n c\u00F4ng (\u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] \u002B \u0027)\u0027); } else { body.classList.add(\u0027jvz-km-host-phase\u0027); body.classList.add(\u0027jvz-km-refresh\u0027); parts.push(\u0027\u0110O\u1EA0T M\u1ECE: bonus \u0027 \u002B bonus \u002B \u0027% \u2265 \u0027 \u002B thr \u002B \u0027%\u0027 \u002B (atk ? \u0027, t\u1EA5n c\u00F4ng \u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] : \u0027\u0027)); } } return \u0027!\u0110\u1EA1t t\u1ED1i \u0111a \u2014 quy\u1EBFt \u0111\u1ECBnh c\u1EE7a l\u01B0\u1EE3t: \u0027 \u002B parts.join(\u0027; \u0027); }",
           "timeoutMs": 15000,
-          "note": "ba c\u1EDD ra kh\u1ECFi c\u1ED5ng: jvz-km-buy-go (mua 1 ph\u00F9 \u2014 c\u1ED5ng localStorage c\u1EE7a M\u00C1Y N\u00C0Y ti\u00EAu su\u1EA5t ngay t\u1EA1i \u0111\u00E2y; s\u1ED5 ng\u00E0y c\u1EE7a \u0110\u00C0N th\u00EC do b\u01B0\u1EDBc d\u1EA5u sau c\u00FA b\u1EA5m ghi, xem KmPhuMarkScript), jvz-km-host-phase (\u0111\u1EE7 \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t), jvz-km-refresh (c\u00F3 c\u1EE5m n\u00E0o s\u1EAFp m\u1EDF l\u1EA1i s\u1ED5)"
-        },
-        {
-          "action": "click",
-          "selector": "#close-btn",
-          "timeoutMs": 8000,
-          "note": "\u0111\u00F3ng s\u1ED5 \u0111\u1EC3 t\u1EDBi TI\u1EC6M \u2014 c\u00F4ng th\u1EE9c c\u1EE7a b\u1EA3n ghi 14/08: \u0111\u00F3ng \u2192 mua \u2192 m\u1EDF l\u1EA1i",
-          "when": {
-            "kind": "visible",
-            "selector": "body.jvz-km-buy-go"
-          }
-        },
-        {
-          "action": "click",
-          "selector": "#shopButton",
-          "timeoutMs": 8000,
-          "when": {
-            "kind": "visible",
-            "selector": "body.jvz-km-buy-go"
-          }
-        },
-        {
-          "action": "waitForCondition",
-          "timeoutMs": 10000,
-          "note": "k\u1EC7 TI\u1EC6M \u0111\u00E3 render \u2014 b\u1EA3n ghi 15/08 \u0111\u1EBFm 6 m\u00F3n, t\u00ECm theo T\u00CAN ch\u1EE9 kh\u00F4ng theo v\u1ECB tr\u00ED",
-          "condition": {
-            "kind": "visible",
-            "selector": "#shop-container .shop-item"
-          },
-          "when": {
-            "kind": "visible",
-            "selector": "body.jvz-km-buy-go"
-          }
-        },
-        {
-          "action": "evaluateJavaScript",
-          "script": "() =\u003E { for (const el of document.querySelectorAll(\u0027.jvz-km-buy\u0027)) el.classList.remove(\u0027jvz-km-buy\u0027); const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); const items = [...document.querySelectorAll(\u0027#shop-container .shop-item\u0027)]; if (items.length === 0) return \u0027shop: #shop-container ch\u01B0a render m\u00F3n n\u00E0o\u0027; const item = items.find((i) =\u003E fold(i.textContent).indexOf(\u0027linh quang phu\u0027) \u003E= 0); if (!item) return \u0027shop: kh\u00F4ng th\u1EA5y m\u00F3n Linh Quang Ph\u00F9 tr\u00EAn k\u1EC7\u0027; const btn = item.querySelector(\u0027button.shop-item-button\u0027); if (!btn) return \u0027shop: m\u00F3n Linh Quang Ph\u00F9 kh\u00F4ng c\u00F3 n\u00FAt mua\u0027; btn.classList.add(\u0027jvz-km-buy\u0027); return \u0027!Mua Linh Quang Ph\u00F9 (\u002B20% tu vi trong 1 gi\u1EDD) cho c\u00FA ch\u1ED1t l\u1EDDi s\u1EAFp t\u1EDBi\u0027; }",
-          "timeoutMs": 15000,
-          "when": {
-            "kind": "visible",
-            "selector": "body.jvz-km-buy-go"
-          }
-        },
-        {
-          "action": "click",
-          "selector": ".jvz-km-buy",
-          "timeoutMs": 8000,
-          "note": "OPTIONAL c\u00F3 ch\u1EE7 \u00FD: thi\u1EBFu ti\u1EC1n hay k\u1EC7 \u0111\u1ED5i th\u00EC ch\u1EC9 m\u1EA5t ph\u1EA7n \u002B20%, l\u01B0\u1EE3t \u0111\u00E0o v\u1EABn \u0111i ti\u1EBFp (su\u1EA5t ng\u00E0y \u0111\u00E3 b\u1ECB ti\u00EAu \u1EDF c\u1ED5ng \u2014 xem l\u00FD do t\u1EA1i KmHostGateScript)",
-          "optional": true,
-          "when": {
-            "kind": "visible",
-            "selector": ".jvz-km-buy"
-          }
-        },
-        {
-          "action": "waitForCondition",
-          "timeoutMs": 8000,
-          "note": "v\u0103n b\u1EA3n popup mua KH\u00D4NG \u0111\u01B0\u1EE3c b\u1EA3n ghi ch\u1EE5p tr\u1ECDn \u2014 \u0111i\u1EC1u ki\u1EC7n l\u1ECFng h\u01A1n c\u00E1c popup kh\u00E1c, v\u00E0 optional",
-          "optional": true,
-          "condition": {
-            "kind": "textMatches",
-            "selector": ".swal2-container .swal2-popup",
-            "text": "mua|linh quang"
-          },
-          "when": {
-            "kind": "visible",
-            "selector": ".jvz-km-buy"
-          }
-        },
-        {
-          "action": "click",
-          "selector": ".swal2-container button.swal2-confirm",
-          "timeoutMs": 8000,
-          "note": "\u300CMua Ngay\u300Dtrong h\u1ED9p x\u00E1c nh\u1EADn (click#236)",
-          "optional": true,
-          "when": {
-            "kind": "visible",
-            "selector": ".jvz-km-buy"
-          }
-        },
-        {
-          "action": "evaluateJavaScript",
-          "script": "() =\u003E \u0027@khoang-mach:phu\u0027",
-          "timeoutMs": 15000,
-          "note": "ghi D\u1EA4U NG\u00C0Y\u300Csu\u1EA5t ph\u00F9 \u0111\u00E3 ti\u00EAu\u300Dv\u00E0o s\u1ED5 c\u1EE7a \u0111\u00E0n (b\u1EA3n web) \u2014 c\u00F9ng c\u1EDD v\u1EDBi ch\u00EDnh c\u00FA b\u1EA5m mua, n\u00EAn kh\u00F4ng c\u00F3 \u0111\u01B0\u1EDDng n\u00E0o ghi d\u1EA5u m\u00E0 ch\u01B0a \u0111i qua ti\u1EC7m. Xem KmPhuMarkScript",
-          "when": {
-            "kind": "visible",
-            "selector": ".jvz-km-buy"
-          }
-        },
-        {
-          "action": "waitForCondition",
-          "timeoutMs": 8000,
-          "note": "toast\u300C\u0110\u1EA1o h\u1EEFu \u0111\u00E3 mua th\u00E0nh c\u00F4ng Linh Quang Ph\u00F9!\u300D\u2014 optional v\u00EC toast s\u1ED1ng ng\u1EAFn",
-          "optional": true,
-          "condition": {
-            "kind": "textMatches",
-            "selector": "body",
-            "text": "mua th\u00E0nh c\u00F4ng"
-          },
-          "when": {
-            "kind": "visible",
-            "selector": "body.jvz-km-buy-go"
-          }
-        },
-        {
-          "action": "click",
-          "selector": ".jvz-km-open",
-          "timeoutMs": 10000,
-          "note": "m\u1EDF l\u1EA1i s\u1ED5; TI\u1EC6M l\u00E0 tab ri\u00EAng n\u00EAn #mine-list v\u00E0 d\u1EA5u jvz-km-open c\u00F2n nguy\u00EAn (click#239 b\u1EA5m th\u1EB3ng \u0111\u01B0\u1EE3c)",
-          "when": {
-            "kind": "visible",
-            "selector": "body.jvz-km-buy-go"
-          }
-        },
-        {
-          "action": "waitForCondition",
-          "timeoutMs": 15000,
-          "condition": {
-            "kind": "visible",
-            "selector": "#user-list .user-row"
-          },
-          "when": {
-            "kind": "visible",
-            "selector": "body.jvz-km-buy-go"
-          }
+          "note": "hai c\u1EDD ra kh\u1ECFi c\u1ED5ng: jvz-km-buy-go (ph\u00F9 C\u00D2N su\u1EA5t h\u00F4m nay \u2014 m\u1EDBi l\u00E0 \u0110\u1EE6 T\u01AF C\u00C1CH mua, ch\u01B0a ph\u1EA3i l\u1EC7nh mua) v\u00E0 jvz-km-host-phase (\u0111\u1EE7 \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t, c\u0169ng l\u00E0 c\u1EDD k\u00E9o theo jvz-km-refresh). L\u1EC7nh mua th\u1EADt l\u00E0 jvz-km-buy-now, ch\u1EC9 c\u1EAFm sau khi \u0111o\u1EA1t TH\u00C0NH \u2014 xem KmHostWonScript"
         },
         {
           "action": "click",
@@ -4033,12 +3933,162 @@
           }
         },
         {
+          "action": "waitForCondition",
+          "timeoutMs": 8000,
+          "note": "ch\u1EDD ch\u00EDnh l\u1EDDi x\u00E1c nh\u1EADn c\u1EE7a trang; OPTIONAL v\u00EC n\u00F3 l\u00E0 toast s\u1ED1ng ng\u1EAFn \u2014 h\u1EE5t th\u00EC KmHostWonScript ngay d\u01B0\u1EDBi \u0111\u1ECDc ra\u300Ckh\u00F4ng th\u00E0nh\u300Dv\u00E0 c\u1EEDa mua \u0111\u00F3ng l\u1EA1i, ph\u00EDa an to\u00E0n",
+          "optional": true,
+          "condition": {
+            "kind": "textMatches",
+            "selector": "body",
+            "text": "\u0111o\u1EA1t th\u00E0nh c\u00F4ng"
+          },
+          "when": {
+            "kind": "visible",
+            "selector": ".jvz-km-doat"
+          }
+        },
+        {
+          "action": "evaluateJavaScript",
+          "script": "() =\u003E { const body = document.body; if (body) body.classList.remove(\u0027jvz-km-buy-now\u0027); if (!body) return \u0027host-won: kh\u00F4ng c\u00F3 body\u0027; if (!body.classList.contains(\u0027jvz-km-host-go\u0027)) return \u0027!L\u01B0\u1EE3t n\u00E0y kh\u00F4ng b\u1EA5m \u0111\u01B0\u1EE3c n\u00FAt \u0110o\u1EA1t M\u1ECF n\u00E0o (\u0111\u00E3 l\u00E0 ch\u1EE7, ho\u1EB7c ch\u1EE7 \u0111ang \u0111\u01B0\u1EE3c b\u1EA3o h\u1ED9) \u2014 KH\u00D4NG mua ph\u00F9\u0027; const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); if (fold(body.textContent).indexOf(\u0027doat thanh cong\u0027) \u003C 0) return \u0027!\u0110o\u1EA1t m\u1ECF KH\u00D4NG th\u00E0nh (trang kh\u00F4ng n\u00F3i c\u00E2u x\u00E1c nh\u1EADn n\u00E0o) \u2014 l\u01B0\u1EE3t n\u00E0y KH\u00D4NG mua ph\u00F9\u0027; if (!body.classList.contains(\u0027jvz-km-buy-go\u0027)) return \u0027!\u0110\u00E3 \u0111o\u1EA1t \u0111\u01B0\u1EE3c quy\u1EC1n ch\u1EE7 m\u1ECF \u2014 kh\u00F4ng mua ph\u00F9 (tu\u1EF3 ch\u1ECDn t\u1EAFt, ho\u1EB7c su\u1EA5t h\u00F4m nay \u0111\u00E3 d\u00F9ng)\u0027; body.classList.add(\u0027jvz-km-buy-now\u0027); return \u0027!\u0110\u00E3 \u0111o\u1EA1t \u0111\u01B0\u1EE3c quy\u1EC1n ch\u1EE7 m\u1ECF \u2014 mua 1 Linh Quang Ph\u00F9 ngay tr\u01B0\u1EDBc c\u00FA ch\u1ED1t l\u1EDDi\u0027; }",
+          "timeoutMs": 15000,
+          "note": "c\u1EAFm jvz-km-buy-now KHI V\u00C0 CH\u1EC8 KHI trang x\u00E1c nh\u1EADn \u0111\u00E3 \u0111o\u1EA1t \u0111\u01B0\u1EE3c \u2014 c\u1EEDa duy nh\u1EA5t m\u1EDF c\u1EE5m mua",
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-host-phase"
+          }
+        },
+        {
           "action": "waitMilliseconds",
           "timeoutMs": 1200,
           "note": "s\u1ED5 x\u1EBFp l\u1EA1i sau khi \u0111\u1ED5i ch\u1EE7",
           "when": {
             "kind": "visible",
             "selector": "body.jvz-km-host-phase"
+          }
+        },
+        {
+          "action": "click",
+          "selector": "#close-btn",
+          "timeoutMs": 8000,
+          "note": "\u0111\u00F3ng s\u1ED5 \u0111\u1EC3 t\u1EDBi TI\u1EC6M \u2014 c\u00F4ng th\u1EE9c c\u1EE7a b\u1EA3n ghi 14/08: \u0111\u00F3ng \u2192 mua \u2192 m\u1EDF l\u1EA1i",
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-buy-now"
+          }
+        },
+        {
+          "action": "click",
+          "selector": "#shopButton",
+          "timeoutMs": 8000,
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-buy-now"
+          }
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 10000,
+          "note": "k\u1EC7 TI\u1EC6M \u0111\u00E3 render \u2014 b\u1EA3n ghi 15/08 \u0111\u1EBFm 6 m\u00F3n, t\u00ECm theo T\u00CAN ch\u1EE9 kh\u00F4ng theo v\u1ECB tr\u00ED",
+          "condition": {
+            "kind": "visible",
+            "selector": "#shop-container .shop-item"
+          },
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-buy-now"
+          }
+        },
+        {
+          "action": "evaluateJavaScript",
+          "script": "() =\u003E { for (const el of document.querySelectorAll(\u0027.jvz-km-buy\u0027)) el.classList.remove(\u0027jvz-km-buy\u0027); const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); const items = [...document.querySelectorAll(\u0027#shop-container .shop-item\u0027)]; if (items.length === 0) return \u0027shop: #shop-container ch\u01B0a render m\u00F3n n\u00E0o\u0027; const item = items.find((i) =\u003E fold(i.textContent).indexOf(\u0027linh quang phu\u0027) \u003E= 0); if (!item) return \u0027shop: kh\u00F4ng th\u1EA5y m\u00F3n Linh Quang Ph\u00F9 tr\u00EAn k\u1EC7\u0027; const btn = item.querySelector(\u0027button.shop-item-button\u0027); if (!btn) return \u0027shop: m\u00F3n Linh Quang Ph\u00F9 kh\u00F4ng c\u00F3 n\u00FAt mua\u0027; btn.classList.add(\u0027jvz-km-buy\u0027); return \u0027!Mua Linh Quang Ph\u00F9 (\u002B20% tu vi trong 1 gi\u1EDD) cho c\u00FA ch\u1ED1t l\u1EDDi s\u1EAFp t\u1EDBi\u0027; }",
+          "timeoutMs": 15000,
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-buy-now"
+          }
+        },
+        {
+          "action": "click",
+          "selector": ".jvz-km-buy",
+          "timeoutMs": 8000,
+          "note": "OPTIONAL c\u00F3 ch\u1EE7 \u00FD: thi\u1EBFu ti\u1EC1n hay k\u1EC7 \u0111\u1ED5i th\u00EC ch\u1EC9 m\u1EA5t ph\u1EA7n \u002B20%, l\u01B0\u1EE3t \u0111\u00E0o v\u1EABn \u0111i ti\u1EBFp",
+          "optional": true,
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-buy-now .jvz-km-buy"
+          }
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 8000,
+          "note": "v\u0103n b\u1EA3n popup mua KH\u00D4NG \u0111\u01B0\u1EE3c b\u1EA3n ghi ch\u1EE5p tr\u1ECDn \u2014 \u0111i\u1EC1u ki\u1EC7n l\u1ECFng h\u01A1n c\u00E1c popup kh\u00E1c, v\u00E0 optional",
+          "optional": true,
+          "condition": {
+            "kind": "textMatches",
+            "selector": ".swal2-container .swal2-popup",
+            "text": "mua|linh quang"
+          },
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-buy-now .jvz-km-buy"
+          }
+        },
+        {
+          "action": "click",
+          "selector": ".swal2-container button.swal2-confirm",
+          "timeoutMs": 8000,
+          "note": "\u300CMua Ngay\u300Dtrong h\u1ED9p x\u00E1c nh\u1EADn (click#236)",
+          "optional": true,
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-buy-now .jvz-km-buy"
+          }
+        },
+        {
+          "action": "evaluateJavaScript",
+          "script": "() =\u003E { const d = new Date(); const today = d.getFullYear() \u002B \u0027-\u0027 \u002B (d.getMonth() \u002B 1) \u002B \u0027-\u0027 \u002B d.getDate(); try { localStorage.setItem(\u0027__jvz_km_phu\u0027, today); } catch (e) { } return \u0027@khoang-mach:phu\u0027; }",
+          "timeoutMs": 15000,
+          "note": "TI\u00CAU su\u1EA5t c\u1EE7a ng\u00E0y \u2014 c\u1EA3 kho\u00E1 localStorage c\u1EE7a m\u00E1y n\u00E0y l\u1EABn D\u1EA4U NG\u00C0Y v\u1EC1 s\u1ED5 c\u1EE7a \u0111\u00E0n. C\u00F9ng c\u1EDD v\u1EDBi ch\u00EDnh c\u00FA b\u1EA5m mua, v\u00E0 \u0110\u1EE8NG SAU n\u00F3: m\u1ED9t c\u00FA \u0111o\u1EA1t tr\u01B0\u1EE3t kh\u00F4ng c\u00F2n \u0111\u1ED1t su\u1EA5t nh\u01B0 b\u1EA3n c\u0169 (c\u1ED5ng ti\u00EAu su\u1EA5t ngay l\u00FAc quy\u1EBFt \u0111\u1ECBnh). Xem KmPhuMarkScript",
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-buy-now .jvz-km-buy"
+          }
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 8000,
+          "note": "toast\u300C\u0110\u1EA1o h\u1EEFu \u0111\u00E3 mua th\u00E0nh c\u00F4ng Linh Quang Ph\u00F9!\u300D\u2014 optional v\u00EC toast s\u1ED1ng ng\u1EAFn",
+          "optional": true,
+          "condition": {
+            "kind": "textMatches",
+            "selector": "body",
+            "text": "mua th\u00E0nh c\u00F4ng"
+          },
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-buy-now"
+          }
+        },
+        {
+          "action": "click",
+          "selector": ".jvz-km-open",
+          "timeoutMs": 10000,
+          "note": "m\u1EDF l\u1EA1i s\u1ED5; TI\u1EC6M l\u00E0 tab ri\u00EAng n\u00EAn #mine-list v\u00E0 d\u1EA5u jvz-km-open c\u00F2n nguy\u00EAn (click#239 b\u1EA5m th\u1EB3ng \u0111\u01B0\u1EE3c)",
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-buy-now"
+          }
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 15000,
+          "condition": {
+            "kind": "visible",
+            "selector": "#user-list .user-row"
+          },
+          "when": {
+            "kind": "visible",
+            "selector": "body.jvz-km-buy-now"
           }
         },
         {
@@ -4233,11 +4283,11 @@
         },
         {
           "key": "buyPhu",
-          "label": "Mua Linh Quang Ph\u00F9 (t\u1ED1i \u0111a 1/ng\u00E0y)",
+          "label": "Mua Linh Quang Ph\u00F9 sau khi \u0111o\u1EA1t m\u1ECF (t\u1ED1i \u0111a 1/ng\u00E0y)",
           "choices": [
             {
               "value": "mua 1 ph\u00F9 m\u1ED7i ng\u00E0y",
-              "label": "Mua \u2014 m\u1ED7i ng\u00E0y m\u1ED9t l\u00E1, ngay tr\u01B0\u1EDBc c\u00FA ch\u1ED1t l\u1EDDi"
+              "label": "Mua \u2014 m\u1ED7i ng\u00E0y m\u1ED9t l\u00E1, ch\u1EC9 sau khi \u0111o\u1EA1t \u0111\u01B0\u1EE3c m\u1ECF"
             },
             {
               "value": "\u00ABkh\u00F4ng mua\u00BB",
