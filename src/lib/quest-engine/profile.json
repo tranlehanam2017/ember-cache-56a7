@@ -1,6 +1,6 @@
 {
   "name": "Ho\u1EA1t \u0111\u1ED9ng h\u00E0ng ng\u00E0y (m\u1EB7c \u0111\u1ECBnh)",
-  "schemaVersion": 64,
+  "schemaVersion": 65,
   "dailyQuestPath": "/nhiem-vu-hang-ngay",
   "quests": [
     {
@@ -2200,6 +2200,16 @@
           }
         },
         {
+          "action": "evaluateJavaScript",
+          "script": "() =\u003E { const body = document.body; if (!body) return \u0027win-watch: kh\u00F4ng c\u00F3 body\u0027; body.classList.remove(\u0027jvz-km-won\u0027); const W = window; W.__jvzKmHeard = \u0027\u0027; const plain = (t) =\u003E String(t == null ? \u0027\u0027 : t).replace(/\\\\u([0-9a-fA-F]{4})/g, (m, h) =\u003E String.fromCharCode(parseInt(h, 16))); const WON = /o[\u1EA1a]t\\s\u002Bth[\u00E0a]nh\\s\u002Bc[\u00F4o]ng/i; const won = (s) =\u003E { if (WON.test(s) \u0026\u0026 document.body) document.body.classList.add(\u0027jvz-km-won\u0027); }; const fromNet = (t) =\u003E { const s = plain(t); if (!W.__jvzKmHeard \u0026\u0026 s.trim()) W.__jvzKmHeard = s.replace(/\\s\u002B/g, \u0027 \u0027).trim().slice(0, 120); won(s); }; const fromDom = (t) =\u003E { won(plain(t)); }; if (!W.__jvzKmEar) { W.__jvzKmEar = 1; const of = W.fetch; if (typeof of === \u0027function\u0027) W.fetch = function () { const p = of.apply(this, arguments); try { return p.then((r) =\u003E { try { r.clone().text().then(fromNet, () =\u003E { }); } catch (e) { } return r; }); } catch (e) { return p; } }; const xp = W.XMLHttpRequest \u0026\u0026 W.XMLHttpRequest.prototype; if (xp \u0026\u0026 typeof xp.send === \u0027function\u0027) { const os = xp.send; xp.send = function () { try { this.addEventListener(\u0027load\u0027, () =\u003E { try { fromNet(this.responseText); } catch (e) { } }); } catch (e) { } return os.apply(this, arguments); }; } try { new MutationObserver((recs) =\u003E { for (const rec of recs) { try { if (rec.type === \u0027characterData\u0027) fromDom(rec.target.textContent); else for (const node of rec.addedNodes) fromDom(node.textContent); } catch (e) { } } }).observe(document.documentElement, { childList: true, subtree: true, characterData: true }); } catch (e) { } } return \u0027win-watch: \u0111\u00E3 g\u00E0i tai nghe \u2014 l\u1EDDi x\u00E1c nh\u1EADn c\u1EE7a c\u00FA \u0111o\u1EA1t b\u1EAFt \u0111\u01B0\u1EE3c \u1EDF c\u1EA3 ng\u1EA3 m\u1EA1ng l\u1EABn ng\u1EA3 DOM\u0027; }",
+          "timeoutMs": 15000,
+          "note": "g\u00E0i tai nghe TR\u01AF\u1EDAC c\u00FA b\u1EA5m, v\u00EC l\u1EDDi x\u00E1c nh\u1EADn \u0111i b\u1EB1ng TH\u00C2N TR\u1EA2 L\u1EDCI AJAX \u2014 th\u1EE9 c\u00F3 th\u1EC3 kh\u00F4ng bao gi\u1EDD v\u00E0o DOM cho m\u1ED9t textMatches \u0111\u1ECDc \u0111\u01B0\u1EE3c (\u0111\u00E0n th\u1EADt 17/08/2026)",
+          "when": {
+            "kind": "visible",
+            "selector": ".jvz-km-doat"
+          }
+        },
+        {
           "action": "click",
           "selector": ".swal2-container button.swal2-confirm",
           "timeoutMs": 8000,
@@ -2212,21 +2222,20 @@
         {
           "action": "waitForCondition",
           "timeoutMs": 8000,
-          "note": "ch\u1EDD ch\u00EDnh l\u1EDDi x\u00E1c nh\u1EADn c\u1EE7a trang; OPTIONAL v\u00EC n\u00F3 l\u00E0 toast s\u1ED1ng ng\u1EAFn \u2014 h\u1EE5t th\u00EC KmHostWonScript ngay d\u01B0\u1EDBi \u0111\u1ECDc ra\u300Ckh\u00F4ng th\u00E0nh\u300Dv\u00E0 c\u1EEDa mua \u0111\u00F3ng l\u1EA1i, ph\u00EDa an to\u00E0n",
+          "note": "ch\u1EDD tai nghe b\u1EAFt \u0111\u01B0\u1EE3c l\u1EDDi x\u00E1c nh\u1EADn (ng\u1EA3 m\u1EA1ng ho\u1EB7c ng\u1EA3 DOM); OPTIONAL v\u00EC h\u1EE5t th\u00EC KmHostWonScript ngay d\u01B0\u1EDBi \u0111\u1ECDc ra\u300Ckh\u00F4ng th\u00E0nh\u300Dv\u00E0 c\u1EEDa mua \u0111\u00F3ng l\u1EA1i, ph\u00EDa an to\u00E0n",
           "optional": true,
           "condition": {
-            "kind": "textMatches",
-            "selector": "body",
-            "text": "\u0111o\u1EA1t th\u00E0nh c\u00F4ng"
+            "kind": "visible",
+            "selector": "body.jvz-km-won"
           },
           "when": {
             "kind": "visible",
-            "selector": ".jvz-km-doat"
+            "selector": "body.jvz-km-host-go"
           }
         },
         {
           "action": "evaluateJavaScript",
-          "script": "() =\u003E { const body = document.body; if (body) body.classList.remove(\u0027jvz-km-buy-now\u0027); if (!body) return \u0027host-won: kh\u00F4ng c\u00F3 body\u0027; if (!body.classList.contains(\u0027jvz-km-host-go\u0027)) return \u0027!L\u01B0\u1EE3t n\u00E0y kh\u00F4ng b\u1EA5m \u0111\u01B0\u1EE3c n\u00FAt \u0110o\u1EA1t M\u1ECF n\u00E0o (\u0111\u00E3 l\u00E0 ch\u1EE7, ho\u1EB7c ch\u1EE7 \u0111ang \u0111\u01B0\u1EE3c b\u1EA3o h\u1ED9) \u2014 KH\u00D4NG mua ph\u00F9\u0027; const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); if (fold(body.textContent).indexOf(\u0027doat thanh cong\u0027) \u003C 0) return \u0027!\u0110o\u1EA1t m\u1ECF KH\u00D4NG th\u00E0nh (trang kh\u00F4ng n\u00F3i c\u00E2u x\u00E1c nh\u1EADn n\u00E0o) \u2014 l\u01B0\u1EE3t n\u00E0y KH\u00D4NG mua ph\u00F9\u0027; if (!body.classList.contains(\u0027jvz-km-buy-go\u0027)) return \u0027!\u0110\u00E3 \u0111o\u1EA1t \u0111\u01B0\u1EE3c quy\u1EC1n ch\u1EE7 m\u1ECF \u2014 kh\u00F4ng mua ph\u00F9 (tu\u1EF3 ch\u1ECDn t\u1EAFt, ho\u1EB7c su\u1EA5t h\u00F4m nay \u0111\u00E3 d\u00F9ng)\u0027; body.classList.add(\u0027jvz-km-buy-now\u0027); return \u0027!\u0110\u00E3 \u0111o\u1EA1t \u0111\u01B0\u1EE3c quy\u1EC1n ch\u1EE7 m\u1ECF \u2014 mua 1 Linh Quang Ph\u00F9 ngay tr\u01B0\u1EDBc c\u00FA ch\u1ED1t l\u1EDDi\u0027; }",
+          "script": "() =\u003E { const body = document.body; if (body) body.classList.remove(\u0027jvz-km-buy-now\u0027); if (!body) return \u0027host-won: kh\u00F4ng c\u00F3 body\u0027; if (!body.classList.contains(\u0027jvz-km-host-go\u0027)) return \u0027!L\u01B0\u1EE3t n\u00E0y kh\u00F4ng b\u1EA5m \u0111\u01B0\u1EE3c n\u00FAt \u0110o\u1EA1t M\u1ECF n\u00E0o (\u0111\u00E3 l\u00E0 ch\u1EE7, ho\u1EB7c ch\u1EE7 \u0111ang \u0111\u01B0\u1EE3c b\u1EA3o h\u1ED9) \u2014 KH\u00D4NG mua ph\u00F9\u0027; if (!body.classList.contains(\u0027jvz-km-won\u0027)) { const heard = String(window.__jvzKmHeard || \u0027\u0027).trim(); return \u0027!\u0110o\u1EA1t m\u1ECF KH\u00D4NG th\u00E0nh (kh\u00F4ng nghe \u0111\u01B0\u1EE3c c\u00E2u x\u00E1c nh\u1EADn n\u00E0o\u0027 \u002B (heard ? \u0027 \u2014 trang tr\u1EA3 l\u1EDDi: \u0027 \u002B heard : \u0027\u0027) \u002B \u0027) \u2014 l\u01B0\u1EE3t n\u00E0y KH\u00D4NG mua ph\u00F9\u0027; } if (!body.classList.contains(\u0027jvz-km-buy-go\u0027)) return \u0027!\u0110\u00E3 \u0111o\u1EA1t \u0111\u01B0\u1EE3c quy\u1EC1n ch\u1EE7 m\u1ECF \u2014 kh\u00F4ng mua ph\u00F9 (tu\u1EF3 ch\u1ECDn t\u1EAFt, ho\u1EB7c su\u1EA5t h\u00F4m nay \u0111\u00E3 d\u00F9ng)\u0027; body.classList.add(\u0027jvz-km-buy-now\u0027); return \u0027!\u0110\u00E3 \u0111o\u1EA1t \u0111\u01B0\u1EE3c quy\u1EC1n ch\u1EE7 m\u1ECF \u2014 mua 1 Linh Quang Ph\u00F9 ngay tr\u01B0\u1EDBc c\u00FA ch\u1ED1t l\u1EDDi\u0027; }",
           "timeoutMs": 15000,
           "note": "c\u1EAFm jvz-km-buy-now KHI V\u00C0 CH\u1EC8 KHI trang x\u00E1c nh\u1EADn \u0111\u00E3 \u0111o\u1EA1t \u0111\u01B0\u1EE3c \u2014 c\u1EEDa duy nh\u1EA5t m\u1EDF c\u1EE5m mua",
           "when": {
@@ -3929,6 +3938,16 @@
           }
         },
         {
+          "action": "evaluateJavaScript",
+          "script": "() =\u003E { const body = document.body; if (!body) return \u0027win-watch: kh\u00F4ng c\u00F3 body\u0027; body.classList.remove(\u0027jvz-km-won\u0027); const W = window; W.__jvzKmHeard = \u0027\u0027; const plain = (t) =\u003E String(t == null ? \u0027\u0027 : t).replace(/\\\\u([0-9a-fA-F]{4})/g, (m, h) =\u003E String.fromCharCode(parseInt(h, 16))); const WON = /o[\u1EA1a]t\\s\u002Bth[\u00E0a]nh\\s\u002Bc[\u00F4o]ng/i; const won = (s) =\u003E { if (WON.test(s) \u0026\u0026 document.body) document.body.classList.add(\u0027jvz-km-won\u0027); }; const fromNet = (t) =\u003E { const s = plain(t); if (!W.__jvzKmHeard \u0026\u0026 s.trim()) W.__jvzKmHeard = s.replace(/\\s\u002B/g, \u0027 \u0027).trim().slice(0, 120); won(s); }; const fromDom = (t) =\u003E { won(plain(t)); }; if (!W.__jvzKmEar) { W.__jvzKmEar = 1; const of = W.fetch; if (typeof of === \u0027function\u0027) W.fetch = function () { const p = of.apply(this, arguments); try { return p.then((r) =\u003E { try { r.clone().text().then(fromNet, () =\u003E { }); } catch (e) { } return r; }); } catch (e) { return p; } }; const xp = W.XMLHttpRequest \u0026\u0026 W.XMLHttpRequest.prototype; if (xp \u0026\u0026 typeof xp.send === \u0027function\u0027) { const os = xp.send; xp.send = function () { try { this.addEventListener(\u0027load\u0027, () =\u003E { try { fromNet(this.responseText); } catch (e) { } }); } catch (e) { } return os.apply(this, arguments); }; } try { new MutationObserver((recs) =\u003E { for (const rec of recs) { try { if (rec.type === \u0027characterData\u0027) fromDom(rec.target.textContent); else for (const node of rec.addedNodes) fromDom(node.textContent); } catch (e) { } } }).observe(document.documentElement, { childList: true, subtree: true, characterData: true }); } catch (e) { } } return \u0027win-watch: \u0111\u00E3 g\u00E0i tai nghe \u2014 l\u1EDDi x\u00E1c nh\u1EADn c\u1EE7a c\u00FA \u0111o\u1EA1t b\u1EAFt \u0111\u01B0\u1EE3c \u1EDF c\u1EA3 ng\u1EA3 m\u1EA1ng l\u1EABn ng\u1EA3 DOM\u0027; }",
+          "timeoutMs": 15000,
+          "note": "g\u00E0i tai nghe TR\u01AF\u1EDAC c\u00FA b\u1EA5m, v\u00EC l\u1EDDi x\u00E1c nh\u1EADn \u0111i b\u1EB1ng TH\u00C2N TR\u1EA2 L\u1EDCI AJAX \u2014 th\u1EE9 c\u00F3 th\u1EC3 kh\u00F4ng bao gi\u1EDD v\u00E0o DOM cho m\u1ED9t textMatches \u0111\u1ECDc \u0111\u01B0\u1EE3c (\u0111\u00E0n th\u1EADt 17/08/2026)",
+          "when": {
+            "kind": "visible",
+            "selector": ".jvz-km-doat"
+          }
+        },
+        {
           "action": "click",
           "selector": ".swal2-container button.swal2-confirm",
           "timeoutMs": 8000,
@@ -3941,21 +3960,20 @@
         {
           "action": "waitForCondition",
           "timeoutMs": 8000,
-          "note": "ch\u1EDD ch\u00EDnh l\u1EDDi x\u00E1c nh\u1EADn c\u1EE7a trang; OPTIONAL v\u00EC n\u00F3 l\u00E0 toast s\u1ED1ng ng\u1EAFn \u2014 h\u1EE5t th\u00EC KmHostWonScript ngay d\u01B0\u1EDBi \u0111\u1ECDc ra\u300Ckh\u00F4ng th\u00E0nh\u300Dv\u00E0 c\u1EEDa mua \u0111\u00F3ng l\u1EA1i, ph\u00EDa an to\u00E0n",
+          "note": "ch\u1EDD tai nghe b\u1EAFt \u0111\u01B0\u1EE3c l\u1EDDi x\u00E1c nh\u1EADn (ng\u1EA3 m\u1EA1ng ho\u1EB7c ng\u1EA3 DOM); OPTIONAL v\u00EC h\u1EE5t th\u00EC KmHostWonScript ngay d\u01B0\u1EDBi \u0111\u1ECDc ra\u300Ckh\u00F4ng th\u00E0nh\u300Dv\u00E0 c\u1EEDa mua \u0111\u00F3ng l\u1EA1i, ph\u00EDa an to\u00E0n",
           "optional": true,
           "condition": {
-            "kind": "textMatches",
-            "selector": "body",
-            "text": "\u0111o\u1EA1t th\u00E0nh c\u00F4ng"
+            "kind": "visible",
+            "selector": "body.jvz-km-won"
           },
           "when": {
             "kind": "visible",
-            "selector": ".jvz-km-doat"
+            "selector": "body.jvz-km-host-go"
           }
         },
         {
           "action": "evaluateJavaScript",
-          "script": "() =\u003E { const body = document.body; if (body) body.classList.remove(\u0027jvz-km-buy-now\u0027); if (!body) return \u0027host-won: kh\u00F4ng c\u00F3 body\u0027; if (!body.classList.contains(\u0027jvz-km-host-go\u0027)) return \u0027!L\u01B0\u1EE3t n\u00E0y kh\u00F4ng b\u1EA5m \u0111\u01B0\u1EE3c n\u00FAt \u0110o\u1EA1t M\u1ECF n\u00E0o (\u0111\u00E3 l\u00E0 ch\u1EE7, ho\u1EB7c ch\u1EE7 \u0111ang \u0111\u01B0\u1EE3c b\u1EA3o h\u1ED9) \u2014 KH\u00D4NG mua ph\u00F9\u0027; const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); if (fold(body.textContent).indexOf(\u0027doat thanh cong\u0027) \u003C 0) return \u0027!\u0110o\u1EA1t m\u1ECF KH\u00D4NG th\u00E0nh (trang kh\u00F4ng n\u00F3i c\u00E2u x\u00E1c nh\u1EADn n\u00E0o) \u2014 l\u01B0\u1EE3t n\u00E0y KH\u00D4NG mua ph\u00F9\u0027; if (!body.classList.contains(\u0027jvz-km-buy-go\u0027)) return \u0027!\u0110\u00E3 \u0111o\u1EA1t \u0111\u01B0\u1EE3c quy\u1EC1n ch\u1EE7 m\u1ECF \u2014 kh\u00F4ng mua ph\u00F9 (tu\u1EF3 ch\u1ECDn t\u1EAFt, ho\u1EB7c su\u1EA5t h\u00F4m nay \u0111\u00E3 d\u00F9ng)\u0027; body.classList.add(\u0027jvz-km-buy-now\u0027); return \u0027!\u0110\u00E3 \u0111o\u1EA1t \u0111\u01B0\u1EE3c quy\u1EC1n ch\u1EE7 m\u1ECF \u2014 mua 1 Linh Quang Ph\u00F9 ngay tr\u01B0\u1EDBc c\u00FA ch\u1ED1t l\u1EDDi\u0027; }",
+          "script": "() =\u003E { const body = document.body; if (body) body.classList.remove(\u0027jvz-km-buy-now\u0027); if (!body) return \u0027host-won: kh\u00F4ng c\u00F3 body\u0027; if (!body.classList.contains(\u0027jvz-km-host-go\u0027)) return \u0027!L\u01B0\u1EE3t n\u00E0y kh\u00F4ng b\u1EA5m \u0111\u01B0\u1EE3c n\u00FAt \u0110o\u1EA1t M\u1ECF n\u00E0o (\u0111\u00E3 l\u00E0 ch\u1EE7, ho\u1EB7c ch\u1EE7 \u0111ang \u0111\u01B0\u1EE3c b\u1EA3o h\u1ED9) \u2014 KH\u00D4NG mua ph\u00F9\u0027; if (!body.classList.contains(\u0027jvz-km-won\u0027)) { const heard = String(window.__jvzKmHeard || \u0027\u0027).trim(); return \u0027!\u0110o\u1EA1t m\u1ECF KH\u00D4NG th\u00E0nh (kh\u00F4ng nghe \u0111\u01B0\u1EE3c c\u00E2u x\u00E1c nh\u1EADn n\u00E0o\u0027 \u002B (heard ? \u0027 \u2014 trang tr\u1EA3 l\u1EDDi: \u0027 \u002B heard : \u0027\u0027) \u002B \u0027) \u2014 l\u01B0\u1EE3t n\u00E0y KH\u00D4NG mua ph\u00F9\u0027; } if (!body.classList.contains(\u0027jvz-km-buy-go\u0027)) return \u0027!\u0110\u00E3 \u0111o\u1EA1t \u0111\u01B0\u1EE3c quy\u1EC1n ch\u1EE7 m\u1ECF \u2014 kh\u00F4ng mua ph\u00F9 (tu\u1EF3 ch\u1ECDn t\u1EAFt, ho\u1EB7c su\u1EA5t h\u00F4m nay \u0111\u00E3 d\u00F9ng)\u0027; body.classList.add(\u0027jvz-km-buy-now\u0027); return \u0027!\u0110\u00E3 \u0111o\u1EA1t \u0111\u01B0\u1EE3c quy\u1EC1n ch\u1EE7 m\u1ECF \u2014 mua 1 Linh Quang Ph\u00F9 ngay tr\u01B0\u1EDBc c\u00FA ch\u1ED1t l\u1EDDi\u0027; }",
           "timeoutMs": 15000,
           "note": "c\u1EAFm jvz-km-buy-now KHI V\u00C0 CH\u1EC8 KHI trang x\u00E1c nh\u1EADn \u0111\u00E3 \u0111o\u1EA1t \u0111\u01B0\u1EE3c \u2014 c\u1EEDa duy nh\u1EA5t m\u1EDF c\u1EE5m mua",
           "when": {
