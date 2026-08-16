@@ -39,6 +39,13 @@ export const DAILY_QUOTA_QUEST_IDS = new Set([
   // nên không bao giờ lạc vào sổ này.
   "khoang-mach",
   "khoang-mach-thuong",
+  // Phần Thưởng Hoạt Động: hai rương của NGÀY, nhận rồi là thẻ mang class `claimed` cho tới
+  // hôm sau. `alreadyDone` của nó phát từ ĐÚNG MỘT chỗ — stopIf đọc cờ「cả hai thẻ đều
+  // claimed」— nên nó không thể lẫn với「lúc này chưa tới mốc」: cảnh ấy đi ngả onCooldown 30
+  // phút, và ngả「không thấy mục trên trang」đi ngả onCooldown 60 phút. Chính ranh giới ấy là
+  // thứ Vòng Quay bản thường không có, và là lý do bản thường của nó vắng mặt ở sổ này.
+  "phan-thuong-hoat-dong",
+  "phan-thuong-hoat-dong-thuong",
 ]);
 
 /**

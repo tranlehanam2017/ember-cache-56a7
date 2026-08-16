@@ -90,6 +90,7 @@ const SIMPLE_QUESTS = [
   ["vongQuay", "Vòng Quay Phúc Vận"],
   ["vanDap", "Vấn Đáp"],
   ["hySuDuong", "Hỷ Sự Đường"],
+  ["phanThuongHoatDong", "Phần Thưởng Hoạt Động"],
 ];
 
 /**

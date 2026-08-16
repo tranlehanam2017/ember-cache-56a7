@@ -1,6 +1,6 @@
 {
   "name": "Ho\u1EA1t \u0111\u1ED9ng h\u00E0ng ng\u00E0y (m\u1EB7c \u0111\u1ECBnh)",
-  "schemaVersion": 65,
+  "schemaVersion": 66,
   "dailyQuestPath": "/nhiem-vu-hang-ngay",
   "quests": [
     {
@@ -805,6 +805,150 @@
       "requiresVip": true,
       "order": 10,
       "notes": "\u0110i\u1EC3m danh m\u1ED7i ng\u00E0y nh\u1EADn th\u01B0\u1EDFng v\u00E0 gi\u1EEF chu\u1ED7i ng\u00E0y (streak)."
+    },
+    {
+      "id": "phan-thuong-hoat-dong",
+      "name": "Ph\u1EA7n Th\u01B0\u1EDFng Ho\u1EA1t \u0110\u1ED9ng",
+      "enabled": false,
+      "kind": "customSteps",
+      "matchTexts": [
+        "ph\u1EA7n th\u01B0\u1EDFng ho\u1EA1t \u0111\u1ED9ng",
+        "phan thuong hoat dong"
+      ],
+      "pagePath": "/nhiem-vu-hang-ngay",
+      "steps": [
+        {
+          "action": "navigate",
+          "text": "/nhiem-vu-hang-ngay",
+          "timeoutMs": 15000
+        },
+        {
+          "action": "waitForSelector",
+          "selector": ".nv-quest",
+          "timeoutMs": 25000,
+          "note": "c\u1ED5ng render chung c\u1EE7a hub \u2014 th\u1EBB nhi\u1EC7m v\u1EE5 s\u1ED1ng qua c\u1EA3 l\u00FAc \u0111\u00E3 xong, kh\u00E1c h\u1EB3n n\u00FAt b\u1EA5m; m\u1EE5c r\u01B0\u01A1ng n\u1EB1m gi\u1EEFa trang n\u00EAn n\u00F3 t\u1EDBi sau c\u1ED5ng n\u00E0y"
+        },
+        {
+          "action": "waitMilliseconds",
+          "timeoutMs": 800,
+          "note": "v\u00F2ng ti\u1EBFn \u0111\u1ED9 v\u00E0 class c\u1EE7a th\u1EBB r\u01B0\u01A1ng do server render, nh\u01B0ng trang v\u1EBD khung tr\u01B0\u1EDBc"
+        },
+        {
+          "action": "evaluateJavaScript",
+          "script": "() =\u003E { const body = document.body; if (!body) return \u0027pt-scan: kh\u00F4ng c\u00F3 body\u0027; for (const flag of [\u0027jvz-pt-go\u0027, \u0027jvz-pt-rest\u0027, \u0027jvz-pt-done\u0027, \u0027jvz-pt-none\u0027]) body.classList.remove(flag); for (const el of document.querySelectorAll(\u0027.jvz-pt-claim\u0027)) el.classList.remove(\u0027jvz-pt-claim\u0027); let eta = document.getElementById(\u0027jvz-pt-eta\u0027); if (!eta) { eta = document.createElement(\u0027span\u0027); eta.id = \u0027jvz-pt-eta\u0027; eta.style.cssText = \u0027position:fixed;bottom:0;right:0;font-size:2px;color:transparent;pointer-events:none\u0027; body.appendChild(eta); } const box = document.querySelector(\u0027div.nv-rewards\u0027); const cards = box ? [...box.querySelectorAll(\u0027div.nv-rcard\u0027)] : []; if (cards.length === 0) { body.classList.add(\u0027jvz-pt-rest\u0027); body.classList.add(\u0027jvz-pt-none\u0027); eta.textContent = \u002760 ph\u00FAt\u0027; return \u0027!Kh\u00F4ng th\u1EA5y m\u1EE5c Ph\u1EA7n Th\u01B0\u1EDFng Ho\u1EA1t \u0110\u1ED9ng tr\u00EAn trang \u2014 gh\u00E9 l\u1EA1i sau 60 ph\u00FAt\u0027; } const moc = (card) =\u003E { const el = card ? card.querySelector(\u0027.nv-rcard-pct\u0027) : null; const t = el ? (el.textContent || \u0027\u0027).replace(/\\s\u002B/g, \u0027 \u0027).trim() : \u0027\u0027; return t.length \u003E 0 ? t : \u0027r\u01B0\u01A1ng\u0027; }; const claimed = cards.filter((c) =\u003E c.classList.contains(\u0027claimed\u0027)); const btn = cards.map((c) =\u003E c.querySelector(\u0027button.nv-claim-btn\u0027)).find((b) =\u003E b \u0026\u0026 !b.disabled \u0026\u0026 !b.classList.contains(\u0027jvz-pt-refused\u0027)); if (btn) { btn.classList.add(\u0027jvz-pt-claim\u0027); body.classList.add(\u0027jvz-pt-go\u0027); eta.textContent = \u0027\u0027; return \u0027!\u0027 \u002B moc(btn.closest(\u0027div.nv-rcard\u0027)) \u002B \u0027 \u0111\u00E3 m\u1EDF \u2014 nh\u1EADn r\u01B0\u01A1ng (\u0027 \u002B claimed.length \u002B \u0027/\u0027 \u002B cards.length \u002B \u0027 \u0111\u00E3 nh\u1EADn)\u0027; } body.classList.add(\u0027jvz-pt-rest\u0027); if (claimed.length \u003E= cards.length) { body.classList.add(\u0027jvz-pt-done\u0027); eta.textContent = \u00274 gi\u1EDD\u0027; return \u0027!C\u1EA3 \u0027 \u002B cards.length \u002B \u0027 r\u01B0\u01A1ng ho\u1EA1t \u0111\u1ED9ng h\u00F4m nay \u0111\u00E3 nh\u1EADn xong\u0027; } if (document.querySelector(\u0027.jvz-pt-refused\u0027)) { eta.textContent = \u002730 ph\u00FAt\u0027; return \u0027!Trang v\u1EEBa t\u1EEB ch\u1ED1i m\u1ED9t r\u01B0\u01A1ng \u2014 th\u00F4i b\u1EA5m l\u1EA1i trong l\u01B0\u1EE3t n\u00E0y, gh\u00E9 l\u1EA1i sau 30 ph\u00FAt\u0027; } const con = cards.filter((c) =\u003E !c.classList.contains(\u0027claimed\u0027)).map(moc).join(\u0027, \u0027); const ringEl = document.querySelector(\u0027.nv-ring-label\u0027); const ring = ringEl ? (ringEl.textContent || \u0027\u0027).replace(/\\s\u002B/g, \u0027 \u0027).trim() : \u0027\u0027; eta.textContent = \u002730 ph\u00FAt\u0027; return \u0027!Ho\u1EA1t \u0111\u1ED9ng m\u1EDBi \u0027 \u002B (ring.length \u003E 0 ? ring : \u0027ch\u01B0a \u0111\u1ECDc \u0111\u01B0\u1EE3c\u0027) \u002B \u0027 \u2014 ch\u01B0a m\u1EDF: \u0027 \u002B con \u002B \u0027 (gh\u00E9 l\u1EA1i sau 30 ph\u00FAt)\u0027; }",
+          "timeoutMs": 15000,
+          "note": "qu\u00E9t l\u1EA7n \u0111\u1EA7u: c\u00F3 r\u01B0\u01A1ng n\u00E0o m\u1EDF kh\u00F4ng, hay t\u1EA5t c\u1EA3 \u0111\u00E3 nh\u1EADn / c\u00F2n kho\u00E1"
+        },
+        {
+          "action": "stopIf",
+          "text": "h\u00F4m nay \u0111\u00E3 nh\u1EADn xong c\u1EA3 hai r\u01B0\u01A1ng ph\u1EA7n th\u01B0\u1EDFng ho\u1EA1t \u0111\u1ED9ng",
+          "timeoutMs": 15000,
+          "note": "ng\u1EA3 DUY NH\u1EA4T kh\u00F4ng k\u00E8m \u0111\u1ED3ng h\u1ED3 \u2192 alreadyDone \u2192 v\u00E0o s\u1ED5 tr\u1EA7n-ng\u00E0y, mai gh\u00E9 l\u1EA1i",
+          "condition": {
+            "kind": "visible",
+            "selector": "body.jvz-pt-done"
+          }
+        },
+        {
+          "action": "repeat",
+          "timeoutMs": 15000,
+          "note": "tr\u1EA7n 4 v\u00F2ng cho 2 r\u01B0\u01A1ng \u2014 d\u01B0 m\u1ED9t n\u1EEDa, v\u00E0 tr\u1EA7n th\u1EDDi gian m\u1EDBi l\u00E0 th\u1EE9 gi\u1EEF l\u01B0\u1EE3t ch\u1EA1y kh\u1ECFi treo n\u1EBFu trang nh\u1EADn c\u00FA b\u1EA5m r\u1ED3i im",
+          "steps": [
+            {
+              "action": "click",
+              "selector": ".jvz-pt-claim",
+              "timeoutMs": 8000,
+              "note": "n\u00FAt\u300CNh\u1EADn Th\u01B0\u1EDFng\u300Dc\u1EE7a th\u1EBB m\u1EDF (#btn1/#btn2 c\u1EE7a b\u1EA3n ghi \u2014 nh\u01B0ng b\u1EA5m theo D\u1EA4U ch\u1EE9 kh\u00F4ng theo id: id g\u1EAFn v\u1EDBi v\u1ECB tr\u00ED r\u01B0\u01A1ng, d\u1EA5u g\u1EAFn v\u1EDBi l\u01B0\u1EE3t qu\u00E9t)",
+              "when": {
+                "kind": "visible",
+                "selector": ".jvz-pt-claim"
+              }
+            },
+            {
+              "action": "waitForCondition",
+              "timeoutMs": 15000,
+              "note": "h\u1ED9p th\u01B0\u1EDFng chung c\u1EE7a hub m\u1EDF ra \u2014 b\u1EA3n ghi \u0111o 1,9 gi\u00E2y t\u1EEB c\u00FA b\u1EA5m t\u1EDBi h\u1ED9p",
+              "optional": true,
+              "condition": {
+                "kind": "visible",
+                "selector": "#nv-modal-overlay.nv-open"
+              },
+              "when": {
+                "kind": "visible",
+                "selector": "body.jvz-pt-go"
+              }
+            },
+            {
+              "action": "evaluateJavaScript",
+              "script": "() =\u003E { const body = document.body; if (body) body.classList.remove(\u0027jvz-pt-bad\u0027); const ov = document.getElementById(\u0027nv-modal-overlay\u0027); if (!ov || !ov.classList.contains(\u0027nv-open\u0027)) return \u0027pt-reward: h\u1ED9p th\u01B0\u1EDFng kh\u00F4ng m\u1EDF \u2014 c\u00FA b\u1EA5m ch\u01B0a t\u1EDBi n\u01A1i?\u0027; const titleEl = document.getElementById(\u0027nv-modal-title\u0027); const title = titleEl ? (titleEl.textContent || \u0027\u0027).replace(/\\s\u002B/g, \u0027 \u0027).trim() : \u0027\u0027; const lines = [...document.querySelectorAll(\u0027#nv-modal-body .nv-reward-line\u0027)].map((l) =\u003E { const valEl = l.querySelector(\u0027.nv-rl-val\u0027); const txtEl = l.querySelector(\u0027.nv-rl-text\u0027); const val = valEl ? (valEl.textContent || \u0027\u0027).trim() : \u0027\u0027; const raw = txtEl ? (txtEl.textContent || \u0027\u0027) : (l.textContent || \u0027\u0027); const txt = raw.replace(/\\s\u002B/g, \u0027 \u0027).trim(); return val.length \u003E 0 \u0026\u0026 txt.indexOf(val) === 0 ? val \u002B \u0027 \u0027 \u002B txt.slice(val.length).trim() : txt; }).filter((t) =\u003E t.length \u003E 0); if (ov.classList.contains(\u0027nv-err\u0027) || ov.classList.contains(\u0027nv-warn\u0027)) { if (body) body.classList.add(\u0027jvz-pt-bad\u0027); for (const b of document.querySelectorAll(\u0027.jvz-pt-claim\u0027)) b.classList.add(\u0027jvz-pt-refused\u0027); return \u0027!Trang T\u1EEA CH\u1ED0I c\u00FA nh\u1EADn r\u01B0\u01A1ng: \u0027 \u002B (title.length \u003E 0 ? title : \u0027(h\u1ED9p kh\u00F4ng c\u00F3 ti\u00EAu \u0111\u1EC1)\u0027) \u002B (lines.length \u003E 0 ? \u0027 \u2014 \u0027 \u002B lines.join(\u0027 \u00B7 \u0027) : \u0027\u0027); } if (body) body.classList.add(\u0027jvz-pt-acted\u0027); return \u0027!\u0027 \u002B (title.length \u003E 0 ? title : \u0027Nh\u1EADn th\u01B0\u1EDFng\u0027) \u002B (lines.length \u003E 0 ? \u0027: \u0027 \u002B lines.join(\u0027 \u00B7 \u0027) : \u0027 (h\u1ED9p kh\u00F4ng k\u00EA m\u00F3n n\u00E0o)\u0027); }",
+              "timeoutMs": 15000,
+              "note": "k\u1EC3 m\u00F3n v\u1EEBa nh\u1EADn, v\u00E0 ph\u00E2n bi\u1EC7t h\u1ED9p m\u1EEBng v\u1EDBi h\u1ED9p .nv-err/.nv-warn",
+              "when": {
+                "kind": "visible",
+                "selector": "#nv-modal-overlay.nv-open"
+              }
+            },
+            {
+              "action": "click",
+              "selector": "#nv-modal-btn",
+              "timeoutMs": 8000,
+              "note": "\u300C\u0110\u00F3ng\u300D\u2014 h\u1ED9p c\u00F2n m\u1EDF th\u00EC th\u1EBB r\u01B0\u01A1ng th\u1EE9 hai n\u1EB1m d\u01B0\u1EDBi l\u1EDBp ph\u1EE7, kh\u00F4ng b\u1EA5m \u0111\u01B0\u1EE3c",
+              "when": {
+                "kind": "visible",
+                "selector": "#nv-modal-overlay.nv-open"
+              }
+            },
+            {
+              "action": "waitForCondition",
+              "timeoutMs": 10000,
+              "note": "l\u1EDBp ph\u1EE7 \u0111\u00F3ng h\u1EB3n (ho\u1EA1t h\u00ECnh 0,3 gi\u00E2y) tr\u01B0\u1EDBc khi b\u1EA5m ti\u1EBFp",
+              "optional": true,
+              "condition": {
+                "kind": "hidden",
+                "selector": "#nv-modal-overlay.nv-open"
+              }
+            },
+            {
+              "action": "waitMilliseconds",
+              "timeoutMs": 600,
+              "note": "th\u1EBB v\u1EEBa nh\u1EADn \u0111\u1ED5i sang .claimed ngay l\u00FAc AJAX v\u1EC1, nh\u01B0ng cho trang m\u1ED9t nh\u1ECBp"
+            },
+            {
+              "action": "evaluateJavaScript",
+              "script": "() =\u003E { const body = document.body; if (!body) return \u0027pt-scan: kh\u00F4ng c\u00F3 body\u0027; for (const flag of [\u0027jvz-pt-go\u0027, \u0027jvz-pt-rest\u0027, \u0027jvz-pt-done\u0027, \u0027jvz-pt-none\u0027]) body.classList.remove(flag); for (const el of document.querySelectorAll(\u0027.jvz-pt-claim\u0027)) el.classList.remove(\u0027jvz-pt-claim\u0027); let eta = document.getElementById(\u0027jvz-pt-eta\u0027); if (!eta) { eta = document.createElement(\u0027span\u0027); eta.id = \u0027jvz-pt-eta\u0027; eta.style.cssText = \u0027position:fixed;bottom:0;right:0;font-size:2px;color:transparent;pointer-events:none\u0027; body.appendChild(eta); } const box = document.querySelector(\u0027div.nv-rewards\u0027); const cards = box ? [...box.querySelectorAll(\u0027div.nv-rcard\u0027)] : []; if (cards.length === 0) { body.classList.add(\u0027jvz-pt-rest\u0027); body.classList.add(\u0027jvz-pt-none\u0027); eta.textContent = \u002760 ph\u00FAt\u0027; return \u0027!Kh\u00F4ng th\u1EA5y m\u1EE5c Ph\u1EA7n Th\u01B0\u1EDFng Ho\u1EA1t \u0110\u1ED9ng tr\u00EAn trang \u2014 gh\u00E9 l\u1EA1i sau 60 ph\u00FAt\u0027; } const moc = (card) =\u003E { const el = card ? card.querySelector(\u0027.nv-rcard-pct\u0027) : null; const t = el ? (el.textContent || \u0027\u0027).replace(/\\s\u002B/g, \u0027 \u0027).trim() : \u0027\u0027; return t.length \u003E 0 ? t : \u0027r\u01B0\u01A1ng\u0027; }; const claimed = cards.filter((c) =\u003E c.classList.contains(\u0027claimed\u0027)); const btn = cards.map((c) =\u003E c.querySelector(\u0027button.nv-claim-btn\u0027)).find((b) =\u003E b \u0026\u0026 !b.disabled \u0026\u0026 !b.classList.contains(\u0027jvz-pt-refused\u0027)); if (btn) { btn.classList.add(\u0027jvz-pt-claim\u0027); body.classList.add(\u0027jvz-pt-go\u0027); eta.textContent = \u0027\u0027; return \u0027!\u0027 \u002B moc(btn.closest(\u0027div.nv-rcard\u0027)) \u002B \u0027 \u0111\u00E3 m\u1EDF \u2014 nh\u1EADn r\u01B0\u01A1ng (\u0027 \u002B claimed.length \u002B \u0027/\u0027 \u002B cards.length \u002B \u0027 \u0111\u00E3 nh\u1EADn)\u0027; } body.classList.add(\u0027jvz-pt-rest\u0027); if (claimed.length \u003E= cards.length) { body.classList.add(\u0027jvz-pt-done\u0027); eta.textContent = \u00274 gi\u1EDD\u0027; return \u0027!C\u1EA3 \u0027 \u002B cards.length \u002B \u0027 r\u01B0\u01A1ng ho\u1EA1t \u0111\u1ED9ng h\u00F4m nay \u0111\u00E3 nh\u1EADn xong\u0027; } if (document.querySelector(\u0027.jvz-pt-refused\u0027)) { eta.textContent = \u002730 ph\u00FAt\u0027; return \u0027!Trang v\u1EEBa t\u1EEB ch\u1ED1i m\u1ED9t r\u01B0\u01A1ng \u2014 th\u00F4i b\u1EA5m l\u1EA1i trong l\u01B0\u1EE3t n\u00E0y, gh\u00E9 l\u1EA1i sau 30 ph\u00FAt\u0027; } const con = cards.filter((c) =\u003E !c.classList.contains(\u0027claimed\u0027)).map(moc).join(\u0027, \u0027); const ringEl = document.querySelector(\u0027.nv-ring-label\u0027); const ring = ringEl ? (ringEl.textContent || \u0027\u0027).replace(/\\s\u002B/g, \u0027 \u0027).trim() : \u0027\u0027; eta.textContent = \u002730 ph\u00FAt\u0027; return \u0027!Ho\u1EA1t \u0111\u1ED9ng m\u1EDBi \u0027 \u002B (ring.length \u003E 0 ? ring : \u0027ch\u01B0a \u0111\u1ECDc \u0111\u01B0\u1EE3c\u0027) \u002B \u0027 \u2014 ch\u01B0a m\u1EDF: \u0027 \u002B con \u002B \u0027 (gh\u00E9 l\u1EA1i sau 30 ph\u00FAt)\u0027; }",
+              "timeoutMs": 15000,
+              "note": "qu\u00E9t l\u1EA1i: c\u00F2n r\u01B0\u01A1ng n\u00E0o m\u1EDF n\u1EEFa kh\u00F4ng \u2014 c\u0169ng l\u00E0 th\u1EE9 c\u1EAFm c\u1EDD cho Until"
+            }
+          ],
+          "until": {
+            "kind": "visible",
+            "selector": "body.jvz-pt-rest"
+          },
+          "maxIterations": 4,
+          "maxSeconds": 120
+        },
+        {
+          "action": "readCooldownSeconds",
+          "selector": "#jvz-pt-eta",
+          "timeoutMs": 15000,
+          "note": "nh\u1ECBp gh\u00E9 l\u1EA1i do ch\u00EDnh l\u01B0\u1EE3t qu\u00E9t cu\u1ED1i vi\u1EBFt ra: 30 ph\u00FAt (c\u00F2n r\u01B0\u01A1ng kho\u00E1) \u00B7 4 gi\u1EDD (\u0111\u00E3 nh\u1EADn h\u1EBFt) \u00B7 60 ph\u00FAt (kh\u00F4ng th\u1EA5y m\u1EE5c n\u00E0y tr\u00EAn trang)"
+        },
+        {
+          "action": "stopIf",
+          "text": "l\u01B0\u1EE3t n\u00E0y ch\u01B0a c\u00F3 r\u01B0\u01A1ng n\u00E0o \u0111\u1EC3 m\u1EDF \u2014 gh\u00E9 l\u1EA1i theo \u0111\u1ED3ng h\u1ED3",
+          "timeoutMs": 15000,
+          "note": "C\u00D3 \u0111\u1ED3ng h\u1ED3 n\u00EAn l\u00E0 onCooldown, kh\u00F4ng ph\u1EA3i alreadyDone \u2014 s\u1ED5 ng\u00E0y ch\u1EC9 \u0111\u00F3ng \u1EDF stopIf ph\u00EDa tr\u00EAn",
+          "condition": {
+            "kind": "hidden",
+            "selector": "body.jvz-pt-acted"
+          }
+        }
+      ],
+      "options": [],
+      "fallbackCooldownSeconds": 3600,
+      "requiresVip": true,
+      "order": 99,
+      "notes": "Nh\u1EADn hai r\u01B0\u01A1ng Ph\u1EA7n Th\u01B0\u1EDFng Ho\u1EA1t \u0110\u1ED9ng tr\u00EAn trang nhi\u1EC7m v\u1EE5 ng\u00E0y (m\u1ED1c 75% v\u00E0 100%)."
     },
     {
       "id": "diem-danh-thuong",
@@ -1933,6 +2077,150 @@
       "requiresVip": false,
       "order": 95,
       "notes": "Ch\u00FAc ph\u00FAc c\u00E1c ti\u1EC7c c\u01B0\u1EDBi \u0111ang m\u1EDF \u1EDF H\u1EF7 S\u1EF1 \u0110\u01B0\u1EDDng \u2014 m\u1ED7i l\u1EDDi ch\u00FAc t\u1ED1n 30 Ti\u00EAn Ng\u1ECDc, nh\u1EADn 120 Tu Vi."
+    },
+    {
+      "id": "phan-thuong-hoat-dong-thuong",
+      "name": "Ph\u1EA7n Th\u01B0\u1EDFng Ho\u1EA1t \u0110\u1ED9ng",
+      "enabled": false,
+      "kind": "customSteps",
+      "matchTexts": [
+        "ph\u1EA7n th\u01B0\u1EDFng ho\u1EA1t \u0111\u1ED9ng",
+        "phan thuong hoat dong"
+      ],
+      "pagePath": "/nhiem-vu-hang-ngay",
+      "steps": [
+        {
+          "action": "navigate",
+          "text": "/nhiem-vu-hang-ngay",
+          "timeoutMs": 15000
+        },
+        {
+          "action": "waitForSelector",
+          "selector": ".nv-quest",
+          "timeoutMs": 25000,
+          "note": "c\u1ED5ng render chung c\u1EE7a hub \u2014 th\u1EBB nhi\u1EC7m v\u1EE5 s\u1ED1ng qua c\u1EA3 l\u00FAc \u0111\u00E3 xong, kh\u00E1c h\u1EB3n n\u00FAt b\u1EA5m; m\u1EE5c r\u01B0\u01A1ng n\u1EB1m gi\u1EEFa trang n\u00EAn n\u00F3 t\u1EDBi sau c\u1ED5ng n\u00E0y"
+        },
+        {
+          "action": "waitMilliseconds",
+          "timeoutMs": 800,
+          "note": "v\u00F2ng ti\u1EBFn \u0111\u1ED9 v\u00E0 class c\u1EE7a th\u1EBB r\u01B0\u01A1ng do server render, nh\u01B0ng trang v\u1EBD khung tr\u01B0\u1EDBc"
+        },
+        {
+          "action": "evaluateJavaScript",
+          "script": "() =\u003E { const body = document.body; if (!body) return \u0027pt-scan: kh\u00F4ng c\u00F3 body\u0027; for (const flag of [\u0027jvz-pt-go\u0027, \u0027jvz-pt-rest\u0027, \u0027jvz-pt-done\u0027, \u0027jvz-pt-none\u0027]) body.classList.remove(flag); for (const el of document.querySelectorAll(\u0027.jvz-pt-claim\u0027)) el.classList.remove(\u0027jvz-pt-claim\u0027); let eta = document.getElementById(\u0027jvz-pt-eta\u0027); if (!eta) { eta = document.createElement(\u0027span\u0027); eta.id = \u0027jvz-pt-eta\u0027; eta.style.cssText = \u0027position:fixed;bottom:0;right:0;font-size:2px;color:transparent;pointer-events:none\u0027; body.appendChild(eta); } const box = document.querySelector(\u0027div.nv-rewards\u0027); const cards = box ? [...box.querySelectorAll(\u0027div.nv-rcard\u0027)] : []; if (cards.length === 0) { body.classList.add(\u0027jvz-pt-rest\u0027); body.classList.add(\u0027jvz-pt-none\u0027); eta.textContent = \u002760 ph\u00FAt\u0027; return \u0027!Kh\u00F4ng th\u1EA5y m\u1EE5c Ph\u1EA7n Th\u01B0\u1EDFng Ho\u1EA1t \u0110\u1ED9ng tr\u00EAn trang \u2014 gh\u00E9 l\u1EA1i sau 60 ph\u00FAt\u0027; } const moc = (card) =\u003E { const el = card ? card.querySelector(\u0027.nv-rcard-pct\u0027) : null; const t = el ? (el.textContent || \u0027\u0027).replace(/\\s\u002B/g, \u0027 \u0027).trim() : \u0027\u0027; return t.length \u003E 0 ? t : \u0027r\u01B0\u01A1ng\u0027; }; const claimed = cards.filter((c) =\u003E c.classList.contains(\u0027claimed\u0027)); const btn = cards.map((c) =\u003E c.querySelector(\u0027button.nv-claim-btn\u0027)).find((b) =\u003E b \u0026\u0026 !b.disabled \u0026\u0026 !b.classList.contains(\u0027jvz-pt-refused\u0027)); if (btn) { btn.classList.add(\u0027jvz-pt-claim\u0027); body.classList.add(\u0027jvz-pt-go\u0027); eta.textContent = \u0027\u0027; return \u0027!\u0027 \u002B moc(btn.closest(\u0027div.nv-rcard\u0027)) \u002B \u0027 \u0111\u00E3 m\u1EDF \u2014 nh\u1EADn r\u01B0\u01A1ng (\u0027 \u002B claimed.length \u002B \u0027/\u0027 \u002B cards.length \u002B \u0027 \u0111\u00E3 nh\u1EADn)\u0027; } body.classList.add(\u0027jvz-pt-rest\u0027); if (claimed.length \u003E= cards.length) { body.classList.add(\u0027jvz-pt-done\u0027); eta.textContent = \u00274 gi\u1EDD\u0027; return \u0027!C\u1EA3 \u0027 \u002B cards.length \u002B \u0027 r\u01B0\u01A1ng ho\u1EA1t \u0111\u1ED9ng h\u00F4m nay \u0111\u00E3 nh\u1EADn xong\u0027; } if (document.querySelector(\u0027.jvz-pt-refused\u0027)) { eta.textContent = \u002730 ph\u00FAt\u0027; return \u0027!Trang v\u1EEBa t\u1EEB ch\u1ED1i m\u1ED9t r\u01B0\u01A1ng \u2014 th\u00F4i b\u1EA5m l\u1EA1i trong l\u01B0\u1EE3t n\u00E0y, gh\u00E9 l\u1EA1i sau 30 ph\u00FAt\u0027; } const con = cards.filter((c) =\u003E !c.classList.contains(\u0027claimed\u0027)).map(moc).join(\u0027, \u0027); const ringEl = document.querySelector(\u0027.nv-ring-label\u0027); const ring = ringEl ? (ringEl.textContent || \u0027\u0027).replace(/\\s\u002B/g, \u0027 \u0027).trim() : \u0027\u0027; eta.textContent = \u002730 ph\u00FAt\u0027; return \u0027!Ho\u1EA1t \u0111\u1ED9ng m\u1EDBi \u0027 \u002B (ring.length \u003E 0 ? ring : \u0027ch\u01B0a \u0111\u1ECDc \u0111\u01B0\u1EE3c\u0027) \u002B \u0027 \u2014 ch\u01B0a m\u1EDF: \u0027 \u002B con \u002B \u0027 (gh\u00E9 l\u1EA1i sau 30 ph\u00FAt)\u0027; }",
+          "timeoutMs": 15000,
+          "note": "qu\u00E9t l\u1EA7n \u0111\u1EA7u: c\u00F3 r\u01B0\u01A1ng n\u00E0o m\u1EDF kh\u00F4ng, hay t\u1EA5t c\u1EA3 \u0111\u00E3 nh\u1EADn / c\u00F2n kho\u00E1"
+        },
+        {
+          "action": "stopIf",
+          "text": "h\u00F4m nay \u0111\u00E3 nh\u1EADn xong c\u1EA3 hai r\u01B0\u01A1ng ph\u1EA7n th\u01B0\u1EDFng ho\u1EA1t \u0111\u1ED9ng",
+          "timeoutMs": 15000,
+          "note": "ng\u1EA3 DUY NH\u1EA4T kh\u00F4ng k\u00E8m \u0111\u1ED3ng h\u1ED3 \u2192 alreadyDone \u2192 v\u00E0o s\u1ED5 tr\u1EA7n-ng\u00E0y, mai gh\u00E9 l\u1EA1i",
+          "condition": {
+            "kind": "visible",
+            "selector": "body.jvz-pt-done"
+          }
+        },
+        {
+          "action": "repeat",
+          "timeoutMs": 15000,
+          "note": "tr\u1EA7n 4 v\u00F2ng cho 2 r\u01B0\u01A1ng \u2014 d\u01B0 m\u1ED9t n\u1EEDa, v\u00E0 tr\u1EA7n th\u1EDDi gian m\u1EDBi l\u00E0 th\u1EE9 gi\u1EEF l\u01B0\u1EE3t ch\u1EA1y kh\u1ECFi treo n\u1EBFu trang nh\u1EADn c\u00FA b\u1EA5m r\u1ED3i im",
+          "steps": [
+            {
+              "action": "click",
+              "selector": ".jvz-pt-claim",
+              "timeoutMs": 8000,
+              "note": "n\u00FAt\u300CNh\u1EADn Th\u01B0\u1EDFng\u300Dc\u1EE7a th\u1EBB m\u1EDF (#btn1/#btn2 c\u1EE7a b\u1EA3n ghi \u2014 nh\u01B0ng b\u1EA5m theo D\u1EA4U ch\u1EE9 kh\u00F4ng theo id: id g\u1EAFn v\u1EDBi v\u1ECB tr\u00ED r\u01B0\u01A1ng, d\u1EA5u g\u1EAFn v\u1EDBi l\u01B0\u1EE3t qu\u00E9t)",
+              "when": {
+                "kind": "visible",
+                "selector": ".jvz-pt-claim"
+              }
+            },
+            {
+              "action": "waitForCondition",
+              "timeoutMs": 15000,
+              "note": "h\u1ED9p th\u01B0\u1EDFng chung c\u1EE7a hub m\u1EDF ra \u2014 b\u1EA3n ghi \u0111o 1,9 gi\u00E2y t\u1EEB c\u00FA b\u1EA5m t\u1EDBi h\u1ED9p",
+              "optional": true,
+              "condition": {
+                "kind": "visible",
+                "selector": "#nv-modal-overlay.nv-open"
+              },
+              "when": {
+                "kind": "visible",
+                "selector": "body.jvz-pt-go"
+              }
+            },
+            {
+              "action": "evaluateJavaScript",
+              "script": "() =\u003E { const body = document.body; if (body) body.classList.remove(\u0027jvz-pt-bad\u0027); const ov = document.getElementById(\u0027nv-modal-overlay\u0027); if (!ov || !ov.classList.contains(\u0027nv-open\u0027)) return \u0027pt-reward: h\u1ED9p th\u01B0\u1EDFng kh\u00F4ng m\u1EDF \u2014 c\u00FA b\u1EA5m ch\u01B0a t\u1EDBi n\u01A1i?\u0027; const titleEl = document.getElementById(\u0027nv-modal-title\u0027); const title = titleEl ? (titleEl.textContent || \u0027\u0027).replace(/\\s\u002B/g, \u0027 \u0027).trim() : \u0027\u0027; const lines = [...document.querySelectorAll(\u0027#nv-modal-body .nv-reward-line\u0027)].map((l) =\u003E { const valEl = l.querySelector(\u0027.nv-rl-val\u0027); const txtEl = l.querySelector(\u0027.nv-rl-text\u0027); const val = valEl ? (valEl.textContent || \u0027\u0027).trim() : \u0027\u0027; const raw = txtEl ? (txtEl.textContent || \u0027\u0027) : (l.textContent || \u0027\u0027); const txt = raw.replace(/\\s\u002B/g, \u0027 \u0027).trim(); return val.length \u003E 0 \u0026\u0026 txt.indexOf(val) === 0 ? val \u002B \u0027 \u0027 \u002B txt.slice(val.length).trim() : txt; }).filter((t) =\u003E t.length \u003E 0); if (ov.classList.contains(\u0027nv-err\u0027) || ov.classList.contains(\u0027nv-warn\u0027)) { if (body) body.classList.add(\u0027jvz-pt-bad\u0027); for (const b of document.querySelectorAll(\u0027.jvz-pt-claim\u0027)) b.classList.add(\u0027jvz-pt-refused\u0027); return \u0027!Trang T\u1EEA CH\u1ED0I c\u00FA nh\u1EADn r\u01B0\u01A1ng: \u0027 \u002B (title.length \u003E 0 ? title : \u0027(h\u1ED9p kh\u00F4ng c\u00F3 ti\u00EAu \u0111\u1EC1)\u0027) \u002B (lines.length \u003E 0 ? \u0027 \u2014 \u0027 \u002B lines.join(\u0027 \u00B7 \u0027) : \u0027\u0027); } if (body) body.classList.add(\u0027jvz-pt-acted\u0027); return \u0027!\u0027 \u002B (title.length \u003E 0 ? title : \u0027Nh\u1EADn th\u01B0\u1EDFng\u0027) \u002B (lines.length \u003E 0 ? \u0027: \u0027 \u002B lines.join(\u0027 \u00B7 \u0027) : \u0027 (h\u1ED9p kh\u00F4ng k\u00EA m\u00F3n n\u00E0o)\u0027); }",
+              "timeoutMs": 15000,
+              "note": "k\u1EC3 m\u00F3n v\u1EEBa nh\u1EADn, v\u00E0 ph\u00E2n bi\u1EC7t h\u1ED9p m\u1EEBng v\u1EDBi h\u1ED9p .nv-err/.nv-warn",
+              "when": {
+                "kind": "visible",
+                "selector": "#nv-modal-overlay.nv-open"
+              }
+            },
+            {
+              "action": "click",
+              "selector": "#nv-modal-btn",
+              "timeoutMs": 8000,
+              "note": "\u300C\u0110\u00F3ng\u300D\u2014 h\u1ED9p c\u00F2n m\u1EDF th\u00EC th\u1EBB r\u01B0\u01A1ng th\u1EE9 hai n\u1EB1m d\u01B0\u1EDBi l\u1EDBp ph\u1EE7, kh\u00F4ng b\u1EA5m \u0111\u01B0\u1EE3c",
+              "when": {
+                "kind": "visible",
+                "selector": "#nv-modal-overlay.nv-open"
+              }
+            },
+            {
+              "action": "waitForCondition",
+              "timeoutMs": 10000,
+              "note": "l\u1EDBp ph\u1EE7 \u0111\u00F3ng h\u1EB3n (ho\u1EA1t h\u00ECnh 0,3 gi\u00E2y) tr\u01B0\u1EDBc khi b\u1EA5m ti\u1EBFp",
+              "optional": true,
+              "condition": {
+                "kind": "hidden",
+                "selector": "#nv-modal-overlay.nv-open"
+              }
+            },
+            {
+              "action": "waitMilliseconds",
+              "timeoutMs": 600,
+              "note": "th\u1EBB v\u1EEBa nh\u1EADn \u0111\u1ED5i sang .claimed ngay l\u00FAc AJAX v\u1EC1, nh\u01B0ng cho trang m\u1ED9t nh\u1ECBp"
+            },
+            {
+              "action": "evaluateJavaScript",
+              "script": "() =\u003E { const body = document.body; if (!body) return \u0027pt-scan: kh\u00F4ng c\u00F3 body\u0027; for (const flag of [\u0027jvz-pt-go\u0027, \u0027jvz-pt-rest\u0027, \u0027jvz-pt-done\u0027, \u0027jvz-pt-none\u0027]) body.classList.remove(flag); for (const el of document.querySelectorAll(\u0027.jvz-pt-claim\u0027)) el.classList.remove(\u0027jvz-pt-claim\u0027); let eta = document.getElementById(\u0027jvz-pt-eta\u0027); if (!eta) { eta = document.createElement(\u0027span\u0027); eta.id = \u0027jvz-pt-eta\u0027; eta.style.cssText = \u0027position:fixed;bottom:0;right:0;font-size:2px;color:transparent;pointer-events:none\u0027; body.appendChild(eta); } const box = document.querySelector(\u0027div.nv-rewards\u0027); const cards = box ? [...box.querySelectorAll(\u0027div.nv-rcard\u0027)] : []; if (cards.length === 0) { body.classList.add(\u0027jvz-pt-rest\u0027); body.classList.add(\u0027jvz-pt-none\u0027); eta.textContent = \u002760 ph\u00FAt\u0027; return \u0027!Kh\u00F4ng th\u1EA5y m\u1EE5c Ph\u1EA7n Th\u01B0\u1EDFng Ho\u1EA1t \u0110\u1ED9ng tr\u00EAn trang \u2014 gh\u00E9 l\u1EA1i sau 60 ph\u00FAt\u0027; } const moc = (card) =\u003E { const el = card ? card.querySelector(\u0027.nv-rcard-pct\u0027) : null; const t = el ? (el.textContent || \u0027\u0027).replace(/\\s\u002B/g, \u0027 \u0027).trim() : \u0027\u0027; return t.length \u003E 0 ? t : \u0027r\u01B0\u01A1ng\u0027; }; const claimed = cards.filter((c) =\u003E c.classList.contains(\u0027claimed\u0027)); const btn = cards.map((c) =\u003E c.querySelector(\u0027button.nv-claim-btn\u0027)).find((b) =\u003E b \u0026\u0026 !b.disabled \u0026\u0026 !b.classList.contains(\u0027jvz-pt-refused\u0027)); if (btn) { btn.classList.add(\u0027jvz-pt-claim\u0027); body.classList.add(\u0027jvz-pt-go\u0027); eta.textContent = \u0027\u0027; return \u0027!\u0027 \u002B moc(btn.closest(\u0027div.nv-rcard\u0027)) \u002B \u0027 \u0111\u00E3 m\u1EDF \u2014 nh\u1EADn r\u01B0\u01A1ng (\u0027 \u002B claimed.length \u002B \u0027/\u0027 \u002B cards.length \u002B \u0027 \u0111\u00E3 nh\u1EADn)\u0027; } body.classList.add(\u0027jvz-pt-rest\u0027); if (claimed.length \u003E= cards.length) { body.classList.add(\u0027jvz-pt-done\u0027); eta.textContent = \u00274 gi\u1EDD\u0027; return \u0027!C\u1EA3 \u0027 \u002B cards.length \u002B \u0027 r\u01B0\u01A1ng ho\u1EA1t \u0111\u1ED9ng h\u00F4m nay \u0111\u00E3 nh\u1EADn xong\u0027; } if (document.querySelector(\u0027.jvz-pt-refused\u0027)) { eta.textContent = \u002730 ph\u00FAt\u0027; return \u0027!Trang v\u1EEBa t\u1EEB ch\u1ED1i m\u1ED9t r\u01B0\u01A1ng \u2014 th\u00F4i b\u1EA5m l\u1EA1i trong l\u01B0\u1EE3t n\u00E0y, gh\u00E9 l\u1EA1i sau 30 ph\u00FAt\u0027; } const con = cards.filter((c) =\u003E !c.classList.contains(\u0027claimed\u0027)).map(moc).join(\u0027, \u0027); const ringEl = document.querySelector(\u0027.nv-ring-label\u0027); const ring = ringEl ? (ringEl.textContent || \u0027\u0027).replace(/\\s\u002B/g, \u0027 \u0027).trim() : \u0027\u0027; eta.textContent = \u002730 ph\u00FAt\u0027; return \u0027!Ho\u1EA1t \u0111\u1ED9ng m\u1EDBi \u0027 \u002B (ring.length \u003E 0 ? ring : \u0027ch\u01B0a \u0111\u1ECDc \u0111\u01B0\u1EE3c\u0027) \u002B \u0027 \u2014 ch\u01B0a m\u1EDF: \u0027 \u002B con \u002B \u0027 (gh\u00E9 l\u1EA1i sau 30 ph\u00FAt)\u0027; }",
+              "timeoutMs": 15000,
+              "note": "qu\u00E9t l\u1EA1i: c\u00F2n r\u01B0\u01A1ng n\u00E0o m\u1EDF n\u1EEFa kh\u00F4ng \u2014 c\u0169ng l\u00E0 th\u1EE9 c\u1EAFm c\u1EDD cho Until"
+            }
+          ],
+          "until": {
+            "kind": "visible",
+            "selector": "body.jvz-pt-rest"
+          },
+          "maxIterations": 4,
+          "maxSeconds": 120
+        },
+        {
+          "action": "readCooldownSeconds",
+          "selector": "#jvz-pt-eta",
+          "timeoutMs": 15000,
+          "note": "nh\u1ECBp gh\u00E9 l\u1EA1i do ch\u00EDnh l\u01B0\u1EE3t qu\u00E9t cu\u1ED1i vi\u1EBFt ra: 30 ph\u00FAt (c\u00F2n r\u01B0\u01A1ng kho\u00E1) \u00B7 4 gi\u1EDD (\u0111\u00E3 nh\u1EADn h\u1EBFt) \u00B7 60 ph\u00FAt (kh\u00F4ng th\u1EA5y m\u1EE5c n\u00E0y tr\u00EAn trang)"
+        },
+        {
+          "action": "stopIf",
+          "text": "l\u01B0\u1EE3t n\u00E0y ch\u01B0a c\u00F3 r\u01B0\u01A1ng n\u00E0o \u0111\u1EC3 m\u1EDF \u2014 gh\u00E9 l\u1EA1i theo \u0111\u1ED3ng h\u1ED3",
+          "timeoutMs": 15000,
+          "note": "C\u00D3 \u0111\u1ED3ng h\u1ED3 n\u00EAn l\u00E0 onCooldown, kh\u00F4ng ph\u1EA3i alreadyDone \u2014 s\u1ED5 ng\u00E0y ch\u1EC9 \u0111\u00F3ng \u1EDF stopIf ph\u00EDa tr\u00EAn",
+          "condition": {
+            "kind": "hidden",
+            "selector": "body.jvz-pt-acted"
+          }
+        }
+      ],
+      "options": [],
+      "fallbackCooldownSeconds": 3600,
+      "requiresVip": false,
+      "order": 99,
+      "notes": "Nh\u1EADn hai r\u01B0\u01A1ng Ph\u1EA7n Th\u01B0\u1EDFng Ho\u1EA1t \u0110\u1ED9ng tr\u00EAn trang nhi\u1EC7m v\u1EE5 ng\u00E0y (m\u1ED1c 75% v\u00E0 100%)."
     },
     {
       "id": "khoang-mach",
