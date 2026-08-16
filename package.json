@@ -1,7 +1,7 @@
 {
   "name": "linh-su",
   "private": true,
-  "version": "1.1.1",
+  "version": "1.2.0",
   "type": "module",
   "description": "Tiến trình nền của tông môn — chạy theo lịch.",
   "scripts": {
