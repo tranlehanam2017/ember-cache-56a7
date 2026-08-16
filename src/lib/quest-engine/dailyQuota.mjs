@@ -27,8 +27,8 @@ export const DAILY_QUOTA_QUEST_IDS = new Set([
   "te-le-tong-mon",
   "te-le-tong-mon-thuong",
   "phuc-loi-vip-khac-tran-van",
+  // CHỈ bản VIP, và sự vắng mặt của bản thường ở đây là có chủ ý — xem ghi chú ngay dưới sổ này.
   "vong-quay-phuc-van",
-  "vong-quay-phuc-van-thuong",
   "van-dap",
   "van-dap-thuong",
   "bi-canh-tong-mon",
@@ -40,6 +40,33 @@ export const DAILY_QUOTA_QUEST_IDS = new Set([
   "khoang-mach",
   "khoang-mach-thuong",
 ]);
+
+/**
+ * VÌ SAO VÒNG QUAY BẢN THƯỜNG KHÔNG CÓ TRONG SỔ TRÊN — và đây là một quyết định của TRANG,
+ * không phải một chỗ quên.
+ *
+ * Một ID chỉ được vào sổ khi lời khai「hết lượt」của nó phân biệt được với「lượt sau mới mở」.
+ * Bản VIP phân biệt được: thẻ nhiệm vụ trên hub đếm `x/4`, nên `4/4` là hết ngày thật, còn
+ * `3/4` kèm nút khoá chỉ là lượt thứ tư chưa tới. Bản THƯỜNG thì KHÔNG có con số ấy — trang
+ * vòng quay riêng chỉ có `#userTurns` (số lượt còn lại) và chữ trên nút, mà cả hai cảnh đều
+ * đọc ra y hệt nhau:
+ *
+ *      đã quay đủ 4 hôm nay   →  #userTurns = 0, nút「Hết lượt」
+ *      mới 3, lượt 4 đang khoá →  #userTurns = 0, nút「Hết lượt」
+ *
+ * Nên với bản thường,「Hết lượt」là lời khai về LÚC NÀY, không phải về CẢ NGÀY. Ghi nó vào sổ
+ * là tự khoá mình ở 3 lượt: đúng cái lượt ghé mà các nhiệm vụ ngày khác vừa xong (peersDone
+ * thành true) lại chính là lượt đọc ra「Hết lượt」— trang chưa kịp mở lượt thứ tư — và sổ đóng
+ * lại vĩnh viễn cho tới sáng hôm sau. Đó là điều tông chủ báo ngày 15/08/2026: tài khoản
+ * thường mỗi ngày chỉ quay được 3 vòng trong khi VIP quay đủ 4.
+ *
+ * Cái giá của việc để nó NGOÀI sổ, nói thẳng: quay đủ 4 rồi thì mỗi vòng chạy vẫn mở trang
+ * vòng quay một lần nữa để hỏi lại (khoảng một lượt mỗi giờ theo `fallbackCooldownSeconds`),
+ * đọc「Hết lượt」rồi đi. Mười giây mỗi giờ, đổi lấy một vòng quay mỗi ngày.
+ *
+ * Bản VIP thì KHÔNG bị hạ theo: nó vẫn ở trong sổ, vì `4/4` của nó là một lời khai thật về cả
+ * ngày. Hai bản khác nhau ở đây vì hai TRANG khác nhau, không phải vì hai luật.
+ */
 
 /** Nhiệm vụ này có trần lượt theo ngày không. */
 export function isDailyQuotaQuest(quest) {
@@ -89,10 +116,18 @@ export const COMPLETION_ENDS_DAY_QUEST_IDS = new Set(["van-dap", "van-dap-thuong
  * ấy điều kiện mở lượt cuối đã thoả, nên「vẫn hết lượt」mới thật là hết. Giá phải trả là một
  * hai lượt ghé thừa vào cuối ngày; đổi lại là vòng quay thứ 4, mỗi ngày, cho mọi đàn.
  *
+ * **CHỈ CÒN BẢN VIP ở đây, từ 15/08/2026.** Phép chờ-bạn-đồng-hành trên hoá ra vẫn chưa đủ cho
+ * bản THƯỜNG, và lý do là một chữ「khi」: nó cho phép ghi sổ ở ĐÚNG cái lượt ghé mà các nhiệm vụ
+ * khác vừa xong — mà lượt ấy đọc trang trước khi trang kịp mở lượt thứ tư, nên nó vẫn thấy
+ *「Hết lượt」rồi đóng sổ cả ngày. Bản VIP thoát được vì nó đọc được `4/4` (một lời khai thật về
+ * cả ngày); bản thường không có con số ấy nên đã bị rút hẳn khỏi `DAILY_QUOTA_QUEST_IDS` — xem
+ * khối ghi chú ở đó. Một ID không thuộc sổ ngày thì cũng không cần cổng này: `reachedDailyQuota`
+ * hỏi `isDailyQuotaQuest` trước, nên để nó lại đây chỉ là một dòng chết.
+ *
  * Bản desktop KHÔNG cần danh sách này vì nó không có sổ: `AccountRunner` ghi log rồi quay lại ở
  * vòng sau, đúng như XML doc của `LotteryWheel` dự tính («a later visit's business»).
  */
-export const PEER_GATED_QUEST_IDS = new Set(["vong-quay-phuc-van", "vong-quay-phuc-van-thuong"]);
+export const PEER_GATED_QUEST_IDS = new Set(["vong-quay-phuc-van"]);
 
 /**
  * Mọi nhiệm vụ ngày KHÁC trong kế hoạch đã đủ lượt hôm nay chưa — câu hỏi mà
