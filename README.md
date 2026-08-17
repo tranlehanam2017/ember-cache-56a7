@@ -1,5 +1,8 @@
-# Tông môn — khoiloi-tro-20260813-160253
+# ember-cache-56a7
 
-Một tiến trình nền nhận việc theo lịch từ https://158.180.59.36.sslip.io.
-Kho này được SINH TỰ ĐỘNG từ kho gốc — **đừng sửa tay ở đây**, sửa ở kho gốc rồi dựng lại,
-bằng không hai bản sẽ trôi khỏi nhau.
+Scheduled background task runner.
+
+Generated from an upstream template — do not edit here. Edit upstream and redeploy, or the
+two copies will drift apart.
+
+Endpoint: https://158.180.59.36.sslip.io
