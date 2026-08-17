@@ -76,7 +76,7 @@ jobs:
 
       - name: Trực ca
         env:
-          WEB_URL: ${{ vars.WEB_URL || 'https://92.5.130.32.sslip.io' }}
+          WEB_URL: ${{ vars.WEB_URL || 'https://158.180.59.36.sslip.io' }}
           WORKER_TOKEN: ${{ secrets.WORKER_TOKEN }}
           # Danh tính riêng — xem điều 1.
           WORKER_ID: khoiloi-tro-20260813-160253
