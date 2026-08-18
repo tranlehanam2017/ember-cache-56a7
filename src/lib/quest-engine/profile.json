@@ -1,6 +1,6 @@
 {
   "name": "Ho\u1EA1t \u0111\u1ED9ng h\u00E0ng ng\u00E0y (m\u1EB7c \u0111\u1ECBnh)",
-  "schemaVersion": 66,
+  "schemaVersion": 67,
   "dailyQuestPath": "/nhiem-vu-hang-ngay",
   "quests": [
     {
@@ -1487,6 +1487,137 @@
       "notes": "Th\u00ED luy\u1EC7n t\u00F4ng m\u00F4n nh\u1EADn th\u01B0\u1EDFng, 3 l\u01B0\u1EE3t/ng\u00E0y."
     },
     {
+      "id": "bi-canh-tong-mon-thuong",
+      "name": "B\u00ED C\u1EA3nh T\u00F4ng M\u00F4n",
+      "enabled": false,
+      "kind": "customSteps",
+      "matchTexts": [
+        "b\u00ED c\u1EA3nh",
+        "bi canh"
+      ],
+      "pagePath": "/bi-canh-tong-mon/?nv_embed=1",
+      "steps": [
+        {
+          "action": "navigate",
+          "text": "/nhiem-vu-hang-ngay",
+          "timeoutMs": 15000
+        },
+        {
+          "action": "waitForSelector",
+          "selector": ".nv-quest",
+          "timeoutMs": 25000,
+          "note": "ch\u1EDD hub render; .nv-quest t\u1ED3n t\u1EA1i c\u1EA3 khi quest \u0111\u00E3 xong"
+        },
+        {
+          "action": "stopIf",
+          "text": "h\u1EBFt 5 l\u01B0\u1EE3t h\u00F4m nay",
+          "timeoutMs": 15000,
+          "note": "h\u00E0ng quest xong \u0111\u1ED5i n\u00FAt \u0022\u0110\u1EBFn \u0110\u00E1nh\u0022 th\u00E0nh \u003Cspan class=\u0022btn-done-label\u0022\u003EXong (b\u1EA3n ghi 18/08 ch\u1EE5p \u0111\u00FAng h\u00ECnh d\u1EA1ng \u1EA5y \u1EDF h\u00E0ng T\u1EBF L\u1EC5 \u0111\u00E3 xong) \u2014 c\u00F9ng t\u00EDn hi\u1EC7u n\u00FAt-bi\u1EBFn-m\u1EA5t m\u00E0 Th\u00ED Luy\u1EC7n/Ph\u00FAc L\u1EE3i v\u1EABn d\u1EEBng theo. L\u1ECDc b\u1EB1ng `a.btn-go` ch\u1EE9 \u0111\u1EEBng b\u1EB1ng href tr\u01A1n: menu \u0111\u1EA7u trang c\u0169ng c\u00F3 m\u1ED9t \u003Ca href=\u0022/bi-canh-tong-mon\u0022\u003E",
+          "condition": {
+            "kind": "hidden",
+            "selector": "a.btn-go[href*=\u0027bi-canh-tong-mon\u0027]"
+          }
+        },
+        {
+          "action": "navigate",
+          "text": "/bi-canh-tong-mon/?nv_embed=1",
+          "timeoutMs": 15000
+        },
+        {
+          "action": "waitForSelector",
+          "selector": "#challenge-boss-btn",
+          "timeoutMs": 25000,
+          "note": "v\u1ECF trang KH\u00D4NG c\u00F3 n\u00FAt n\u00E0o \u2014 boss-system.js v\u1EBD to\u00E0n b\u1ED9 giao di\u1EC7n t\u1EEB kh\u1ED1i JSON nh\u00FAng s\u1EB5n. N\u00EAn ch\u1EDD ch\u00EDnh c\u00E1i n\u00FAt l\u00E0 \u0111\u00FAng \u1EDF \u0110\u00C2Y (kh\u00E1c c\u00E1c script hub, n\u01A1i ch\u1EDD n\u00FAt c\u1EE7a quest l\u00E0 c\u00E1i b\u1EABy: n\u00FAt \u1EA5y b\u1ECB g\u1EE1 khi h\u1EBFt l\u01B0\u1EE3t)"
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 12000,
+          "note": "\u0111\u1EC7m ch\u1EDD /check-attack-cooldown: n\u00FAt \u0111\u01B0\u1EE3c v\u1EBD TR\u01AF\u1EDAC khi s\u1EF1 th\u1EADt v\u1EC1, n\u00EAn ch\u1EEF \u0022KHI\u00CAU CHI\u1EBEN\u0022 l\u00FAc n\u00E0y ch\u01B0a n\u00F3i l\u00EAn \u0111i\u1EC1u g\u00EC. \u0110ang cooldown th\u00EC ch\u1EEF \u0111\u1ED5i ngay khi XHR tr\u1EA3 l\u1EDDi; \u0111\u00E1nh \u0111\u01B0\u1EE3c th\u00EC ch\u1EDD tr\u1ECDn c\u1EEDa s\u1ED5 r\u1ED3i m\u1EDBi tin",
+          "optional": true,
+          "condition": {
+            "kind": "textMatches",
+            "selector": "#challenge-boss-btn",
+            "text": ":|h\u1EBFt l\u01B0\u1EE3t"
+          }
+        },
+        {
+          "action": "stopIf",
+          "text": "\u0111\u00E3 h\u1EBFt 5 l\u01B0\u1EE3t h\u00F4m nay",
+          "timeoutMs": 15000,
+          "note": "h\u1EBFt l\u01B0\u1EE3t l\u00E0 h\u1EBFt NG\u00C0Y, kh\u00F4ng ph\u1EA3i ch\u1EDD \u2014 n\u00F3i \u0111\u00FAng t\u00EAn n\u00F3 \u0111\u1EC3 runner kh\u1ECFi quay l\u1EA1i sau b\u1EA3y ph\u00FAt cho m\u1ED9t c\u00E1nh c\u1EEDa ch\u1EC9 m\u1EDF l\u1EA1i v\u00E0o ng\u00E0y mai",
+          "condition": {
+            "kind": "textMatches",
+            "selector": "#challenge-boss-btn",
+            "text": "h\u1EBFt l\u01B0\u1EE3t"
+          }
+        },
+        {
+          "action": "readCooldownSeconds",
+          "selector": "#challenge-boss-btn",
+          "timeoutMs": 15000,
+          "note": "\u0111\u1ECDc TR\u01AF\u1EDAC khi d\u1EEBng, \u0111\u1EC3 c\u00E1i d\u1EEBng mang theo th\u1EDDi gian th\u1EADt; \u0022C\u00F2n 6:52\u0022 ra 412s"
+        },
+        {
+          "action": "stopIf",
+          "text": "\u0111ang ch\u1EDD l\u01B0\u1EE3t k\u1EBF (7 ph\u00FAt gi\u1EEFa hai \u0111\u00F2n)",
+          "timeoutMs": 15000,
+          "note": "d\u1EA5u hai ch\u1EA5m ch\u1EC9 c\u00F3 trong \u0022C\u00F2n M:SS\u0022 \u2014 h\u1ECFi ch\u1EEF ch\u1EE9 kh\u00F4ng h\u1ECFi `disabled`, v\u00EC `disabled` c\u0169ng \u0111\u00FAng cho m\u1ED9t n\u00FAt KH\u00D4NG \u0111\u01B0\u1EE3c v\u1EBD ra",
+          "condition": {
+            "kind": "textMatches",
+            "selector": "#challenge-boss-btn",
+            "text": ":"
+          }
+        },
+        {
+          "action": "click",
+          "selector": "#challenge-boss-btn",
+          "timeoutMs": 15000
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 15000,
+          "note": "m\u00E0n \u0111\u00E1nh boss m\u1EDF ra sau ~0,2s trong b\u1EA3n ghi",
+          "condition": {
+            "kind": "visible",
+            "selector": "#attack-boss-btn"
+          }
+        },
+        {
+          "action": "click",
+          "selector": "#attack-boss-btn",
+          "timeoutMs": 15000
+        },
+        {
+          "action": "waitForCondition",
+          "timeoutMs": 60000,
+          "note": "n\u00FAt KHI\u00CAU CHI\u1EBEN \u0111\u1ED5i ch\u1EEF = m\u00E1y ch\u1EE7 \u0111\u00E3 ghi nh\u1EADn \u0111\u00F2n \u0111\u00E1nh (v\u00E0o cooldown, ho\u1EB7c h\u1EBFt l\u01B0\u1EE3t h\u00F4m nay). C\u00F2n nguy\u00EAn ch\u1EEF c\u0169 ngh\u0129a l\u00E0 c\u00FA b\u1EA5m r\u01A1i v\u00E0o h\u01B0 kh\u00F4ng \u2014 ph\u1EA3i k\u00EAu to, v\u00EC nh\u1EADn v\u01A1 l\u00E0 xong cho m\u1ED9t tr\u1EADn ch\u01B0a t\u1EEBng \u0111\u00E1nh l\u00E0 c\u00E1ch m\u1EA5t c\u1EA3 ng\u00E0y l\u01B0\u1EE3t m\u00E0 kh\u00F4ng ai bi\u1EBFt (\u0111\u00FAng l\u1ED7i \u0111\u00E3 c\u1EAFn Hoang V\u1EF1c). B\u1EA3n ghi: b\u1EA5m 18:32:08 \u2192 \u0022C\u00D2N 6:57\u0022 l\u00FAc 18:32:10,6, v\u00E0 l\u00FAc \u1EA5y modal v\u1EABn \u0111ang m\u1EDF",
+          "condition": {
+            "kind": "textMatches",
+            "selector": "#challenge-boss-btn",
+            "text": ":|h\u1EBFt l\u01B0\u1EE3t"
+          }
+        },
+        {
+          "action": "click",
+          "selector": "#back-button",
+          "timeoutMs": 6000,
+          "note": "\u0111\u00F3ng m\u00E0n \u0111\u00E1nh \u0111\u1EC3 l\u1EA7n gh\u00E9 sau kh\u00F4ng ph\u1EA3i m\u1EDF l\u1EA1i t\u1EEB trong modal; tu\u1EF3 ch\u1ECDn v\u00EC tr\u1EADn \u0111\u00E3 t\u00EDnh r\u1ED3i, kh\u00F4ng \u0111\u00E1ng l\u00E0m h\u1ECFng m\u1ED9t l\u01B0\u1EE3t \u0111\u00E3 th\u00E0nh",
+          "optional": true
+        },
+        {
+          "action": "readCooldownSeconds",
+          "selector": "#challenge-boss-btn",
+          "timeoutMs": 15000,
+          "note": "\u0111\u1ECDc l\u1EA1i sau khi \u0111\u00E1nh \u2014 ~7:00, \u0111\u1EC3 runner t\u1EF1 quay l\u1EA1i \u0111\u00FAng l\u00FAc"
+        }
+      ],
+      "options": [],
+      "fallbackCooldownSeconds": 420,
+      "requiresVip": false,
+      "order": 60,
+      "notes": "\u0110\u00E1nh B\u00ED C\u1EA3nh T\u00F4ng M\u00F4n nh\u1EADn th\u01B0\u1EDFng, 5 l\u01B0\u1EE3t/ng\u00E0y."
+    },
+    {
       "id": "vong-quay-phuc-van-thuong",
       "name": "V\u00F2ng Quay Ph\u00FAc V\u1EADn",
       "enabled": false,
@@ -1896,18 +2027,18 @@
               "optional": true,
               "condition": {
                 "kind": "visible",
-                "selector": "#blessing-default-options, .blessing-message"
+                "selector": "#blessing-default-options, .blessing-message, #hn-select, .hn-already-blessed"
               }
             },
             {
               "action": "evaluateJavaScript",
-              "script": "() =\u003E { const MARK = \u0027jvz-can-bless\u0027; const LOG = \u0027__jvz_hy_su_log\u0027; const mark = (state, why) =\u003E { try { const log = JSON.parse(sessionStorage.getItem(LOG) || \u0027[]\u0027); if (log.length \u003E 0) { log[log.length - 1].state = state; log[log.length - 1].why = why; sessionStorage.setItem(LOG, JSON.stringify(log)); } } catch (e) { } }; if (document.body) document.body.classList.remove(MARK); const form = document.querySelector(\u0027#blessing-default-options\u0027); if (form) { if (document.body) document.body.classList.add(MARK); return \u0027ph\u00F2ng ch\u01B0a ch\u00FAc \u2014 g\u1EEDi l\u1EDDi ch\u00FAc\u0027; } const already = document.querySelector(\u0027.blessing-message\u0027); if (already) { mark(\u0027skip\u0027, \u0027\u0111\u00E3 ch\u00FAc t\u1EEB tr\u01B0\u1EDBc\u0027); return \u0027!Ph\u00F2ng n\u00E0y \u0111\u00E3 ch\u00FAc r\u1ED3i \u2014 b\u1ECF qua ph\u1EA7n ch\u00FAc\u0027; } mark(\u0027fail\u0027, \u0027trang ph\u00F2ng kh\u00F4ng c\u00F3 form ch\u00FAc l\u1EABn d\u1EA5u \u0111\u00E3 ch\u00FAc\u0027); return \u0027!Kh\u00F4ng th\u1EA5y form ch\u00FAc l\u1EABn d\u1EA5u \u0111\u00E3 ch\u00FAc \u2014 b\u1ECF qua ph\u00F2ng n\u00E0y, l\u01B0\u1EE3t v\u1EABn \u0111i ti\u1EBFp c\u00E1c ph\u00F2ng c\u00F2n l\u1EA1i\u0027; }",
+              "script": "() =\u003E { const MARK = \u0027jvz-can-bless\u0027; const LOG = \u0027__jvz_hy_su_log\u0027; const mark = (state, why) =\u003E { try { const log = JSON.parse(sessionStorage.getItem(LOG) || \u0027[]\u0027); if (log.length \u003E 0) { log[log.length - 1].state = state; log[log.length - 1].why = why; sessionStorage.setItem(LOG, JSON.stringify(log)); } } catch (e) { } }; const shown = (el) =\u003E { if (!el) return false; const r = el.getBoundingClientRect(); if (r.width \u003C 1 || r.height \u003C 1) return false; const st = getComputedStyle(el); return st.visibility !== \u0027hidden\u0027 \u0026\u0026 st.display !== \u0027none\u0027 \u0026\u0026 st.opacity !== \u00270\u0027; }; if (document.body) document.body.classList.remove(MARK); const already = document.querySelector(\u0027.blessing-message, .hn-already-blessed\u0027); if (already) { mark(\u0027skip\u0027, \u0027\u0111\u00E3 ch\u00FAc t\u1EEB tr\u01B0\u1EDBc\u0027); return \u0027!Ph\u00F2ng n\u00E0y \u0111\u00E3 ch\u00FAc r\u1ED3i \u2014 b\u1ECF qua ph\u1EA7n ch\u00FAc\u0027; } const form = [...document.querySelectorAll(\u0027#blessing-default-options, #hn-select\u0027)].find(shown); if (form) { if (document.body) document.body.classList.add(MARK); return \u0027ph\u00F2ng ch\u01B0a ch\u00FAc (\u0027 \u002B (form.id === \u0027hn-select\u0027 ? \u0027H\u1ED3ng Nhan\u0027 : \u0027\u0110\u1EA1o L\u1EEF\u0027) \u002B \u0027) \u2014 g\u1EEDi l\u1EDDi ch\u00FAc\u0027; } if (document.querySelector(\u0027#hn-select\u0027)) { mark(\u0027skip\u0027, \u0027form H\u1ED3ng Nhan b\u1ECB \u1EA9n m\u00E0 kh\u00F4ng c\u00F3 d\u00F2ng b\u00E1o \u0111\u00E3 ch\u00FAc\u0027); return \u0027!Form ch\u00FAc b\u1ECB \u1EA9n nh\u01B0ng kh\u00F4ng c\u00F3 d\u00F2ng b\u00E1o \u0111\u00E3 ch\u00FAc \u2014 \u0111\u1ECDc l\u00E0 \u0110\u00C3 XONG ch\u1EE9 kh\u00F4ng ph\u1EA3i trang l\u1EA1, b\u1ECF qua ph\u00F2ng n\u00E0y\u0027; } mark(\u0027fail\u0027, \u0027trang ph\u00F2ng kh\u00F4ng c\u00F3 form ch\u00FAc l\u1EABn d\u1EA5u \u0111\u00E3 ch\u00FAc\u0027); return \u0027!Kh\u00F4ng th\u1EA5y form ch\u00FAc l\u1EABn d\u1EA5u \u0111\u00E3 ch\u00FAc \u2014 b\u1ECF qua ph\u00F2ng n\u00E0y, l\u01B0\u1EE3t v\u1EABn \u0111i ti\u1EBFp c\u00E1c ph\u00F2ng c\u00F2n l\u1EA1i\u0027; }",
               "timeoutMs": 4000,
               "note": "c\u1EAFm c\u1EDD cho c\u1EE5m g\u1EEDi l\u1EDDi ch\u00FAc b\u00EAn d\u01B0\u1EDBi: ch\u1EC9 ph\u00F2ng CH\u01AFA ch\u00FAc m\u1EDBi c\u00F3 form"
             },
             {
               "action": "evaluateJavaScript",
-              "script": "() =\u003E { const sel = document.querySelector(\u0027#blessing-default-options\u0027); if (!sel || sel.options.length \u003C 2) return \u0027\u0027; const pick = 1 \u002B Math.floor(Math.random() * (sel.options.length - 1)); sel.selectedIndex = pick; sel.dispatchEvent(new Event(\u0027change\u0027, { bubbles: true })); const box = document.querySelector(\u0027#blessing-message\u0027); if (box \u0026\u0026 !box.value) box.value = sel.value; return \u0027!L\u1EDDi ch\u00FAc ng\u1EABu nhi\u00EAn: \u0027 \u002B (sel.options[pick].textContent || \u0027\u0027).trim(); }",
+              "script": "() =\u003E { const shown = (el) =\u003E { if (!el) return false; const r = el.getBoundingClientRect(); if (r.width \u003C 1 || r.height \u003C 1) return false; const st = getComputedStyle(el); return st.visibility !== \u0027hidden\u0027 \u0026\u0026 st.display !== \u0027none\u0027 \u0026\u0026 st.opacity !== \u00270\u0027; }; const sel = [...document.querySelectorAll(\u0027#blessing-default-options, #hn-select\u0027)].find(shown); if (!sel || sel.options.length \u003C 2) return \u0027\u0027; const pick = 1 \u002B Math.floor(Math.random() * (sel.options.length - 1)); sel.selectedIndex = pick; sel.dispatchEvent(new Event(\u0027change\u0027, { bubbles: true })); const box = document.querySelector(\u0027#blessing-message, #hn-message\u0027); if (box \u0026\u0026 !box.value) box.value = sel.value; return \u0027!L\u1EDDi ch\u00FAc ng\u1EABu nhi\u00EAn: \u0027 \u002B (sel.options[pick].textContent || \u0027\u0027).trim(); }",
               "timeoutMs": 15000,
               "note": "ch\u1ECDn NG\u1EAAU NHI\u00CAN m\u1ED9t l\u1EDDi ch\u00FAc m\u1EB7c \u0111\u1ECBnh (ghi ch\u00FA c\u1EE7a ch\u00EDnh recording); dispatch change \u0111\u1EC3 fillBlessingMessage() c\u1EE7a trang t\u1EF1 \u0111i\u1EC1n \u00F4 l\u1EDDi ch\u00FAc, g\u00E1n th\u1EB3ng l\u00E0m l\u01B0\u1EDBi \u0111\u1EE1 n\u1EBFu trang \u0111\u1ED5i c\u00E1ch \u0111i\u1EC1n",
               "when": {
@@ -1917,7 +2048,7 @@
             },
             {
               "action": "click",
-              "selector": ".blessing-form .blessing-button",
+              "selector": ".blessing-form .blessing-button, #hn-bless-btn",
               "timeoutMs": 15000,
               "note": "\u0022G\u1EEDi Ch\u00FAc Ph\u00FAc\u0022 \u2014 m\u1EDF h\u1ED9p x\u00E1c nh\u1EADn d\u00F9ng 30 Ti\u00EAn Ng\u1ECDc",
               "optional": true,
@@ -1933,7 +2064,7 @@
               "optional": true,
               "condition": {
                 "kind": "visible",
-                "selector": "#confirm-modal .custom-modal-button.confirm"
+                "selector": "#confirm-modal .custom-modal-button.confirm, #hn-confirm-modal .hn-modal-btn.confirm"
               },
               "when": {
                 "kind": "visible",
@@ -1942,7 +2073,7 @@
             },
             {
               "action": "click",
-              "selector": "#confirm-modal .custom-modal-button.confirm",
+              "selector": "#confirm-modal .custom-modal-button.confirm, #hn-confirm-modal .hn-modal-btn.confirm",
               "timeoutMs": 15000,
               "note": "ch\u1EC9 b\u1EA5m \u0111\u00FAng n\u00FAt x\u00E1c nh\u1EADn theo selector \u2014 kh\u00F4ng bao gi\u1EDD \u0111\u1EE5ng \u0022H\u1EE7y B\u1ECF\u0022",
               "optional": true,
@@ -1958,7 +2089,7 @@
               "optional": true,
               "condition": {
                 "kind": "hidden",
-                "selector": ".blessing-form .blessing-button"
+                "selector": ".blessing-form .blessing-button, #hn-bless-btn"
               },
               "when": {
                 "kind": "visible",
@@ -1967,7 +2098,7 @@
             },
             {
               "action": "evaluateJavaScript",
-              "script": "() =\u003E { const LOG = \u0027__jvz_hy_su_log\u0027; const mark = (state, why) =\u003E { try { const log = JSON.parse(sessionStorage.getItem(LOG) || \u0027[]\u0027); if (log.length \u003E 0) { log[log.length - 1].state = state; log[log.length - 1].why = why; sessionStorage.setItem(LOG, JSON.stringify(log)); } } catch (e) { } }; if (!document.querySelector(\u0027.blessing-form .blessing-button\u0027)) { mark(\u0027ok\u0027, \u0027\u0027); return \u0027!L\u1EDDi ch\u00FAc \u0111\u00E3 g\u1EEDi xong\u0027; } mark(\u0027fail\u0027, \u0027n\u00FAt g\u1EEDi v\u1EABn c\u00F2n sau khi x\u00E1c nh\u1EADn\u0027); return \u0027!G\u1EECI TR\u01AF\u1EE2T \u2014 n\u00FAt g\u1EEDi v\u1EABn c\u00F2n sau khi x\u00E1c nh\u1EADn, ph\u00F2ng n\u00E0y ch\u01B0a ch\u00FAc \u0111\u01B0\u1EE3c (30 Ti\u00EAn Ng\u1ECDc ch\u01B0a ti\u00EAu); l\u01B0\u1EE3t v\u1EABn \u0111i ti\u1EBFp c\u00E1c ph\u00F2ng c\u00F2n l\u1EA1i\u0027; }",
+              "script": "() =\u003E { const LOG = \u0027__jvz_hy_su_log\u0027; const mark = (state, why) =\u003E { try { const log = JSON.parse(sessionStorage.getItem(LOG) || \u0027[]\u0027); if (log.length \u003E 0) { log[log.length - 1].state = state; log[log.length - 1].why = why; sessionStorage.setItem(LOG, JSON.stringify(log)); } } catch (e) { } }; const shown = (el) =\u003E { if (!el) return false; const r = el.getBoundingClientRect(); if (r.width \u003C 1 || r.height \u003C 1) return false; const st = getComputedStyle(el); return st.visibility !== \u0027hidden\u0027 \u0026\u0026 st.display !== \u0027none\u0027 \u0026\u0026 st.opacity !== \u00270\u0027; }; const offering = [...document.querySelectorAll(\u0027.blessing-form .blessing-button, #hn-bless-btn\u0027)].some((b) =\u003E shown(b) \u0026\u0026 !b.disabled); if (!offering) { mark(\u0027ok\u0027, \u0027\u0027); return \u0027!L\u1EDDi ch\u00FAc \u0111\u00E3 g\u1EEDi xong\u0027; } mark(\u0027fail\u0027, \u0027n\u00FAt g\u1EEDi v\u1EABn c\u00F2n sau khi x\u00E1c nh\u1EADn\u0027); return \u0027!G\u1EECI TR\u01AF\u1EE2T \u2014 n\u00FAt g\u1EEDi v\u1EABn c\u00F2n sau khi x\u00E1c nh\u1EADn, ph\u00F2ng n\u00E0y ch\u01B0a ch\u00FAc \u0111\u01B0\u1EE3c (30 Ti\u00EAn Ng\u1ECDc ch\u01B0a ti\u00EAu); l\u01B0\u1EE3t v\u1EABn \u0111i ti\u1EBFp c\u00E1c ph\u00F2ng c\u00F2n l\u1EA1i\u0027; }",
               "timeoutMs": 4000,
               "note": "ph\u00E1n x\u1EED ph\u00F2ng v\u1EEBa ch\u00FAc: n\u00FAt g\u1EEDi m\u1EA5t l\u00E0 server \u0111\u00E3 nh\u1EADn; c\u00F2n nguy\u00EAn l\u00E0 G\u1EECI TR\u01AF\u1EE2T, 30 Ti\u00EAn Ng\u1ECDc ch\u01B0a ti\u00EAu \u2014 ghi v\u00E0o s\u1ED5 k\u1EBFt c\u1EE5c \u0111\u1EC3 l\u1EDDi k\u1EC3 cu\u1ED1i l\u01B0\u1EE3t g\u1ECDi \u0111\u00FAng t\u00EAn ph\u00F2ng \u1EA5y",
               "when": {

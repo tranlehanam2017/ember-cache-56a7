@@ -31,7 +31,12 @@ export const DAILY_QUOTA_QUEST_IDS = new Set([
   "vong-quay-phuc-van",
   "van-dap",
   "van-dap-thuong",
+  // Cả hai bản: trần 5 lượt là trần NGÀY, và cả hai đều nói ra được điều đó bằng một câu
+  // riêng — bản VIP mất nút quick-click trên hub, bản thường đọc chữ "Hết lượt hôm nay" mà
+  // boss-system.js khắc lên chính nút KHIÊU CHIẾN. Cảnh "còn lượt nhưng đang chờ" của bản
+  // thường đi ngả onCooldown (chữ "Còn 6:52"), nên không thể lạc vào sổ này.
   "bi-canh-tong-mon",
+  "bi-canh-tong-mon-thuong",
   // Khoáng Mạch: trần NGÀY thật — hai ô Tu Vi/Tinh Thạch server render trên trang, và trần
   // ĐỔI mỗi ngày (14/08 đo 300/100, 15/08 đo 600/200 — không có con số「N lần nhận」nào).
   // `alreadyDone` của nó chỉ phát từ MỘT chỗ: stopIf「đã đầy trần」đọc số x/y ấy — đúng hình
