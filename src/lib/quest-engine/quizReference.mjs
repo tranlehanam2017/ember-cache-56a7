@@ -19,8 +19,13 @@ export const DEFAULT_QUIZ_REFERENCE_URL =
 export const QUIZ_REFERENCE_FRESHNESS_MS = 12 * 60 * 60 * 1000;
 
 const DEFAULT_TIMEOUT_MS = 20_000;
-const ROW_PATTERN =
-  /<tr>\s*<td>\s*\d+\s*<\/td>\s*<td>([\s\S]*?)<\/td>\s*<td>([\s\S]*?)<\/td>\s*<\/tr>/gi;
+const DOWNLOAD_ATTEMPTS = 2;
+// Trang cộng đồng không phải lúc nào cũng sinh HTML hợp lệ: dữ liệu hiện tại có những ô
+// thiếu `</td>`, và một lần đổi giao diện có thể thêm class/data-* vào thẻ. Tách hàng rồi
+// tách ô theo THẺ MỞ giúp đọc được cả hai hình dạng mà vẫn đòi cột đầu là ID số — nhờ vậy
+// những bảng trang trí khác không bị nhận nhầm là kho đáp án.
+const ROW_PATTERN = /<tr\b[^>]*>([\s\S]*?)(?=<\/tr\s*>|<tr\b|$)/gi;
+const CELL_PATTERN = /<td\b[^>]*>([\s\S]*?)(?=<\/td\s*>|<td\b|$)/gi;
 const TAG_PATTERN = /<[^>]+>/g;
 const LEADING_NUMBER_PATTERN = /^\s*\d+\s*[.)]\s*/;
 const TRAILING_NOTE_PATTERN = /\s*\([^)]*\)\s*$/;
@@ -77,8 +82,11 @@ export function parseQuizReferenceHtml(html) {
   const entries = new Map();
 
   for (const row of String(html ?? "").matchAll(ROW_PATTERN)) {
-    const question = cleanCell(row[1]);
-    const answer = cleanCell(row[2]).replace(LEADING_NUMBER_PATTERN, "").trim();
+    const cells = [...row[1].matchAll(CELL_PATTERN)].map((cell) => cell[1]);
+    if (cells.length < 3 || !/^\d+$/.test(cleanCell(cells[0]))) continue;
+
+    const question = cleanCell(cells[1]);
+    const answer = cleanCell(cells[2]).replace(LEADING_NUMBER_PATTERN, "").trim();
     const key = foldText(question);
     if (!key || !answer) continue;
 
@@ -229,30 +237,46 @@ export function createQuizReferenceDirectory({
     }
 
     loading = (async () => {
-      try {
-        const html = await download(url);
-        const parsed = parseQuizReferenceHtml(html);
-        if (parsed.size === 0) {
-          failedAt = now();
-          warnOnce(log, `Danh sách đáp án tại ${url} không có dòng nào đọc được.`);
-          return entries;
+      let lastError = null;
+      let emptyResponse = false;
+
+      // Nguồn từng trả HTTP 200 nhưng phần bảng rỗng trong đúng một lượt (ảnh lỗi 06/09).
+      // Một lần thử lại ngay tại đây rẻ hơn bỏ trắng cả bài Vấn Đáp; chỉ cảnh báo sau khi cả
+      // hai lượt đều thất bại, nên nhật ký không la oan cho một chập chờn đã tự hồi phục.
+      for (let attempt = 1; attempt <= DOWNLOAD_ATTEMPTS; attempt++) {
+        try {
+          const html = await download(url);
+          const parsed = parseQuizReferenceHtml(html);
+          if (parsed.size > 0) {
+            entries = parsed;
+            loadedAt = now();
+            loadedFrom = url;
+            failedAt = 0;
+            warnedLogs = new WeakSet();
+            writeLog(log, "info", `Đã nạp ${parsed.size} câu từ danh sách tham khảo.`);
+            return entries;
+          }
+
+          emptyResponse = true;
+          lastError = null;
+        } catch (error) {
+          lastError = error;
+          emptyResponse = false;
         }
 
-        entries = parsed;
-        loadedAt = now();
-        loadedFrom = url;
-        failedAt = 0;
-        warnedLogs = new WeakSet();
-        writeLog(log, "info", `Đã nạp ${parsed.size} câu từ danh sách tham khảo.`);
-        return entries;
-      } catch (error) {
-        failedAt = now();
-        warnOnce(
-          log,
-          `Không đọc được danh sách đáp án (${error instanceof Error ? error.message : String(error)}). Câu chưa biết sẽ để lại cho bạn.`,
-        );
-        return entries;
+        if (attempt < DOWNLOAD_ATTEMPTS) {
+          writeLog(log, "debug", `Nguồn đáp án chưa đọc được ở lượt ${attempt}; thử lại một lần.`);
+        }
       }
+
+      failedAt = now();
+      warnOnce(
+        log,
+        emptyResponse
+          ? `Danh sách đáp án tại ${url} không có dòng nào đọc được sau ${DOWNLOAD_ATTEMPTS} lần thử.`
+          : `Không đọc được danh sách đáp án (${lastError instanceof Error ? lastError.message : String(lastError)}). Câu chưa biết sẽ để lại cho bạn.`,
+      );
+      return entries;
     })();
 
     try {

@@ -151,20 +151,39 @@ const SIMPLE_QUESTS = [
 ];
 
 /**
- * Khoá DẤU NGÀY của suất Linh Quang Phù — một lá mỗi ngày cho mỗi đàn.
+ * Tiền tố DẤU NGÀY của mỗi lần mua Linh Quang Phù.
  *
  * Nằm chung sổ với「nhiệm vụ đã đủ lượt hôm nay」(`daily_done.questIds`) nên phải mang hình
  * dạng KHÔNG THỂ trùng một ID nhiệm vụ: dấu hai chấm không có trong ID nào của hồ sơ, và
  * `splitPlanForToday` còn lọc lại bằng `isDailyQuotaQuest` trước khi dám bỏ qua nhiệm vụ nào.
  *
- * MỘT khoá cho cả hai bản VIP/thường: suất phù là của TÀI KHOẢN, không phải của cái flow chạy
- * nó — y như lập luận đã viết cho `DAILY_QUOTA_QUEST_IDS`. Một tài khoản rớt hạng giữa ngày
- * vẫn là tài khoản đã tiêu một lá phù hôm nay.
+ * MỘT tiền tố cho cả hai bản VIP/thường: hạn mức phù là của TÀI KHOẢN, không phải của cái flow
+ * chạy nó — y như lập luận đã viết cho `DAILY_QUOTA_QUEST_IDS`. Mỗi lần mua mới thêm một hậu tố
+ * duy nhất; mảng `questIds` của sổ vốn khử trùng, nên dùng lại đúng một khoá sẽ không thể đếm 2/3.
+ * Khoá trần không hậu tố của worker cũ vẫn được tính là một lần mua để nâng cấp giữa ngày không
+ * làm mất dấu đã tiêu tiền.
  *
  * Chuỗi này phải TRÙNG với dòng `@…` trong script của hồ sơ quest; `npm run smoke` đối chiếu
  * hai bên và đỏ khi chúng lệch nhau.
  */
 export const PHU_DAILY_MARK = "khoang-mach:phu";
+export const PHU_DAILY_LIMIT_MAX = 3;
+
+/** Đếm cả dấu worker cũ (`khoang-mach:phu`) lẫn dấu duy nhất của worker mới. */
+export function countPhuDailyMarks(marksToday) {
+  const marks = marksToday instanceof Set ? marksToday : new Set(marksToday ?? []);
+  const prefix = `${PHU_DAILY_MARK}:`;
+  let count = 0;
+  for (const mark of marks) {
+    if (
+      mark === PHU_DAILY_MARK ||
+      (typeof mark === "string" && mark.startsWith(prefix) && mark.length > prefix.length)
+    ) {
+      count++;
+    }
+  }
+  return count;
+}
 
 /**
  * Áp cấu hình người dùng lên một hồ sơ mới và trả về nó.
@@ -330,12 +349,24 @@ export function profileForConfig(config, say, marksToday) {
       setOption(khoangMach, "minBonus", String(km.minBonus ?? 0), { allowFreeform: true, log });
 
       // buyPhu và hostMode trên web là công tắc, trong hồ sơ là hai giá trị chuỗi mà «…» nghĩa
-      // là tắt — cùng phép dịch với capCheck của Mê Cung ở trên.
+      // là tắt — cùng phép dịch với capCheck của Mê Cung ở trên. Hạn mức là ô số riêng; kẹp ở
+      // đây lần nữa vì profileForConfig còn được smoke/tool gọi trực tiếp, ngoài cửa Zod.
+      const phuDailyLimit = Math.max(
+        1,
+        Math.min(
+          PHU_DAILY_LIMIT_MAX,
+          Number.parseInt(String(km.phuDailyLimit ?? 1), 10) || 1,
+        ),
+      );
+      setOption(khoangMach, "phuDailyLimit", String(phuDailyLimit), {
+        allowFreeform: true,
+        log,
+      });
       const phuOption = findOption(khoangMach, "buyPhu");
       const phuOff = phuOption?.choices?.find((c) => c.value.includes("«"));
       const phuOn = phuOption?.choices?.find((c) => !c.value.includes("«"));
       /**
-       * SUẤT PHÙ CỦA NGÀY — cổng thứ hai, và là cổng DUY NHẤT sống qua việc đàn đổi khôi lỗi.
+       * HẠN MỨC PHÙ CỦA NGÀY — cổng thứ hai, và là cổng DUY NHẤT sống qua việc đàn đổi khôi lỗi.
        *
        * Cổng thứ nhất nằm trong chính script cổng (một khoá `localStorage`), và nó chỉ nhớ
        * được trong PHẠM VI MỘT HỒ SƠ TRÌNH DUYỆT. Đàn thì không đứng yên một máy: đo trên đàn
@@ -343,15 +374,18 @@ export function profileForConfig(config, say, marksToday) {
        * lúc 18:08 khi vòng ấy rơi vào một khôi lỗi khác với hồ sơ trắng. Khôi lỗi GitHub còn
        * tệ hơn: mỗi lượt Actions là một máy mới tinh, nên cổng ấy chưa bao giờ chặn được gì.
        *
-       * Nên sổ thật nằm ở server (`automation_jobs.daily_done`, khoá `PHU_DAILY_MARK`) và
-       * được đọc ngay tại đây: đã có dấu thì ép tuỳ chọn về TẮT, script cổng thậm chí không
-       * còn nhánh nào để cân nhắc. Dấu được ghi ở bước chọn món trong tiệm (xem hồ sơ quest).
+       * Nên sổ thật nằm ở server (`automation_jobs.daily_done`, tiền tố `PHU_DAILY_MARK`) và
+       * được đọc ngay tại đây: đủ số dấu người dùng đặt thì ép tuỳ chọn về TẮT, script cổng
+       * thậm chí không còn nhánh nào để cân nhắc. Mỗi dấu được ghi ở bước mua trong tiệm.
        */
-      const phuSpent = doneToday.has(PHU_DAILY_MARK);
+      const phuBoughtToday = countPhuDailyMarks(doneToday);
+      const phuSpent = phuBoughtToday >= phuDailyLimit;
       const phuWanted = km.buyPhu === false || phuSpent ? phuOff : phuOn;
       if (phuWanted) setOption(khoangMach, "buyPhu", phuWanted.value, { log });
       if (phuSpent && km.buyPhu !== false) {
-        log?.("Linh Quang Phù: đàn này đã mua đúng một lá hôm nay — vòng này không mua nữa.");
+        log?.(
+          `Linh Quang Phù: đàn này đã mua ${phuBoughtToday}/${phuDailyLimit} lá hôm nay — vòng này không mua nữa.`,
+        );
       }
 
       const hostOption = findOption(khoangMach, "hostMode");

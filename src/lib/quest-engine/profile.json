@@ -1,6 +1,6 @@
 {
   "name": "Ho\u1EA1t \u0111\u1ED9ng h\u00E0ng ng\u00E0y (m\u1EB7c \u0111\u1ECBnh)",
-  "schemaVersion": 81,
+  "schemaVersion": 82,
   "dailyQuestPath": "/nhiem-vu-hang-ngay",
   "quests": [
     {
@@ -3622,7 +3622,7 @@
         },
         {
           "action": "evaluateJavaScript",
-          "script": "() =\u003E { const body = document.body; if (body) { body.classList.remove(\u0027jvz-km-host-phase\u0027); body.classList.remove(\u0027jvz-km-buy-go\u0027); body.classList.remove(\u0027jvz-km-buy-now\u0027); body.classList.remove(\u0027jvz-km-refresh\u0027); } if (!body || !body.classList.contains(\u0027jvz-km-ripe\u0027)) return \u0027gate: ch\u01B0a \u0111\u1EA1t khai th\u00E1c t\u1ED1i \u0111a \u2014 l\u01B0\u1EE3t n\u00E0y kh\u00F4ng mua, kh\u00F4ng \u0111o\u1EA1t\u0027; const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); const parts = []; /* ---- su\u1EA5t mua ph\u00F9 c\u1EE7a ng\u00E0y ---- */ if (\u0027{{buyPhu}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) { parts.push(\u0027kh\u00F4ng mua ph\u00F9 (tu\u1EF3 ch\u1ECDn t\u1EAFt)\u0027); } else { const d = new Date(); const today = d.getFullYear() \u002B \u0027-\u0027 \u002B (d.getMonth() \u002B 1) \u002B \u0027-\u0027 \u002B d.getDate(); let last = null; try { last = localStorage.getItem(\u0027__jvz_km_phu\u0027); } catch (e) { } if (last === today) { parts.push(\u0027ph\u00F9 h\u00F4m nay \u0111\u00E3 d\u00F9ng su\u1EA5t \u2014 kh\u00F4ng mua n\u1EEFa\u0027); } else { body.classList.add(\u0027jvz-km-buy-go\u0027); parts.push(\u0027ph\u00F9: C\u00D2N su\u1EA5t h\u00F4m nay \u2014 s\u1EBD mua n\u1EBFu \u0111o\u1EA1t \u0111\u01B0\u1EE3c m\u1ECF\u0027); } } /* ---- \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t ---- */ if (\u0027{{hostMode}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t (tu\u1EF3 ch\u1ECDn t\u1EAFt)\u0027); } else { const bonusEl = document.querySelector(\u0027#tuvi-bonus-percentage\u0027); const bonus = bonusEl ? parseInt((bonusEl.textContent || \u0027\u0027).replace(/\\D/g, \u0027\u0027), 10) : NaN; const thr = parseInt(\u0027{{hostMinBonus}}\u0027, 10) || 0; const atk = fold(body.textContent).match(/luot tan cong\\s*:?\\s*(\\d\u002B)\\s*\\/\\s*(\\d\u002B)/); if (!(bonus \u003E= 0)) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: ch\u01B0a \u0111\u1ECDc \u0111\u01B0\u1EE3c % bonus c\u1EE7a m\u1ECF\u0027); } else if (bonus \u003C thr) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: bonus \u0027 \u002B bonus \u002B \u0027% d\u01B0\u1EDBi ng\u01B0\u1EE1ng \u0027 \u002B thr \u002B \u0027%\u0027); } else if (atk \u0026\u0026 parseInt(atk[1], 10) \u003E= parseInt(atk[2], 10)) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: h\u1EBFt l\u01B0\u1EE3t t\u1EA5n c\u00F4ng (\u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] \u002B \u0027)\u0027); } else { body.classList.add(\u0027jvz-km-host-phase\u0027); body.classList.add(\u0027jvz-km-refresh\u0027); parts.push(\u0027\u0110O\u1EA0T M\u1ECE: bonus \u0027 \u002B bonus \u002B \u0027% \u2265 \u0027 \u002B thr \u002B \u0027%\u0027 \u002B (atk ? \u0027, t\u1EA5n c\u00F4ng \u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] : \u0027\u0027)); } } return \u0027!\u0110\u1EA1t t\u1ED1i \u0111a \u2014 quy\u1EBFt \u0111\u1ECBnh c\u1EE7a l\u01B0\u1EE3t: \u0027 \u002B parts.join(\u0027; \u0027); }",
+          "script": "() =\u003E { const body = document.body; if (body) { body.classList.remove(\u0027jvz-km-host-phase\u0027); body.classList.remove(\u0027jvz-km-buy-go\u0027); body.classList.remove(\u0027jvz-km-buy-now\u0027); body.classList.remove(\u0027jvz-km-refresh\u0027); } if (!body || !body.classList.contains(\u0027jvz-km-ripe\u0027)) return \u0027gate: ch\u01B0a \u0111\u1EA1t khai th\u00E1c t\u1ED1i \u0111a \u2014 l\u01B0\u1EE3t n\u00E0y kh\u00F4ng mua, kh\u00F4ng \u0111o\u1EA1t\u0027; const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); const parts = []; /* ---- h\u1EA1n m\u1EE9c mua ph\u00F9 c\u1EE7a ng\u00E0y ---- */ if (\u0027{{buyPhu}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) { parts.push(\u0027kh\u00F4ng mua ph\u00F9 (tu\u1EF3 ch\u1ECDn t\u1EAFt)\u0027); } else { const d = new Date(); const today = d.getFullYear() \u002B \u0027-\u0027 \u002B (d.getMonth() \u002B 1) \u002B \u0027-\u0027 \u002B d.getDate(); const limit = Math.max(1, Math.min(3, parseInt(\u0027{{phuDailyLimit}}\u0027, 10) || 1)); let used = 0; try { const raw = localStorage.getItem(\u0027__jvz_km_phu\u0027); if (raw === today) used = 1; else if (raw) { const saved = JSON.parse(raw); if (saved \u0026\u0026 saved.day === today) used = Math.max(0, parseInt(saved.count, 10) || 0); } } catch (e) { } if (used \u003E= limit) { parts.push(\u0027ph\u00F9 h\u00F4m nay \u0111\u00E3 mua \u0111\u1EE7 \u0027 \u002B used \u002B \u0027/\u0027 \u002B limit \u002B \u0027 l\u00E1 \u2014 kh\u00F4ng mua n\u1EEFa\u0027); } else { body.classList.add(\u0027jvz-km-buy-go\u0027); parts.push(\u0027ph\u00F9: c\u00F2n \u0027 \u002B (limit - used) \u002B \u0027/\u0027 \u002B limit \u002B \u0027 su\u1EA5t h\u00F4m nay \u2014 s\u1EBD mua n\u1EBFu \u0111o\u1EA1t \u0111\u01B0\u1EE3c m\u1ECF\u0027); } } /* ---- \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t ---- */ if (\u0027{{hostMode}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t (tu\u1EF3 ch\u1ECDn t\u1EAFt)\u0027); } else { const bonusEl = document.querySelector(\u0027#tuvi-bonus-percentage\u0027); const bonus = bonusEl ? parseInt((bonusEl.textContent || \u0027\u0027).replace(/\\D/g, \u0027\u0027), 10) : NaN; const thr = parseInt(\u0027{{hostMinBonus}}\u0027, 10) || 0; const atk = fold(body.textContent).match(/luot tan cong\\s*:?\\s*(\\d\u002B)\\s*\\/\\s*(\\d\u002B)/); if (!(bonus \u003E= 0)) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: ch\u01B0a \u0111\u1ECDc \u0111\u01B0\u1EE3c % bonus c\u1EE7a m\u1ECF\u0027); } else if (bonus \u003C thr) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: bonus \u0027 \u002B bonus \u002B \u0027% d\u01B0\u1EDBi ng\u01B0\u1EE1ng \u0027 \u002B thr \u002B \u0027%\u0027); } else if (atk \u0026\u0026 parseInt(atk[1], 10) \u003E= parseInt(atk[2], 10)) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: h\u1EBFt l\u01B0\u1EE3t t\u1EA5n c\u00F4ng (\u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] \u002B \u0027)\u0027); } else { body.classList.add(\u0027jvz-km-host-phase\u0027); body.classList.add(\u0027jvz-km-refresh\u0027); parts.push(\u0027\u0110O\u1EA0T M\u1ECE: bonus \u0027 \u002B bonus \u002B \u0027% \u2265 \u0027 \u002B thr \u002B \u0027%\u0027 \u002B (atk ? \u0027, t\u1EA5n c\u00F4ng \u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] : \u0027\u0027)); } } return \u0027!\u0110\u1EA1t t\u1ED1i \u0111a \u2014 quy\u1EBFt \u0111\u1ECBnh c\u1EE7a l\u01B0\u1EE3t: \u0027 \u002B parts.join(\u0027; \u0027); }",
           "timeoutMs": 15000,
           "note": "hai c\u1EDD ra kh\u1ECFi c\u1ED5ng: jvz-km-buy-go (ph\u00F9 C\u00D2N su\u1EA5t h\u00F4m nay \u2014 m\u1EDBi l\u00E0 \u0110\u1EE6 T\u01AF C\u00C1CH mua, ch\u01B0a ph\u1EA3i l\u1EC7nh mua) v\u00E0 jvz-km-host-phase (\u0111\u1EE7 \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t, c\u0169ng l\u00E0 c\u1EDD k\u00E9o theo jvz-km-refresh). L\u1EC7nh mua th\u1EADt l\u00E0 jvz-km-buy-now, ch\u1EC9 c\u1EAFm sau khi \u0111o\u1EA1t TH\u00C0NH \u2014 xem KmHostWonScript"
         },
@@ -3831,7 +3831,7 @@
         },
         {
           "action": "evaluateJavaScript",
-          "script": "() =\u003E { const d = new Date(); const today = d.getFullYear() \u002B \u0027-\u0027 \u002B (d.getMonth() \u002B 1) \u002B \u0027-\u0027 \u002B d.getDate(); try { localStorage.setItem(\u0027__jvz_km_phu\u0027, today); } catch (e) { } return \u0027@khoang-mach:phu\u0027; }",
+          "script": "() =\u003E { const d = new Date(); const today = d.getFullYear() \u002B \u0027-\u0027 \u002B (d.getMonth() \u002B 1) \u002B \u0027-\u0027 \u002B d.getDate(); const limit = Math.max(1, Math.min(3, parseInt(\u0027{{phuDailyLimit}}\u0027, 10) || 1)); let used = 0; try { const raw = localStorage.getItem(\u0027__jvz_km_phu\u0027); if (raw === today) used = 1; else if (raw) { const saved = JSON.parse(raw); if (saved \u0026\u0026 saved.day === today) used = Math.max(0, parseInt(saved.count, 10) || 0); } used = Math.min(limit, used \u002B 1); localStorage.setItem(\u0027__jvz_km_phu\u0027, JSON.stringify({ day: today, count: used })); } catch (e) { } const nonce = Date.now().toString(36) \u002B \u0027-\u0027 \u002B Math.random().toString(36).slice(2, 8); return \u0027@khoang-mach:phu:\u0027 \u002B nonce; }",
           "timeoutMs": 15000,
           "note": "TI\u00CAU su\u1EA5t c\u1EE7a ng\u00E0y \u2014 c\u1EA3 kho\u00E1 localStorage c\u1EE7a m\u00E1y n\u00E0y l\u1EABn D\u1EA4U NG\u00C0Y v\u1EC1 s\u1ED5 c\u1EE7a \u0111\u00E0n. C\u00F9ng c\u1EDD v\u1EDBi ch\u00EDnh c\u00FA b\u1EA5m mua, v\u00E0 \u0110\u1EE8NG SAU n\u00F3: m\u1ED9t c\u00FA \u0111o\u1EA1t tr\u01B0\u1EE3t kh\u00F4ng c\u00F2n \u0111\u1ED1t su\u1EA5t nh\u01B0 b\u1EA3n c\u0169 (c\u1ED5ng ti\u00EAu su\u1EA5t ngay l\u00FAc quy\u1EBFt \u0111\u1ECBnh). Xem KmPhuMarkScript",
           "when": {
@@ -4068,11 +4068,11 @@
         },
         {
           "key": "buyPhu",
-          "label": "Mua Linh Quang Ph\u00F9 sau khi \u0111o\u1EA1t m\u1ECF (t\u1ED1i \u0111a 1/ng\u00E0y)",
+          "label": "Mua Linh Quang Ph\u00F9 sau khi \u0111o\u1EA1t m\u1ECF",
           "choices": [
             {
-              "value": "mua 1 ph\u00F9 m\u1ED7i ng\u00E0y",
-              "label": "Mua \u2014 m\u1ED7i ng\u00E0y m\u1ED9t l\u00E1, ch\u1EC9 sau khi \u0111o\u1EA1t \u0111\u01B0\u1EE3c m\u1ECF"
+              "value": "mua ph\u00F9 theo h\u1EA1n m\u1EE9c",
+              "label": "Mua \u2014 ch\u1EC9 sau khi \u0111o\u1EA1t \u0111\u01B0\u1EE3c m\u1ECF"
             },
             {
               "value": "\u00ABkh\u00F4ng mua\u00BB",
@@ -4080,7 +4080,16 @@
             }
           ],
           "allowCustom": false,
-          "selectedValue": "mua 1 ph\u00F9 m\u1ED7i ng\u00E0y"
+          "selectedValue": "mua ph\u00F9 theo h\u1EA1n m\u1EE9c"
+        },
+        {
+          "key": "phuDailyLimit",
+          "label": "S\u1ED1 Linh Quang Ph\u00F9 t\u1ED1i \u0111a m\u1ED7i ng\u00E0y",
+          "choices": [],
+          "allowCustom": true,
+          "customMinimum": 1,
+          "customMaximum": 3,
+          "selectedValue": "1"
         },
         {
           "key": "hostMode",
@@ -5805,7 +5814,7 @@
         },
         {
           "action": "evaluateJavaScript",
-          "script": "() =\u003E { const body = document.body; if (body) { body.classList.remove(\u0027jvz-km-host-phase\u0027); body.classList.remove(\u0027jvz-km-buy-go\u0027); body.classList.remove(\u0027jvz-km-buy-now\u0027); body.classList.remove(\u0027jvz-km-refresh\u0027); } if (!body || !body.classList.contains(\u0027jvz-km-ripe\u0027)) return \u0027gate: ch\u01B0a \u0111\u1EA1t khai th\u00E1c t\u1ED1i \u0111a \u2014 l\u01B0\u1EE3t n\u00E0y kh\u00F4ng mua, kh\u00F4ng \u0111o\u1EA1t\u0027; const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); const parts = []; /* ---- su\u1EA5t mua ph\u00F9 c\u1EE7a ng\u00E0y ---- */ if (\u0027{{buyPhu}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) { parts.push(\u0027kh\u00F4ng mua ph\u00F9 (tu\u1EF3 ch\u1ECDn t\u1EAFt)\u0027); } else { const d = new Date(); const today = d.getFullYear() \u002B \u0027-\u0027 \u002B (d.getMonth() \u002B 1) \u002B \u0027-\u0027 \u002B d.getDate(); let last = null; try { last = localStorage.getItem(\u0027__jvz_km_phu\u0027); } catch (e) { } if (last === today) { parts.push(\u0027ph\u00F9 h\u00F4m nay \u0111\u00E3 d\u00F9ng su\u1EA5t \u2014 kh\u00F4ng mua n\u1EEFa\u0027); } else { body.classList.add(\u0027jvz-km-buy-go\u0027); parts.push(\u0027ph\u00F9: C\u00D2N su\u1EA5t h\u00F4m nay \u2014 s\u1EBD mua n\u1EBFu \u0111o\u1EA1t \u0111\u01B0\u1EE3c m\u1ECF\u0027); } } /* ---- \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t ---- */ if (\u0027{{hostMode}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t (tu\u1EF3 ch\u1ECDn t\u1EAFt)\u0027); } else { const bonusEl = document.querySelector(\u0027#tuvi-bonus-percentage\u0027); const bonus = bonusEl ? parseInt((bonusEl.textContent || \u0027\u0027).replace(/\\D/g, \u0027\u0027), 10) : NaN; const thr = parseInt(\u0027{{hostMinBonus}}\u0027, 10) || 0; const atk = fold(body.textContent).match(/luot tan cong\\s*:?\\s*(\\d\u002B)\\s*\\/\\s*(\\d\u002B)/); if (!(bonus \u003E= 0)) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: ch\u01B0a \u0111\u1ECDc \u0111\u01B0\u1EE3c % bonus c\u1EE7a m\u1ECF\u0027); } else if (bonus \u003C thr) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: bonus \u0027 \u002B bonus \u002B \u0027% d\u01B0\u1EDBi ng\u01B0\u1EE1ng \u0027 \u002B thr \u002B \u0027%\u0027); } else if (atk \u0026\u0026 parseInt(atk[1], 10) \u003E= parseInt(atk[2], 10)) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: h\u1EBFt l\u01B0\u1EE3t t\u1EA5n c\u00F4ng (\u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] \u002B \u0027)\u0027); } else { body.classList.add(\u0027jvz-km-host-phase\u0027); body.classList.add(\u0027jvz-km-refresh\u0027); parts.push(\u0027\u0110O\u1EA0T M\u1ECE: bonus \u0027 \u002B bonus \u002B \u0027% \u2265 \u0027 \u002B thr \u002B \u0027%\u0027 \u002B (atk ? \u0027, t\u1EA5n c\u00F4ng \u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] : \u0027\u0027)); } } return \u0027!\u0110\u1EA1t t\u1ED1i \u0111a \u2014 quy\u1EBFt \u0111\u1ECBnh c\u1EE7a l\u01B0\u1EE3t: \u0027 \u002B parts.join(\u0027; \u0027); }",
+          "script": "() =\u003E { const body = document.body; if (body) { body.classList.remove(\u0027jvz-km-host-phase\u0027); body.classList.remove(\u0027jvz-km-buy-go\u0027); body.classList.remove(\u0027jvz-km-buy-now\u0027); body.classList.remove(\u0027jvz-km-refresh\u0027); } if (!body || !body.classList.contains(\u0027jvz-km-ripe\u0027)) return \u0027gate: ch\u01B0a \u0111\u1EA1t khai th\u00E1c t\u1ED1i \u0111a \u2014 l\u01B0\u1EE3t n\u00E0y kh\u00F4ng mua, kh\u00F4ng \u0111o\u1EA1t\u0027; const fold = (s) =\u003E String(s || \u0027\u0027).normalize(\u0027NFD\u0027).replace(/[\u0300-\u036F]/g, \u0027\u0027).replace(/\u0111/g, \u0027d\u0027).replace(/\u0110/g, \u0027D\u0027).toLowerCase().replace(/\\s\u002B/g, \u0027 \u0027); const parts = []; /* ---- h\u1EA1n m\u1EE9c mua ph\u00F9 c\u1EE7a ng\u00E0y ---- */ if (\u0027{{buyPhu}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) { parts.push(\u0027kh\u00F4ng mua ph\u00F9 (tu\u1EF3 ch\u1ECDn t\u1EAFt)\u0027); } else { const d = new Date(); const today = d.getFullYear() \u002B \u0027-\u0027 \u002B (d.getMonth() \u002B 1) \u002B \u0027-\u0027 \u002B d.getDate(); const limit = Math.max(1, Math.min(3, parseInt(\u0027{{phuDailyLimit}}\u0027, 10) || 1)); let used = 0; try { const raw = localStorage.getItem(\u0027__jvz_km_phu\u0027); if (raw === today) used = 1; else if (raw) { const saved = JSON.parse(raw); if (saved \u0026\u0026 saved.day === today) used = Math.max(0, parseInt(saved.count, 10) || 0); } } catch (e) { } if (used \u003E= limit) { parts.push(\u0027ph\u00F9 h\u00F4m nay \u0111\u00E3 mua \u0111\u1EE7 \u0027 \u002B used \u002B \u0027/\u0027 \u002B limit \u002B \u0027 l\u00E1 \u2014 kh\u00F4ng mua n\u1EEFa\u0027); } else { body.classList.add(\u0027jvz-km-buy-go\u0027); parts.push(\u0027ph\u00F9: c\u00F2n \u0027 \u002B (limit - used) \u002B \u0027/\u0027 \u002B limit \u002B \u0027 su\u1EA5t h\u00F4m nay \u2014 s\u1EBD mua n\u1EBFu \u0111o\u1EA1t \u0111\u01B0\u1EE3c m\u1ECF\u0027); } } /* ---- \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t ---- */ if (\u0027{{hostMode}}\u0027.indexOf(\u0027\u00AB\u0027) \u003E= 0) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t (tu\u1EF3 ch\u1ECDn t\u1EAFt)\u0027); } else { const bonusEl = document.querySelector(\u0027#tuvi-bonus-percentage\u0027); const bonus = bonusEl ? parseInt((bonusEl.textContent || \u0027\u0027).replace(/\\D/g, \u0027\u0027), 10) : NaN; const thr = parseInt(\u0027{{hostMinBonus}}\u0027, 10) || 0; const atk = fold(body.textContent).match(/luot tan cong\\s*:?\\s*(\\d\u002B)\\s*\\/\\s*(\\d\u002B)/); if (!(bonus \u003E= 0)) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: ch\u01B0a \u0111\u1ECDc \u0111\u01B0\u1EE3c % bonus c\u1EE7a m\u1ECF\u0027); } else if (bonus \u003C thr) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: bonus \u0027 \u002B bonus \u002B \u0027% d\u01B0\u1EDBi ng\u01B0\u1EE1ng \u0027 \u002B thr \u002B \u0027%\u0027); } else if (atk \u0026\u0026 parseInt(atk[1], 10) \u003E= parseInt(atk[2], 10)) { parts.push(\u0027kh\u00F4ng \u0111o\u1EA1t: h\u1EBFt l\u01B0\u1EE3t t\u1EA5n c\u00F4ng (\u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] \u002B \u0027)\u0027); } else { body.classList.add(\u0027jvz-km-host-phase\u0027); body.classList.add(\u0027jvz-km-refresh\u0027); parts.push(\u0027\u0110O\u1EA0T M\u1ECE: bonus \u0027 \u002B bonus \u002B \u0027% \u2265 \u0027 \u002B thr \u002B \u0027%\u0027 \u002B (atk ? \u0027, t\u1EA5n c\u00F4ng \u0027 \u002B atk[1] \u002B \u0027/\u0027 \u002B atk[2] : \u0027\u0027)); } } return \u0027!\u0110\u1EA1t t\u1ED1i \u0111a \u2014 quy\u1EBFt \u0111\u1ECBnh c\u1EE7a l\u01B0\u1EE3t: \u0027 \u002B parts.join(\u0027; \u0027); }",
           "timeoutMs": 15000,
           "note": "hai c\u1EDD ra kh\u1ECFi c\u1ED5ng: jvz-km-buy-go (ph\u00F9 C\u00D2N su\u1EA5t h\u00F4m nay \u2014 m\u1EDBi l\u00E0 \u0110\u1EE6 T\u01AF C\u00C1CH mua, ch\u01B0a ph\u1EA3i l\u1EC7nh mua) v\u00E0 jvz-km-host-phase (\u0111\u1EE7 \u0111i\u1EC1u ki\u1EC7n \u0111o\u1EA1t, c\u0169ng l\u00E0 c\u1EDD k\u00E9o theo jvz-km-refresh). L\u1EC7nh mua th\u1EADt l\u00E0 jvz-km-buy-now, ch\u1EC9 c\u1EAFm sau khi \u0111o\u1EA1t TH\u00C0NH \u2014 xem KmHostWonScript"
         },
@@ -6014,7 +6023,7 @@
         },
         {
           "action": "evaluateJavaScript",
-          "script": "() =\u003E { const d = new Date(); const today = d.getFullYear() \u002B \u0027-\u0027 \u002B (d.getMonth() \u002B 1) \u002B \u0027-\u0027 \u002B d.getDate(); try { localStorage.setItem(\u0027__jvz_km_phu\u0027, today); } catch (e) { } return \u0027@khoang-mach:phu\u0027; }",
+          "script": "() =\u003E { const d = new Date(); const today = d.getFullYear() \u002B \u0027-\u0027 \u002B (d.getMonth() \u002B 1) \u002B \u0027-\u0027 \u002B d.getDate(); const limit = Math.max(1, Math.min(3, parseInt(\u0027{{phuDailyLimit}}\u0027, 10) || 1)); let used = 0; try { const raw = localStorage.getItem(\u0027__jvz_km_phu\u0027); if (raw === today) used = 1; else if (raw) { const saved = JSON.parse(raw); if (saved \u0026\u0026 saved.day === today) used = Math.max(0, parseInt(saved.count, 10) || 0); } used = Math.min(limit, used \u002B 1); localStorage.setItem(\u0027__jvz_km_phu\u0027, JSON.stringify({ day: today, count: used })); } catch (e) { } const nonce = Date.now().toString(36) \u002B \u0027-\u0027 \u002B Math.random().toString(36).slice(2, 8); return \u0027@khoang-mach:phu:\u0027 \u002B nonce; }",
           "timeoutMs": 15000,
           "note": "TI\u00CAU su\u1EA5t c\u1EE7a ng\u00E0y \u2014 c\u1EA3 kho\u00E1 localStorage c\u1EE7a m\u00E1y n\u00E0y l\u1EABn D\u1EA4U NG\u00C0Y v\u1EC1 s\u1ED5 c\u1EE7a \u0111\u00E0n. C\u00F9ng c\u1EDD v\u1EDBi ch\u00EDnh c\u00FA b\u1EA5m mua, v\u00E0 \u0110\u1EE8NG SAU n\u00F3: m\u1ED9t c\u00FA \u0111o\u1EA1t tr\u01B0\u1EE3t kh\u00F4ng c\u00F2n \u0111\u1ED1t su\u1EA5t nh\u01B0 b\u1EA3n c\u0169 (c\u1ED5ng ti\u00EAu su\u1EA5t ngay l\u00FAc quy\u1EBFt \u0111\u1ECBnh). Xem KmPhuMarkScript",
           "when": {
@@ -6251,11 +6260,11 @@
         },
         {
           "key": "buyPhu",
-          "label": "Mua Linh Quang Ph\u00F9 sau khi \u0111o\u1EA1t m\u1ECF (t\u1ED1i \u0111a 1/ng\u00E0y)",
+          "label": "Mua Linh Quang Ph\u00F9 sau khi \u0111o\u1EA1t m\u1ECF",
           "choices": [
             {
-              "value": "mua 1 ph\u00F9 m\u1ED7i ng\u00E0y",
-              "label": "Mua \u2014 m\u1ED7i ng\u00E0y m\u1ED9t l\u00E1, ch\u1EC9 sau khi \u0111o\u1EA1t \u0111\u01B0\u1EE3c m\u1ECF"
+              "value": "mua ph\u00F9 theo h\u1EA1n m\u1EE9c",
+              "label": "Mua \u2014 ch\u1EC9 sau khi \u0111o\u1EA1t \u0111\u01B0\u1EE3c m\u1ECF"
             },
             {
               "value": "\u00ABkh\u00F4ng mua\u00BB",
@@ -6263,7 +6272,16 @@
             }
           ],
           "allowCustom": false,
-          "selectedValue": "mua 1 ph\u00F9 m\u1ED7i ng\u00E0y"
+          "selectedValue": "mua ph\u00F9 theo h\u1EA1n m\u1EE9c"
+        },
+        {
+          "key": "phuDailyLimit",
+          "label": "S\u1ED1 Linh Quang Ph\u00F9 t\u1ED1i \u0111a m\u1ED7i ng\u00E0y",
+          "choices": [],
+          "allowCustom": true,
+          "customMinimum": 1,
+          "customMaximum": 3,
+          "selectedValue": "1"
         },
         {
           "key": "hostMode",
