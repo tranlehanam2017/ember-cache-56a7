@@ -25,7 +25,9 @@
  * không bao giờ tới app để nhận 409; tám runner còn sống nhưng gõ vào xác ấy mỗi 5 giây suốt
  * hơn bảy giờ. `WORKER_FALLBACK_URL` là một origin HTTPS tin cậy do bộ cài/workflow khai sẵn:
  * lỗi mạng hoặc 502/503/504 đổi địa chỉ cho LƯỢT KẾ (không phát lại một POST chưa biết đã tới
- * server chưa); mã `DEPLOYMENT_*` chắc chắn bị chặn ở mép thì được phép thử lại ngay.
+ * server chưa); đúng chữ ký 402/DEPLOYMENT_* của mép thì được phép thử lại ngay. Fallback chỉ
+ * là chỗ trú: cứ năm phút worker dùng một GET không token hỏi cổng chính, sống lại thì trở về để
+ * một cú mạng chập chờn không biến proxy cứu hộ thành đường poll vĩnh viễn.
  */
 
 /** Trạm đã nghỉ trả mã này kèm `activeUrl`. Trùng mã với「job is no longer active」— xem trên. */
@@ -69,7 +71,10 @@ export function parseFallbackUrl(raw) {
 
 /** Thân hoặc header Vercel có nói thẳng deployment đã chết trước khi request tới app không. */
 export function isDeadDeploymentResponse(status, bodyText, platformCode = "") {
-  return status >= 400 && DEAD_DEPLOYMENT.test(`${platformCode}\n${bodyText}`);
+  // Header mang tên riêng của nền tảng là bằng chứng mạnh. Body chỉ được tin cùng đúng 402 đã
+  // đo live; tin một câu DEPLOYMENT_* trong body 500 có thể replay POST mà app đã xử lý xong.
+  return DEAD_DEPLOYMENT.test(String(platformCode)) ||
+    (status === 402 && DEAD_DEPLOYMENT.test(String(bodyText)));
 }
 
 /**
@@ -104,9 +109,22 @@ export function parseActiveUrl(bodyText) {
  * mạng — bài học của chính buổi này: một luật chỉ chạy đúng ngày chuyển trạm mà không có phép
  * kiểm thì nó sẽ sai vào đúng ngày ấy.
  */
-export function createWorkerCall({ webUrl, fallbackUrl = "", token, fetchImpl = fetch, log = console.log }) {
+export function createWorkerCall({
+  webUrl,
+  fallbackUrl = "",
+  token,
+  fetchImpl = fetch,
+  log = console.log,
+  nowImpl = Date.now,
+  fallbackProbeMs = 5 * 60_000,
+}) {
   let base = normalizeBase(webUrl);
+  let preferred = base;
   const fallback = parseFallbackUrl(fallbackUrl);
+  const probeEveryMs = Math.max(1_000, Number(fallbackProbeMs) || 5 * 60_000);
+  let usingFallback = false;
+  let retryPreferredAt = Infinity;
+  let probeInFlight = null;
 
   /** Đổi đúng một biến trong bộ nhớ; mọi op sau tự đi đường mới. */
   const useFallback = (why, expectedBase) => {
@@ -114,12 +132,51 @@ export function createWorkerCall({ webUrl, fallbackUrl = "", token, fetchImpl = 
     // ngược khỏi chỗ mà một request mới hơn vừa chọn.
     if (base !== expectedBase || !fallback || fallback === base) return false;
     const failed = expectedBase;
+    preferred = expectedBase;
     base = fallback;
+    usingFallback = true;
+    retryPreferredAt = nowImpl() + probeEveryMs;
     log(`Cổng khôi lỗi không dùng được (${why}): ${failed} → ${fallback}. Chuyển sang cổng dự phòng.`);
     return true;
   };
 
+  /**
+   * Fallback không được thành đường poll vĩnh viễn. Probe GET công khai, KHÔNG mang token và
+   * không replay thao tác; đồng thời gộp mọi heartbeat/event cùng tới hạn vào đúng một request.
+   */
+  const recoverPreferredIfDue = async () => {
+    if (!usingFallback || !fallback || base !== fallback || nowImpl() < retryPreferredAt) return;
+    if (probeInFlight) return probeInFlight;
+
+    const expectedFallback = base;
+    const target = preferred;
+    retryPreferredAt = nowImpl() + probeEveryMs;
+    probeInFlight = (async () => {
+      try {
+        const probe = await fetchImpl(`${target}/api/maintenance`, {
+          method: "GET",
+          redirect: "manual",
+          headers: { accept: "application/json" },
+        });
+        const body = probe.ok ? await probe.json() : null;
+        // 2xx trần chưa đủ (một trang parking cũng trả 200): đòi đúng hình dạng route công khai.
+        if (typeof body?.active === "boolean" && base === expectedFallback && usingFallback) {
+          base = target;
+          usingFallback = false;
+          retryPreferredAt = Infinity;
+          log(`Cổng chính đã sống lại: ${expectedFallback} → ${target}. Trở về đường chính.`);
+        }
+      } catch {
+        // Cổng chính vẫn chết: fallback đang phục vụ được nên không biến một probe thành lỗi op.
+      }
+    })().finally(() => {
+      probeInFlight = null;
+    });
+    return probeInFlight;
+  };
+
   const call = async (op, payload = {}, { allowFollow = true, allowFallback = true } = {}) => {
+    await recoverPreferredIfDue();
     const requestBase = base;
     let res;
     try {
@@ -139,7 +196,15 @@ export function createWorkerCall({ webUrl, fallbackUrl = "", token, fetchImpl = 
 
     if (!res.ok) {
       // Đọc thân MỘT LẦN: `res.text()` rồi `res.json()` trên cùng phản hồi là lỗi "body đã dùng".
-      const text = await res.text();
+      let text;
+      try {
+        text = await res.text();
+      } catch (err) {
+        // Headers đã về nhưng stream chết giữa thân: POST có thể đã tới app, nên chỉ đổi đường
+        // cho lượt kế và tuyệt đối không replay.
+        if (allowFallback) useFallback(err instanceof Error ? err.message : "lỗi đọc phản hồi", requestBase);
+        throw err;
+      }
 
       if (res.status === CONFLICT && allowFollow) {
         const next = parseActiveUrl(text);
@@ -148,6 +213,9 @@ export function createWorkerCall({ webUrl, fallbackUrl = "", token, fetchImpl = 
         if (next && next !== requestBase && base === requestBase) {
           log(`Trạm hoạt động đã đổi: ${requestBase} → ${next}. Đi theo bảng điều phối.`);
           base = next;
+          preferred = next;
+          usingFallback = false;
+          retryPreferredAt = Infinity;
           // Đúng MỘT lần thử lại. Trạm mới cũng trả 409 thì đó là lỗi thật (hoặc hai trạm đang
           // ping-pong trong lúc cache bảng nguội) — ném lên, vòng lặp ngoài sẽ hỏi lại sau.
           return call(op, payload, { allowFollow: false, allowFallback });
@@ -176,7 +244,14 @@ export function createWorkerCall({ webUrl, fallbackUrl = "", token, fetchImpl = 
       throw new Error(`${op} → HTTP ${res.status} ${text}`);
     }
 
-    return res.json();
+    try {
+      return await res.json();
+    } catch (err) {
+      // 2xx mà body truyền dở/JSON bị cắt vẫn là lỗi đường truyền. Không replay một claim có thể
+      // đã nhận job; chỉ để nhịp ngoài kế tiếp đi cổng cứu hộ.
+      if (allowFallback) useFallback(err instanceof Error ? err.message : "lỗi đọc JSON", requestBase);
+      throw err;
+    }
   };
 
   return { call, currentUrl: () => base };
