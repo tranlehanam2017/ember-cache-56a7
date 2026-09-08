@@ -19,7 +19,7 @@
  *   • WORKER_TOKEN của deployment (khôi lỗi tông môn) → nhận job của mọi thành viên.
  *   • Linh phù cá nhân phát ở mục Khôi Lỗi           → chỉ nhận job của chính chủ.
  *
- *   WEB_URL=https://<app>.vercel.app WORKER_TOKEN=... node scripts/worker.mjs
+ *   WEB_URL=https://<app>.vercel.app WORKER_FALLBACK_URL=https://<backend> WORKER_TOKEN=... node scripts/worker.mjs
  *
  * WORKER_SOLVE_TURNSTILE=1 bật cú tự bấm ô Turnstile khi vấp màn Cloudflare (mặc định TẮT).
  * Chỉ giúp màn tương tác, và KHÔNG chữa được gốc IP trung tâm dữ liệu — bật cho máy IP dân dụng.
@@ -60,6 +60,9 @@ function readOwnVersion() {
 const VERSION = readOwnVersion();
 
 const WEB_URL = (process.env.WEB_URL ?? "http://localhost:3000").replace(/\/$/, "");
+// Origin HTTPS do chính bộ cài/workflow khai. controlFollow chỉ gửi token sang đây khi cổng
+// chính chết ở tầng mạng/deployment; giá trị lạ hoặc có path bị bỏ, không fail-open.
+const FALLBACK_URL = process.env.WORKER_FALLBACK_URL ?? "";
 const TOKEN = process.env.WORKER_TOKEN;
 const WORKER_ID = process.env.WORKER_ID ?? `linh-su-${process.pid}`;
 const POLL_MS = Number(process.env.WORKER_POLL_MS ?? 5000);
@@ -116,7 +119,7 @@ if (!TOKEN || TOKEN === "change-me") {
 // mang thêm một trách nhiệm không hiển nhiên: ĐI THEO trạm hoạt động khi bảng điều phối lật.
 // Trạm đã nghỉ trả 409 kèm `activeUrl`; thiếu đoạn ấy thì mỗi lượt chuyển trạm bỏ lại toàn bộ
 // đàn ở trạm cũ — đúng chuyện đã xảy ra ngày 10/08/2026.
-const { call, currentUrl } = createWorkerCall({ webUrl: WEB_URL, token: TOKEN });
+const { call, currentUrl } = createWorkerCall({ webUrl: WEB_URL, fallbackUrl: FALLBACK_URL, token: TOKEN });
 
 const say = (jobId, message, level = "info") =>
   // Engine nói "warn", giao thức nói "warning" — dịch ở đây, một chỗ duy nhất. Không dịch

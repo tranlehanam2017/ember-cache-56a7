@@ -120,7 +120,13 @@ jobs:
 
       - name: Trực ca
         env:
+          # Khôi lỗi là nguồn request dày nhất (mỗi 5 giây), nên đi thẳng backend thay vì đốt
+          # Edge Requests của một tài khoản Vercel Hobby. Ngày 08/09/2026 tám kho cùng bị kẹt
+          # khi auto-hh3d-4 chạm trần và mép Vercel trả 402 trước khi app kịp phát 409.
           WEB_URL: ${{ vars.WEB_URL || 'https://158.180.59.36.sslip.io' }}
+          # Cổng thứ hai do operator tin cậy và nướng sẵn — worker KHÔNG lấy target từ Location
+          # hay thân lỗi. Nếu đường thẳng gặp lỗi mạng/gateway, lượt kế mới thử qua proxy này.
+          WORKER_FALLBACK_URL: ${{ vars.WORKER_FALLBACK_URL || 'https://auto-hh3d.vercel.app' }}
           WORKER_TOKEN: ${{ secrets.WORKER_TOKEN }}
           # Danh tính riêng — xem điều 1.
           WORKER_ID: ember-cache-56a7
