@@ -117,11 +117,15 @@ export function createWorkerCall({
   log = console.log,
   nowImpl = Date.now,
   fallbackProbeMs = 5 * 60_000,
+  requestTimeoutMs = 15_000,
+  probeTimeoutMs = 4_000,
 }) {
   let base = normalizeBase(webUrl);
   let preferred = base;
   const fallback = parseFallbackUrl(fallbackUrl);
   const probeEveryMs = Math.max(1_000, Number(fallbackProbeMs) || 5 * 60_000);
+  const requestTimeout = Math.max(1_000, Number(requestTimeoutMs) || 15_000);
+  const probeTimeout = Math.max(500, Number(probeTimeoutMs) || 4_000);
   let usingFallback = false;
   let retryPreferredAt = Infinity;
   let probeInFlight = null;
@@ -144,9 +148,9 @@ export function createWorkerCall({
    * Fallback không được thành đường poll vĩnh viễn. Probe GET công khai, KHÔNG mang token và
    * không replay thao tác; đồng thời gộp mọi heartbeat/event cùng tới hạn vào đúng một request.
    */
-  const recoverPreferredIfDue = async () => {
+  const recoverPreferredIfDue = () => {
     if (!usingFallback || !fallback || base !== fallback || nowImpl() < retryPreferredAt) return;
-    if (probeInFlight) return probeInFlight;
+    if (probeInFlight) return;
 
     const expectedFallback = base;
     const target = preferred;
@@ -157,8 +161,14 @@ export function createWorkerCall({
           method: "GET",
           redirect: "manual",
           headers: { accept: "application/json" },
+          signal: AbortSignal.timeout(probeTimeout),
         });
-        const body = probe.ok ? await probe.json() : null;
+        if (!probe.ok) {
+          // Không cần thân lỗi; huỷ stream để undici nhả socket thay vì chờ GC sau mỗi probe.
+          await probe.body?.cancel?.();
+          return;
+        }
+        const body = await probe.json();
         // 2xx trần chưa đủ (một trang parking cũng trả 200): đòi đúng hình dạng route công khai.
         if (typeof body?.active === "boolean" && base === expectedFallback && usingFallback) {
           base = target;
@@ -172,11 +182,12 @@ export function createWorkerCall({
     })().finally(() => {
       probeInFlight = null;
     });
-    return probeInFlight;
   };
 
   const call = async (op, payload = {}, { allowFollow = true, allowFallback = true } = {}) => {
-    await recoverPreferredIfDue();
+    // Probe chạy nền: preferred đang blackhole không được phép chặn một heartbeat qua fallback
+    // đang khỏe. Nếu probe thắng, compare-and-swap chỉ đổi base cho op KẾ TIẾP.
+    recoverPreferredIfDue();
     const requestBase = base;
     let res;
     try {
@@ -186,6 +197,8 @@ export function createWorkerCall({
         redirect: "manual",
         headers: { "content-type": "application/json", authorization: `Bearer ${token}` },
         body: JSON.stringify({ op, ...payload }),
+        // Nhỏ hơn xa cửa reap 3 phút. Một socket nhận TCP rồi im không được giữ heartbeat mãi.
+        signal: AbortSignal.timeout(requestTimeout),
       });
     } catch (err) {
       // Không replay: một POST mất phản hồi có thể đã được app nhận. Vòng ngoài vốn sẽ gọi lại
