@@ -1,6 +1,6 @@
 {
   "name": "Ho\u1EA1t \u0111\u1ED9ng h\u00E0ng ng\u00E0y (m\u1EB7c \u0111\u1ECBnh)",
-  "schemaVersion": 82,
+  "schemaVersion": 83,
   "dailyQuestPath": "/nhiem-vu-hang-ngay",
   "quests": [
     {
@@ -152,16 +152,16 @@
             {
               "action": "waitForCondition",
               "timeoutMs": 8000,
-              "note": "h\u1ED9p x\u00E1c nh\u1EADn SweetAlert2 \u0022\u0110\u1ED5i\u0022",
+              "note": "h\u1ED9p x\u00E1c nh\u1EADn c\u1EE7a site \u0022\u0110\u1ED5i\u0022 \u2014 b\u1EA3n ghi 13/09/2026",
               "optional": true,
               "condition": {
                 "kind": "visible",
-                "selector": ".swal2-confirm"
+                "selector": "#hh3d-confirm-layer .hh3d-confirm__btn--confirm"
               }
             },
             {
               "action": "click",
-              "selector": ".swal2-confirm",
+              "selector": "#hh3d-confirm-layer .hh3d-confirm__btn--confirm",
               "timeoutMs": 6000,
               "optional": true
             },
@@ -1806,16 +1806,16 @@
             {
               "action": "waitForCondition",
               "timeoutMs": 8000,
-              "note": "h\u1ED9p x\u00E1c nh\u1EADn SweetAlert2 \u0022\u0110\u1ED5i\u0022",
+              "note": "h\u1ED9p x\u00E1c nh\u1EADn c\u1EE7a site \u0022\u0110\u1ED5i\u0022 \u2014 b\u1EA3n ghi 13/09/2026",
               "optional": true,
               "condition": {
                 "kind": "visible",
-                "selector": ".swal2-confirm"
+                "selector": "#hh3d-confirm-layer .hh3d-confirm__btn--confirm"
               }
             },
             {
               "action": "click",
-              "selector": ".swal2-confirm",
+              "selector": "#hh3d-confirm-layer .hh3d-confirm__btn--confirm",
               "timeoutMs": 6000,
               "optional": true
             },
@@ -3525,10 +3525,10 @@
         {
           "action": "waitForCondition",
           "timeoutMs": 10000,
-          "note": "h\u1ED9p swal2 c\u1EE7a trang m\u1ECF (kh\u00E1c h\u1ED9p nh\u00E0 #hh3d-confirm-layer!) \u2014 h\u1ECFi CH\u1EEE ch\u1EE9 kh\u00F4ng ch\u1EC9 h\u1ECFi h\u1ED9p: \u300Cth\u01B0\u1EDFng t\u1EEB kho\u00E1ng m\u1EA1ch kh\u00E1c s\u1EBD t\u1EF1 \u0111\u1ED9ng nh\u1EADn tr\u01B0\u1EDBc khi di chuy\u1EC3n\u300D(khung h\u00ECnh 05:28)",
+          "note": "h\u1ED9p x\u00E1c nh\u1EADn #hh3d-confirm-layer c\u1EE7a site \u2014 h\u1ECFi CH\u1EEE ch\u1EE9 kh\u00F4ng ch\u1EC9 h\u1ECFi h\u1ED9p: \u300Cth\u01B0\u1EDFng t\u1EEB kho\u00E1ng m\u1EA1ch kh\u00E1c s\u1EBD t\u1EF1 \u0111\u1ED9ng nh\u1EADn tr\u01B0\u1EDBc khi di chuy\u1EC3n\u300D (b\u1EA3n ghi 13/09/2026)",
           "condition": {
             "kind": "textMatches",
-            "selector": ".swal2-container .swal2-popup",
+            "selector": "#hh3d-confirm-layer .hh3d-confirm__panel",
             "text": "v\u00E0o ngay|di chuy\u1EC3n"
           },
           "when": {
@@ -3538,7 +3538,7 @@
         },
         {
           "action": "click",
-          "selector": ".swal2-container button.swal2-confirm",
+          "selector": "#hh3d-confirm-layer .hh3d-confirm__btn--confirm",
           "timeoutMs": 8000,
           "note": "\u300CC\u00F3, v\u00E0o ngay\u300D\u2014 b\u1EA5m b\u1EB1ng selector, kh\u00F4ng qu\u00E9t nh\u00E3n; kh\u00F4ng bao gi\u1EDD \u0111\u1EE5ng n\u00FAt Kh\u00F4ng",
           "when": {
@@ -3690,7 +3690,7 @@
           "note": "\u300C\u0110\u1EA1o h\u1EEFu c\u00F3 ch\u1EAFc ch\u1EAFn mu\u1ED1n \u0111o\u1EA1t quy\u1EC1n ch\u1EE7 m\u1ECF n\u00E0y kh\u00F4ng?\u300D(khung h\u00ECnh 42:14)",
           "condition": {
             "kind": "textMatches",
-            "selector": ".swal2-container .swal2-popup",
+            "selector": "#hh3d-confirm-layer .hh3d-confirm__panel",
             "text": "\u0111o\u1EA1t quy\u1EC1n ch\u1EE7 m\u1ECF"
           },
           "when": {
@@ -3710,7 +3710,7 @@
         },
         {
           "action": "click",
-          "selector": ".swal2-container button.swal2-confirm",
+          "selector": "#hh3d-confirm-layer .hh3d-confirm__btn--confirm",
           "timeoutMs": 8000,
           "note": "\u300CX\u00E1c nh\u1EADn\u300D\u2014 AJAX tr\u1EA3\u300C\u0110\u00E3 \u0111o\u1EA1t th\u00E0nh c\u00F4ng quy\u1EC1n ch\u1EE7 m\u1ECF.\u300D(click#246)",
           "when": {
@@ -3810,7 +3810,7 @@
           "optional": true,
           "condition": {
             "kind": "textMatches",
-            "selector": ".swal2-container .swal2-popup",
+            "selector": "#hh3d-confirm-layer .hh3d-confirm__panel",
             "text": "mua|linh quang"
           },
           "when": {
@@ -3820,7 +3820,7 @@
         },
         {
           "action": "click",
-          "selector": ".swal2-container button.swal2-confirm",
+          "selector": "#hh3d-confirm-layer .hh3d-confirm__btn--confirm",
           "timeoutMs": 8000,
           "note": "\u300CMua Ngay\u300Dtrong h\u1ED9p x\u00E1c nh\u1EADn (click#236)",
           "optional": true,
@@ -5717,10 +5717,10 @@
         {
           "action": "waitForCondition",
           "timeoutMs": 10000,
-          "note": "h\u1ED9p swal2 c\u1EE7a trang m\u1ECF (kh\u00E1c h\u1ED9p nh\u00E0 #hh3d-confirm-layer!) \u2014 h\u1ECFi CH\u1EEE ch\u1EE9 kh\u00F4ng ch\u1EC9 h\u1ECFi h\u1ED9p: \u300Cth\u01B0\u1EDFng t\u1EEB kho\u00E1ng m\u1EA1ch kh\u00E1c s\u1EBD t\u1EF1 \u0111\u1ED9ng nh\u1EADn tr\u01B0\u1EDBc khi di chuy\u1EC3n\u300D(khung h\u00ECnh 05:28)",
+          "note": "h\u1ED9p x\u00E1c nh\u1EADn #hh3d-confirm-layer c\u1EE7a site \u2014 h\u1ECFi CH\u1EEE ch\u1EE9 kh\u00F4ng ch\u1EC9 h\u1ECFi h\u1ED9p: \u300Cth\u01B0\u1EDFng t\u1EEB kho\u00E1ng m\u1EA1ch kh\u00E1c s\u1EBD t\u1EF1 \u0111\u1ED9ng nh\u1EADn tr\u01B0\u1EDBc khi di chuy\u1EC3n\u300D (b\u1EA3n ghi 13/09/2026)",
           "condition": {
             "kind": "textMatches",
-            "selector": ".swal2-container .swal2-popup",
+            "selector": "#hh3d-confirm-layer .hh3d-confirm__panel",
             "text": "v\u00E0o ngay|di chuy\u1EC3n"
           },
           "when": {
@@ -5730,7 +5730,7 @@
         },
         {
           "action": "click",
-          "selector": ".swal2-container button.swal2-confirm",
+          "selector": "#hh3d-confirm-layer .hh3d-confirm__btn--confirm",
           "timeoutMs": 8000,
           "note": "\u300CC\u00F3, v\u00E0o ngay\u300D\u2014 b\u1EA5m b\u1EB1ng selector, kh\u00F4ng qu\u00E9t nh\u00E3n; kh\u00F4ng bao gi\u1EDD \u0111\u1EE5ng n\u00FAt Kh\u00F4ng",
           "when": {
@@ -5882,7 +5882,7 @@
           "note": "\u300C\u0110\u1EA1o h\u1EEFu c\u00F3 ch\u1EAFc ch\u1EAFn mu\u1ED1n \u0111o\u1EA1t quy\u1EC1n ch\u1EE7 m\u1ECF n\u00E0y kh\u00F4ng?\u300D(khung h\u00ECnh 42:14)",
           "condition": {
             "kind": "textMatches",
-            "selector": ".swal2-container .swal2-popup",
+            "selector": "#hh3d-confirm-layer .hh3d-confirm__panel",
             "text": "\u0111o\u1EA1t quy\u1EC1n ch\u1EE7 m\u1ECF"
           },
           "when": {
@@ -5902,7 +5902,7 @@
         },
         {
           "action": "click",
-          "selector": ".swal2-container button.swal2-confirm",
+          "selector": "#hh3d-confirm-layer .hh3d-confirm__btn--confirm",
           "timeoutMs": 8000,
           "note": "\u300CX\u00E1c nh\u1EADn\u300D\u2014 AJAX tr\u1EA3\u300C\u0110\u00E3 \u0111o\u1EA1t th\u00E0nh c\u00F4ng quy\u1EC1n ch\u1EE7 m\u1ECF.\u300D(click#246)",
           "when": {
@@ -6002,7 +6002,7 @@
           "optional": true,
           "condition": {
             "kind": "textMatches",
-            "selector": ".swal2-container .swal2-popup",
+            "selector": "#hh3d-confirm-layer .hh3d-confirm__panel",
             "text": "mua|linh quang"
           },
           "when": {
@@ -6012,7 +6012,7 @@
         },
         {
           "action": "click",
-          "selector": ".swal2-container button.swal2-confirm",
+          "selector": "#hh3d-confirm-layer .hh3d-confirm__btn--confirm",
           "timeoutMs": 8000,
           "note": "\u300CMua Ngay\u300Dtrong h\u1ED9p x\u00E1c nh\u1EADn (click#236)",
           "optional": true,
